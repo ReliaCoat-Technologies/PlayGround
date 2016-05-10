@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25123.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAQTester", "DAQTester\DAQTester.csproj", "{1DE473BA-857A-4A15-9DD7-230BE43B2DA7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAQViewer", "DAQViewer\DAQViewer.csproj", "{2EC2F39A-81C6-4C3D-9EF5-73C8DDDACF93}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealTimeSciChart", "RealTimeSciChart\RealTimeSciChart.csproj", "{4636BEB3-29A2-4A91-B691-3908151FBBEF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1DE473BA-857A-4A15-9DD7-230BE43B2DA7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1DE473BA-857A-4A15-9DD7-230BE43B2DA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1DE473BA-857A-4A15-9DD7-230BE43B2DA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1DE473BA-857A-4A15-9DD7-230BE43B2DA7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2EC2F39A-81C6-4C3D-9EF5-73C8DDDACF93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2EC2F39A-81C6-4C3D-9EF5-73C8DDDACF93}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2EC2F39A-81C6-4C3D-9EF5-73C8DDDACF93}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2EC2F39A-81C6-4C3D-9EF5-73C8DDDACF93}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4636BEB3-29A2-4A91-B691-3908151FBBEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4636BEB3-29A2-4A91-B691-3908151FBBEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4636BEB3-29A2-4A91-B691-3908151FBBEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4636BEB3-29A2-4A91-B691-3908151FBBEF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

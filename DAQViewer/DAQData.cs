@@ -52,7 +52,7 @@ namespace DAQViewer
                 pDaq = (Daq3xxx)pDev;
                 pDaq.OverSampleMultiplier = OverSampleMultiplier.osmX1024;
                 pDaq.LineCycleRejection = LineCycleRejection.lcr60HzTC;
-                pDev.Open();
+                pDaq.Open();
 
                 Console.WriteLine(pDaq.Name.ToString());
                 pAnalogInputs = pDev.AnalogInputs;
@@ -70,7 +70,7 @@ namespace DAQViewer
 
                 pDev.AnalogOutputs.RemoveAll();
 
-                BaseChannel baseChannel = pAvailableChannels.get_ItemByName("DaqChannel2");
+                BaseChannel baseChannel = pAvailableChannels.get_ItemByName("DaqChannel3");
                 pAnalogInput = pAnalogInputs.Add(AnalogInputType.aitDirect, baseChannel.BaseChannel, 0);
                 pChannel = (pDaq3000DirectAIChannel)pAnalogInput.Channels[1];
                 pChannel.SelectedRange = pChannel.Ranges.ItemByType[RangeType.rtTypeK];
@@ -79,7 +79,7 @@ namespace DAQViewer
                 pChannel.AddToScanList();
                 
                 // For non-TC measurements
-                baseChannel = pAvailableChannels.get_ItemByName("DaqChannel9");
+                baseChannel = pAvailableChannels.get_ItemByName("DaqChannel1");
                 pAnalogInput = pAnalogInputs.Add(AnalogInputType.aitDirect, baseChannel.BaseChannel, 0);
                 pAnalogInput.Channels[1].AddToScanList();
 

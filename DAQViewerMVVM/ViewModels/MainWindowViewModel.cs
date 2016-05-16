@@ -1,6 +1,5 @@
 ﻿using System;
 using DevExpress.Mvvm;
-using SciChart.Charting.Model.DataSeries;
 using DAQViewer;
 using System.Timers;
 using System.Linq;
@@ -19,6 +18,7 @@ namespace DAQViewerMVVM.ViewModels
         public MainWindowViewModel()
         {
             daqUCViewModel = new DaqUCViewModel();
+
             daqUCViewModel.Start += Start;
             daqUCViewModel.Stop += Stop;
             daqUCViewModel.GetData += GetData;

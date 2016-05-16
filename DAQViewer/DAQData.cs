@@ -1,6 +1,7 @@
 ﻿using DAQCOMLib;
 using System;
 using System.Collections.Generic;
+using System.Windows.Threading;
 
 namespace DAQViewer
 {

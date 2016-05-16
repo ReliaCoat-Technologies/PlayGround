@@ -98,7 +98,7 @@ namespace DAQViewer
             pAcq.Disarm();
         }
 
-        public void ExtractData()
+        public Array ExtractData()
         {
             int returnedScans = pAcq.DataStore.FetchData(ref _dataBuffer, 1);
 
@@ -114,6 +114,8 @@ namespace DAQViewer
             }
 
             pAcq.DataStore.FlushData();
+
+            return _dataBuffer;
         }
     }
 }

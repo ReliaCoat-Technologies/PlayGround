@@ -59,8 +59,8 @@ namespace DAQViewer
 
                 pAvailableChannels = pDev.AvailableBaseChannels;
 
-                pConfig.ScanCount = 10;
-                pConfig.ScanRate = 1000;
+                pConfig.ScanCount = 1;
+                pConfig.ScanRate = pConfig.MaxScanRate;
 
                 Console.WriteLine(pConfig.ScanCount.ToString());
                 Console.WriteLine(pConfig.ScanRate.ToString());
@@ -85,16 +85,22 @@ namespace DAQViewer
 
                 pAcq.Starts.ItemByType[StartType.sttImmediate].UseAsAcqStart();
                 pAcq.Stops.ItemByType[StopType.sptManual].UseAsAcqStop();
+                
+                _dataBuffer = new float[2]; // Expensive operation, do NOT put in ExtractData
 
-                _dataBuffer = new float[20]; // Expensive operation, do NOT put in ExtractData
-
+                pAcq.DataStore.BufferMode = DataBufferMode.dbmDataStore;
                 pAcq.Arm();
             }
         }
 
+        public void disarmDaq()
+        {
+            pAcq.Disarm();
+        }
+
         public void ExtractData()
         {
-            int returnedScans = pAcq.DataStore.FetchData(ref _dataBuffer, 10);
+            int returnedScans = pAcq.DataStore.FetchData(ref _dataBuffer, 1);
 
             data1 = new List<float>();
             data2 = new List<float>();
@@ -106,6 +112,8 @@ namespace DAQViewer
                 else data2.Add((float)item);
                 switcher = !switcher;
             }
+
+            pAcq.DataStore.FlushData();
         }
     }
 }

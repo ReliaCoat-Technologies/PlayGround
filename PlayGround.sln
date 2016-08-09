@@ -1,15 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAQTester", "DAQTester\DAQTester.csproj", "{1DE473BA-857A-4A15-9DD7-230BE43B2DA7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Observables", "Observables\Observables.csproj", "{C8729E7A-6596-4479-8259-53C0C524BA79}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAQViewer", "DAQViewer\DAQViewer.csproj", "{2EC2F39A-81C6-4C3D-9EF5-73C8DDDACF93}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Observables WPF", "Observables WPF\Observables WPF.csproj", "{DE04BB20-9399-426B-9056-C394389F1F4C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealTimeSciChart", "RealTimeSciChart\RealTimeSciChart.csproj", "{4636BEB3-29A2-4A91-B691-3908151FBBEF}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAQViewerMVVM", "DAQViewerMVVM\DAQViewerMVVM.csproj", "{ACA70C0A-C13C-4D83-9AC4-F04BF9174CE7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ActiveGigETester", "ActiveGigETester\ActiveGigETester.csproj", "{8C820B09-2BD8-43BE-A5D8-09FF47B15966}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,22 +15,18 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{1DE473BA-857A-4A15-9DD7-230BE43B2DA7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1DE473BA-857A-4A15-9DD7-230BE43B2DA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1DE473BA-857A-4A15-9DD7-230BE43B2DA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1DE473BA-857A-4A15-9DD7-230BE43B2DA7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2EC2F39A-81C6-4C3D-9EF5-73C8DDDACF93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2EC2F39A-81C6-4C3D-9EF5-73C8DDDACF93}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2EC2F39A-81C6-4C3D-9EF5-73C8DDDACF93}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2EC2F39A-81C6-4C3D-9EF5-73C8DDDACF93}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4636BEB3-29A2-4A91-B691-3908151FBBEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4636BEB3-29A2-4A91-B691-3908151FBBEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4636BEB3-29A2-4A91-B691-3908151FBBEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4636BEB3-29A2-4A91-B691-3908151FBBEF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{ACA70C0A-C13C-4D83-9AC4-F04BF9174CE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{ACA70C0A-C13C-4D83-9AC4-F04BF9174CE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{ACA70C0A-C13C-4D83-9AC4-F04BF9174CE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{ACA70C0A-C13C-4D83-9AC4-F04BF9174CE7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C8729E7A-6596-4479-8259-53C0C524BA79}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8729E7A-6596-4479-8259-53C0C524BA79}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8729E7A-6596-4479-8259-53C0C524BA79}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8729E7A-6596-4479-8259-53C0C524BA79}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE04BB20-9399-426B-9056-C394389F1F4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE04BB20-9399-426B-9056-C394389F1F4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE04BB20-9399-426B-9056-C394389F1F4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE04BB20-9399-426B-9056-C394389F1F4C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C820B09-2BD8-43BE-A5D8-09FF47B15966}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C820B09-2BD8-43BE-A5D8-09FF47B15966}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C820B09-2BD8-43BE-A5D8-09FF47B15966}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C820B09-2BD8-43BE-A5D8-09FF47B15966}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -29,6 +29,10 @@ namespace ActiveGigETester
                 Format = 0, // For PixelLink - Mono8 = 0, Mono16 = 1
             };
 
+            /*
+            var cameraList = activeGige.GetCameraList();
+            var macList = activeGige.GetCameraMACList();
+
             // Not essential to operating -- Simply shows characteristics of camera
             var ipList = activeGige.GetCameraIPList();
             var maxFrameRate = activeGige.GetAcquisitionFrameRateMax();
@@ -39,10 +43,11 @@ namespace ActiveGigETester
             var minGain = activeGige.GetGainMin();
             var maxGamma = activeGige.GetGammaMax();
             var minGamma = activeGige.GetGammaMin();
+            */
 
             // Properties available in Matlab version of PlumeOPT now reflected in C#
-            activeGige.ExposureTime = 1000;
-            activeGige.Gain = 5.5f;
+            activeGige.ExposureTime = 1000; // Microseconds
+            activeGige.Gain = 9f;
             activeGige.Gamma = 1;
 
             InitializeComponent();
@@ -50,25 +55,39 @@ namespace ActiveGigETester
 
         private void Start(object sender, RoutedEventArgs e)
         {
-            timer = Observable.Interval(TimeSpan.FromSeconds(0.1)).SubscribeOn(Scheduler.Default).ObserveOnDispatcher();
+            timer = Observable.Interval(TimeSpan.FromSeconds(0.01)).SubscribeOn(Scheduler.Default).ObserveOnDispatcher();
             subscriber = timer.Subscribe(acquireImage);
+
+            //acquireImage(1);
         }
 
         private void acquireImage(long i)
         {
             // Acquires a single frame
             activeGige.Grab();
+            activeGige.Flip = 2;
+            // Avoid rotation - causes lag
+
+            var ySize = activeGige.SizeY;
+            var xSize = activeGige.SizeX;
 
             // This method leads to a dynamic type
             // Mono8 will get you a 2D byte array, Mono16 will get you a 2D short array
-            var rawData = activeGige.GetRawData() as byte[,]; 
+            var rawData = activeGige.GetImageWindow(0, 0, Convert.ToInt16(xSize), Convert.ToInt16(ySize)) as byte[,];
 
             imageHolder.Source = convertToBitmapSource(rawData);
             TimeBlock.Text = DateTime.Now.ToString(CultureInfo.InvariantCulture);
             SampleBlock.Text = i.ToString();
-            if(i >= 100) subscriber.Dispose();
+            if (i >= 2000) subscriber.Dispose();
 
             // Image sequences are possble, API shows how it's done
+        }
+
+        private void acquireImageSequence()
+        {
+            activeGige.CreateSequence(300);
+            activeGige.StartSequenceCapture(300);
+            var rawDataSequence = activeGige.GetSequenceRawData(0);
         }
 
         private BitmapSource convertToBitmapSource(byte[,] rawData)
@@ -77,9 +96,9 @@ namespace ActiveGigETester
             var height = rawData.GetLength(1);
 
             var byteList = new List<byte>();
-            for(var j = 0; j < height; j++)
+            for (var j = 0; j < height; j++)
                 for (var i = 0; i < width; i++)
-                    byteList.Add(rawData[i,j]);
+                    byteList.Add(rawData[i, j]);
 
             var bytes = byteList.ToArray();
 

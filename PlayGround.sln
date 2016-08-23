@@ -9,6 +9,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Observables WPF", "Observab
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ActiveGigETester", "ActiveGigETester\ActiveGigETester.csproj", "{8C820B09-2BD8-43BE-A5D8-09FF47B15966}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ActiveGigELibrary", "ActiveGigELibrary\ActiveGigELibrary.csproj", "{36C24DD6-D054-4F84-A93B-0A2A687F34A1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Concurrency", "Concurrency\Concurrency.csproj", "{995ABC0B-5FF0-4426-9555-8D6A677D2D8D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +31,14 @@ Global
 		{8C820B09-2BD8-43BE-A5D8-09FF47B15966}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8C820B09-2BD8-43BE-A5D8-09FF47B15966}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8C820B09-2BD8-43BE-A5D8-09FF47B15966}.Release|Any CPU.Build.0 = Release|Any CPU
+		{36C24DD6-D054-4F84-A93B-0A2A687F34A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36C24DD6-D054-4F84-A93B-0A2A687F34A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{36C24DD6-D054-4F84-A93B-0A2A687F34A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{36C24DD6-D054-4F84-A93B-0A2A687F34A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{995ABC0B-5FF0-4426-9555-8D6A677D2D8D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{995ABC0B-5FF0-4426-9555-8D6A677D2D8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{995ABC0B-5FF0-4426-9555-8D6A677D2D8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{995ABC0B-5FF0-4426-9555-8D6A677D2D8D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -14,27 +14,19 @@ namespace Concurrency
 
         static void Main(string[] args)
         {
-            var ints = Enumerable.Range(1, 20).ToList();
+            var ints = Enumerable.Range(1, 100).ToList();
 
             circularBuffer.ValueChanged += CircularBuffer_ValueChanged;
 
             foreach (var item in ints)
-            {
-                Task.Run(() =>
-                {
-                    circularBuffer.addToQueue(item);
-                    Thread.Sleep(500);
-                });
+                circularBuffer.addToQueue(item);
 
-                ConcurrentCircularBuffer.autoResetEvent.WaitOne();
-            }
-                
             Console.ReadLine();
         }
 
         private static void CircularBuffer_ValueChanged(int obj)
         {
-            Console.WriteLine(obj);
+            Console.WriteLine($"Value: {obj}");
         }
     }
 }

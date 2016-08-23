@@ -14,7 +14,7 @@ namespace Concurrency
         private static object lockObj = new object();
 
         public event Action<int> ValueChanged;
-        public static AutoResetEvent autoResetEvent = new AutoResetEvent(false);
+        public AutoResetEvent autoResetEvent = new AutoResetEvent(false);
 
         public ConcurrentQueue<int> buffer { get; set; }
         public int sum { get; set; }
@@ -28,9 +28,9 @@ namespace Concurrency
             count = 0;
         }
 
-        public async void addToQueue(int item)
+        public void addToQueue(int item)
         {
-            await Task.Run(() =>
+            Task.Run(() =>
             {
                 count++;
                 if (count <= maxSize)
@@ -47,9 +47,10 @@ namespace Concurrency
                     else sum += item;
                     count--;
                 }
+                autoResetEvent.Set();
             });
             ValueChanged?.Invoke(sum);
-            autoResetEvent.Set();
+            autoResetEvent.WaitOne();
         }
     }
 }

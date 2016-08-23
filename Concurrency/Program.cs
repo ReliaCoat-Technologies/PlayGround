@@ -10,28 +10,31 @@ namespace Concurrency
 {
     class Program
     {
-        private static ConcurrentCircularBufferInt circularBufferInt = new ConcurrentCircularBufferInt(5);
-        private static int i;
+        public static ConcurrentCircularBuffer circularBuffer = new ConcurrentCircularBuffer(5);
 
         static void Main(string[] args)
         {
-            circularBufferInt.ValueChanged += WriteResult;
+            var ints = Enumerable.Range(1, 20).ToList();
 
-            var ints = new List<int> {1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4 };
-            var tasks = new List<Task>();
+            circularBuffer.ValueChanged += CircularBuffer_ValueChanged;
 
             foreach (var item in ints)
-                    circularBufferInt.enqueue(item);
+            {
+                Task.Run(() =>
+                {
+                    circularBuffer.addToQueue(item);
+                    Thread.Sleep(500);
+                });
 
-            Task.WaitAll(tasks.ToArray());
-
+                ConcurrentCircularBuffer.autoResetEvent.WaitOne();
+            }
+                
             Console.ReadLine();
         }
 
-        public static void WriteResult(int input)
+        private static void CircularBuffer_ValueChanged(int obj)
         {
-            i++;
-            Console.WriteLine($"{i}: {input}");
+            Console.WriteLine(obj);
         }
     }
 }

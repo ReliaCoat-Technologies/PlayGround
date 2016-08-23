@@ -1,67 +1,55 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Concurrency
 {
-    public abstract class ConcurrentCircularBuffer<T>
+    public class ConcurrentCircularBuffer
     {
-        #region Statics
-        private static object lockObject = new object();
-        #endregion
+        private static object lockObj = new object();
 
-        #region Fields
-        private readonly int _maxSize;
-        private int _currentSize;
-        protected T _removeObject;
-        #endregion
+        public event Action<int> ValueChanged;
+        public static AutoResetEvent autoResetEvent = new AutoResetEvent(false);
 
-        #region Properties
-        public ConcurrentQueue<T> buffer { get; set; }
-        #endregion
+        public ConcurrentQueue<int> buffer { get; set; }
+        public int sum { get; set; }
+        public int count { get; set; }
+        public int maxSize { get; set; }
 
-        #region Constructor
-        protected ConcurrentCircularBuffer(int maxSizeInput = int.MaxValue)
+        public ConcurrentCircularBuffer(int maxSizeInput)
         {
-            _currentSize = 0;
-            _maxSize = maxSizeInput;
-            buffer = new ConcurrentQueue<T>();
-        }
-        #endregion
-
-        #region Methods
-        public int enqueue(T input)
-        {
-            if (_currentSize <= _maxSize) enqueueWithoutRemoval(input);
-            else enqueueWithRemoval(input);
-            return _currentSize;
+            buffer = new ConcurrentQueue<int>();
+            maxSize = maxSizeInput;
+            count = 0;
         }
 
-        public int tryDequeue(out T itemToRemove)
+        public async void addToQueue(int item)
         {
-            var isRemoved = buffer.TryDequeue(out itemToRemove);
-            if (isRemoved) _currentSize--;
-            return _currentSize;
-        }
-
-        public virtual void enqueueWithoutRemoval(T input)
-        {
-            _currentSize++;
-            buffer.Enqueue(input);
-        }
-
-        public virtual void enqueueWithRemoval(T input)
-        {
-            lock (lockObject)
+            await Task.Run(() =>
             {
-                _removeObject = default(T);
-                var isRemoved = buffer.TryDequeue(out _removeObject);
-                if(isRemoved) buffer.Enqueue(input);
-            }
+                count++;
+                if (count <= maxSize)
+                {
+                    sum += item;
+                    buffer.Enqueue(item);
+                }
+                else
+                {
+                    buffer.Enqueue(item);
+                    int itemToRemove;
+                    var success = buffer.TryDequeue(out itemToRemove);
+                    if (success) sum += item - itemToRemove;
+                    else sum += item;
+                    count--;
+                }
+            });
+            ValueChanged?.Invoke(sum);
+            autoResetEvent.Set();
         }
-        #endregion
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -18,6 +19,8 @@ namespace DXApplication1
         public const string PassColorPropertyName = "PassColor";
         public const string WarnColorPropertyName = "WarnColor";
         public const string FailColorPropertyName = "FailColor";
+        public const string ForegroundPropertyName = "Foreground";
+        public const string FontSizePropertyName = "FontSize";
         #endregion
 
         #region Dependency Properties
@@ -31,6 +34,8 @@ namespace DXApplication1
         public static readonly DependencyProperty PassColorProperty = DependencyProperty.Register(PassColorPropertyName, typeof(SolidColorBrush), typeof(SpecScaleBar), new PropertyMetadata(new SolidColorBrush(Colors.Green), PropertyChangedCallback));
         public static readonly DependencyProperty WarnColorProperty = DependencyProperty.Register(WarnColorPropertyName, typeof(SolidColorBrush), typeof(SpecScaleBar), new PropertyMetadata(new SolidColorBrush(Colors.Yellow), PropertyChangedCallback));
         public static readonly DependencyProperty FailColorProperty = DependencyProperty.Register(FailColorPropertyName, typeof(SolidColorBrush), typeof(SpecScaleBar), new PropertyMetadata(new SolidColorBrush(Colors.Red), PropertyChangedCallback));
+        public static readonly DependencyProperty ForegroundProperty = DependencyProperty.Register(ForegroundPropertyName, typeof(SolidColorBrush), typeof(SpecScaleBar), new PropertyMetadata(new SolidColorBrush(Colors.White), PropertyChangedCallback));
+        public static readonly DependencyProperty FontSizeProperty = DependencyProperty.Register(FontSizePropertyName, typeof(double), typeof(SpecScaleBar), new UIPropertyMetadata(12d, PropertyChangedCallback));
 
         private static void PropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -67,7 +72,13 @@ namespace DXApplication1
                     specScaleBar._warnColor = (SolidColorBrush)e.NewValue;
                     break;
                 case FailColorPropertyName:
-                    specScaleBar._failColor = (SolidColorBrush) e.NewValue;
+                    specScaleBar._failColor = (SolidColorBrush)e.NewValue;
+                    break;
+                case ForegroundPropertyName:
+                    specScaleBar._foreground = (SolidColorBrush)e.NewValue;
+                    break;
+                case FontSizePropertyName:
+                    specScaleBar._fontSize = (double)e.NewValue;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException($"Property {e.Property.Name} change not handled");
@@ -89,6 +100,8 @@ namespace DXApplication1
         private SolidColorBrush _passColor;
         private SolidColorBrush _warnColor;
         private SolidColorBrush _failColor;
+        private SolidColorBrush _foreground;
+        private double _fontSize;
 
         private double _specMaximum;
         private double _specMinimum;
@@ -107,6 +120,8 @@ namespace DXApplication1
         private double _upperFailWidth;
         private double _measureWidthLeft;
         private double _measureWidthRight;
+        private double _leftSideMarkerPadding;
+        private double _rightSideMarkerPadding;
         #endregion
 
         #region Properties
@@ -160,6 +175,16 @@ namespace DXApplication1
             get { return (SolidColorBrush)GetValue(FailColorProperty); }
             set { SetValue(FailColorProperty, value); }
         }
+        public new SolidColorBrush Foreground
+        {
+            get { return (SolidColorBrush)GetValue(ForegroundProperty); }
+            set { SetValue(ForegroundProperty, value); }
+        }
+        public new double FontSize
+        {
+            get { return (double)GetValue(FontSizeProperty); }
+            set { SetValue(FontSizeProperty, value); }
+        }
         #endregion
 
         #region Constructor
@@ -174,16 +199,16 @@ namespace DXApplication1
         private void updateScales()
         {
             resetChart();
-            
+
             if (_specValue == null) return;
             if (_scaleBarPadding == null) _scaleBarPadding = 0.1;
 
             if (!setMarkersAndWidths()) return;
-            setSpecTextblocks();
+            setSpecTextBlocks();
             setMeasuredValues();
         }
 
-        private void setSpecTextblocks()
+        private void setSpecTextBlocks()
         {
             lowerFailLowerSpan.Stroke = _failColor;
             lowerFailUpperSpan.Stroke = _lowerWarnWidth == 0 ? _passColor : _warnColor;
@@ -205,6 +230,8 @@ namespace DXApplication1
 
         private void resetChart()
         {
+            if (_fontSize <= 0) _fontSize = 12;
+
             lowFailBar.Stroke = highFailBar.Stroke = _failColor;
             lowWarnBar.Stroke = highWarnBar.Stroke = _warnColor;
             lowPassBar.Stroke = highPassBar.Stroke = _passColor;
@@ -226,6 +253,27 @@ namespace DXApplication1
             upperWarnUpperSpan.Stroke = _warnColor;
             upperFailLowerSpan.Stroke = _warnColor;
             upperFailUpperSpan.Stroke = _failColor;
+
+            lowerFailMarker.Stroke = _foreground;
+            lowerWarnMarker.Stroke = _foreground;
+            specMarker.Stroke = _foreground;
+            upperWarnMarker.Stroke = _foreground;
+            upperFailMarker.Stroke = _foreground;
+            lowerLimitArrow.Stroke = _foreground;
+            upperLimitArrow.Stroke = _foreground;
+            measuredValueEllipse.Stroke = _foreground;
+
+            lowerFailLimitTextBlock.Foreground = _foreground;
+            lowerWarnLimitTextBlock.Foreground = _foreground;
+            specValueTextBlock.Foreground = _foreground;
+            upperWarnLimitTextBlock.Foreground = _foreground;
+            upperFailLimitTextBlock.Foreground = _foreground;
+
+            lowerFailLimitTextBlock.FontSize = _fontSize;
+            lowerWarnLimitTextBlock.FontSize = _fontSize;
+            specValueTextBlock.FontSize = _fontSize;
+            upperWarnLimitTextBlock.FontSize = _fontSize;
+            upperFailLimitTextBlock.FontSize = _fontSize;
 
             measuredValueEllipse.Visibility = Visibility.Hidden;
             lowerLimitArrow.Visibility = Visibility.Hidden;
@@ -294,15 +342,6 @@ namespace DXApplication1
             return setLimitsSuccessful;
         }
 
-        private void getSpanAndPadding(ref double lowerEdgeWidth, ref double upperEdgeWidth)
-        {
-            _specSpan = _specMaximum - _specMinimum;
-            _padValue = _specSpan * _scaleBarPadding.Value;
-
-            lowerEdgeWidth = _padValue;
-            upperEdgeWidth = _padValue;
-        }
-
         private bool setNeitherLimits()
         {
             _specMinimum = _specMaximum = _specValue.Value;
@@ -310,12 +349,21 @@ namespace DXApplication1
             _lowerPassWidth = _padValue;
             _upperPassWidth = _padValue;
 
-            lowerWarnMarker.Width = new GridLength(0);
-            lowerFailMarker.Width = new GridLength(0);
-            upperFailMarker.Width = new GridLength(0);
-            upperWarnMarker.Width = new GridLength(0);
+            lowerWarnMarkerColumn.Width = new GridLength(0);
+            lowerFailMarkerColumn.Width = new GridLength(0);
+            upperFailMarkerColumn.Width = new GridLength(0);
+            upperWarnMarkerColumn.Width = new GridLength(0);
 
             return true;
+        }
+
+        private void getSpanAndPadding(ref double lowerEdgeWidth, ref double upperEdgeWidth)
+        {
+            _specSpan = _specMaximum - _specMinimum;
+            _padValue = _specSpan * _scaleBarPadding.Value;
+
+            lowerEdgeWidth = _padValue;
+            upperEdgeWidth = _padValue;
         }
 
         private bool setLowerLimits()
@@ -330,9 +378,9 @@ namespace DXApplication1
 
             _upperPassWidth += extraPassWidth;
 
-            lowerFailMarker.Width = GridLength.Auto;
-            upperWarnMarker.Width = new GridLength(0);
-            upperFailMarker.Width = new GridLength(0);
+            lowerFailMarkerColumn.Width = GridLength.Auto;
+            upperWarnMarkerColumn.Width = new GridLength(0);
+            upperFailMarkerColumn.Width = new GridLength(0);
 
             return true;
         }
@@ -349,9 +397,9 @@ namespace DXApplication1
 
             _lowerPassWidth += extraPassWidth;
 
-            lowerWarnMarker.Width = new GridLength(0);
-            lowerFailMarker.Width = new GridLength(0);
-            upperFailMarker.Width = GridLength.Auto;
+            lowerWarnMarkerColumn.Width = new GridLength(0);
+            lowerFailMarkerColumn.Width = new GridLength(0);
+            upperFailMarkerColumn.Width = GridLength.Auto;
             return true;
         }
 
@@ -362,8 +410,8 @@ namespace DXApplication1
             _specMaximum = _upperFailLimit.Value;
             getSpanAndPadding(ref _lowerFailWidth, ref _upperFailWidth);
 
-            upperFailMarker.Width = GridLength.Auto;
-            upperFailMarker.Width = GridLength.Auto;
+            lowerFailMarkerColumn.Width = GridLength.Auto;
+            upperFailMarkerColumn.Width = GridLength.Auto;
             return true;
         }
 
@@ -393,7 +441,7 @@ namespace DXApplication1
 
                 _lowerPassWidth = _specValue.Value - _lowerFailLimit.Value;
                 _lowerWarnWidth = 0;
-                lowerWarnMarker.Width = new GridLength(0);
+                lowerWarnMarkerColumn.Width = new GridLength(0);
             }
             else
             {
@@ -402,7 +450,7 @@ namespace DXApplication1
 
                 _lowerPassWidth = _specValue.Value - _lowerWarnLimit.Value;
                 _lowerWarnWidth = _lowerWarnLimit.Value - _lowerFailLimit.Value;
-                lowerWarnMarker.Width = GridLength.Auto;
+                lowerWarnMarkerColumn.Width = GridLength.Auto;
             }
 
             return true;
@@ -414,7 +462,7 @@ namespace DXApplication1
             {
                 _upperPassWidth = _upperFailLimit.Value - _specValue.Value;
                 _upperWarnWidth = 0;
-                upperWarnMarker.Width = new GridLength(0);
+                upperWarnMarkerColumn.Width = new GridLength(0);
             }
             else
             {
@@ -423,7 +471,7 @@ namespace DXApplication1
 
                 _upperPassWidth = _upperWarnLimit.Value - _specValue.Value;
                 _upperWarnWidth = _upperFailLimit.Value - _upperWarnLimit.Value;
-                upperWarnMarker.Width = GridLength.Auto;
+                upperWarnMarkerColumn.Width = GridLength.Auto;
             }
 
             return true;
@@ -442,7 +490,7 @@ namespace DXApplication1
             {
                 measuredValueEllipse.Visibility = Visibility.Hidden;
                 lowerLimitArrow.Visibility = Visibility.Hidden;
-                
+
                 upperLimitArrow.Visibility = Visibility.Visible;
                 upperLimitArrow.Fill = getEvaluationFillColor();
             }
@@ -450,7 +498,7 @@ namespace DXApplication1
             {
                 measuredValueEllipse.Visibility = Visibility.Hidden;
                 upperLimitArrow.Visibility = Visibility.Hidden;
-                
+
                 lowerLimitArrow.Visibility = Visibility.Visible;
                 lowerLimitArrow.Fill = getEvaluationFillColor();
             }
@@ -459,7 +507,7 @@ namespace DXApplication1
                 measuredValueEllipse.Visibility = Visibility.Visible;
                 measuredValueEllipse.Fill = getEvaluationFillColor();
 
-                _measureWidthLeft = _measuredValue.Value - _specMinimum + _padValue;
+                _measureWidthLeft = (_measuredValue.Value - _specMinimum + _padValue);
                 _measureWidthRight = _scaleBarSpan - _measureWidthLeft;
 
                 measureValueColumnLeft.Width = new GridLength(_measureWidthLeft * _scaleToValueRatio, GridUnitType.Star);
@@ -474,11 +522,11 @@ namespace DXApplication1
             var upperWarnLimit = _upperWarnLimit ?? double.PositiveInfinity;
             var upperFailLimit = _upperFailLimit ?? double.PositiveInfinity;
 
-            if (_measuredValue <= lowerFailLimit || _measuredValue >+ upperFailLimit)
+            if (_measuredValue <= lowerFailLimit || _measuredValue >= upperFailLimit)
             {
                 return _failColor;
             }
-            if(MeasuredValue <= lowerWarnLimit || _measuredValue >= upperWarnLimit)
+            if (MeasuredValue <= lowerWarnLimit || _measuredValue >= upperWarnLimit)
             {
                 return _warnColor;
             }

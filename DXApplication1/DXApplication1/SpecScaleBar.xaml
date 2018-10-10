@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d">
 
-    <Grid Margin="2">
+    <Grid Margin="15, 2">
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -15,19 +15,19 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <Grid VerticalAlignment="Stretch" Grid.Column="1" Grid.Row="0">
+        <Grid VerticalAlignment="Stretch" Grid.Column="1" Grid.Row="0" x:Name="markerSpanGrid">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition x:Name="lowerArrowColumn" Width="13"/>
                 <ColumnDefinition x:Name="lowerFailWidth"/>
-                <ColumnDefinition x:Name="lowerFailMarker" Width="Auto"/>
+                <ColumnDefinition x:Name="lowerFailMarkerColumn" Width="Auto"/>
                 <ColumnDefinition x:Name="lowerWarnWidth"/>
-                <ColumnDefinition x:Name="lowerWarnMarker" Width="Auto"/>
+                <ColumnDefinition x:Name="lowerWarnMarkerColumn" Width="Auto"/>
                 <ColumnDefinition x:Name="lowerPassWidth"/>
-                <ColumnDefinition x:Name="specValueMarker" Width="Auto"/>
+                <ColumnDefinition x:Name="specValueMarkerColumn" Width="Auto"/>
                 <ColumnDefinition x:Name="upperPassWidth"/>
-                <ColumnDefinition x:Name="upperWarnMarker" Width="Auto"/>
+                <ColumnDefinition x:Name="upperWarnMarkerColumn" Width="Auto"/>
                 <ColumnDefinition x:Name="upperWarnWidth"/>
-                <ColumnDefinition x:Name="upperFailMarker" Width="Auto"/>
+                <ColumnDefinition x:Name="upperFailMarkerColumn" Width="Auto"/>
                 <ColumnDefinition x:Name="upperFailWidth"/>
                 <ColumnDefinition x:Name="upperArrowColumn" Width="13"/>
             </Grid.ColumnDefinitions>
@@ -55,7 +55,7 @@
                 </Grid.ColumnDefinitions>
 
                 <Line X1="0" X2="1" Y1="1" Y2="1" StrokeThickness="4" Stretch="UniformToFill" StrokeStartLineCap="Square" StrokeEndLineCap="Square" Grid.Column="0" x:Name="lowerFailLowerSpan"/>
-                <Line X1="0" X2="0" Y1="0" Y2="1" StrokeThickness="2" Stretch="UniformToFill" StrokeStartLineCap="Square" StrokeEndLineCap="Square" Grid.Column="1" Stroke="White"/>
+                <Line X1="0" X2="0" Y1="0" Y2="1" StrokeThickness="2" Stretch="UniformToFill" StrokeStartLineCap="Square" StrokeEndLineCap="Square" Grid.Column="1" x:Name="lowerFailMarker"/>
                 <Line X1="0" X2="1" Y1="1" Y2="1" StrokeThickness="4" Stretch="UniformToFill" StrokeStartLineCap="Square" StrokeEndLineCap="Square" Grid.Column="2" x:Name="lowerFailUpperSpan"/>
 
             </Grid>
@@ -68,7 +68,7 @@
                 </Grid.ColumnDefinitions>
 
                 <Line X1="0" X2="1" Y1="1" Y2="1" StrokeThickness="4" Stretch="UniformToFill" StrokeStartLineCap="Square" StrokeEndLineCap="Square" Grid.Column="0" x:Name="lowerWarnLowerSpan"/>
-                <Line X1="0" X2="0" Y1="0" Y2="1" StrokeThickness="2" Stretch="UniformToFill" StrokeStartLineCap="Square" StrokeEndLineCap="Square" Grid.Column="1" Stroke="White"/>
+                <Line X1="0" X2="0" Y1="0" Y2="1" StrokeThickness="2" Stretch="UniformToFill" StrokeStartLineCap="Square" StrokeEndLineCap="Square" Grid.Column="1" x:Name="lowerWarnMarker"/>
                 <Line X1="0" X2="1" Y1="1" Y2="1" StrokeThickness="4" Stretch="UniformToFill" StrokeStartLineCap="Square" StrokeEndLineCap="Square" Grid.Column="2" x:Name="lowerWarnUpperSpan"/>
 
             </Grid>
@@ -81,7 +81,7 @@
                 </Grid.ColumnDefinitions>
 
                 <Line X1="0" X2="1" Y1="1" Y2="1" StrokeThickness="4" Stretch="UniformToFill" StrokeStartLineCap="Square" StrokeEndLineCap="Square" Grid.Column="0" x:Name="specMarkerLowerSpan"/>
-                <Line X1="0" X2="0" Y1="0" Y2="1" StrokeThickness="2" Stretch="UniformToFill" StrokeStartLineCap="Square" StrokeEndLineCap="Square" Grid.Column="1" Stroke="White"/>
+                <Line X1="0" X2="0" Y1="0" Y2="1" StrokeThickness="2" Stretch="UniformToFill" StrokeStartLineCap="Square" StrokeEndLineCap="Square" Grid.Column="1" x:Name="specMarker"/>
                 <Line X1="0" X2="1" Y1="1" Y2="1" StrokeThickness="4" Stretch="UniformToFill" StrokeStartLineCap="Square" StrokeEndLineCap="Square" Grid.Column="2" x:Name="specMarkerUpperSpan"/>
 
             </Grid>
@@ -94,7 +94,7 @@
                 </Grid.ColumnDefinitions>
 
                 <Line X1="0" X2="1" Y1="1" Y2="1" StrokeThickness="4" Stretch="UniformToFill" StrokeStartLineCap="Square" StrokeEndLineCap="Square" Grid.Column="0" x:Name="upperWarnLowerSpan"/>
-                <Line X1="0" X2="0" Y1="0" Y2="1" StrokeThickness="2" Stretch="UniformToFill" StrokeStartLineCap="Square" StrokeEndLineCap="Square" Grid.Column="1" Stroke="White"/>
+                <Line X1="0" X2="0" Y1="0" Y2="1" StrokeThickness="2" Stretch="UniformToFill" StrokeStartLineCap="Square" StrokeEndLineCap="Square" Grid.Column="1" x:Name="upperWarnMarker"/>
                 <Line X1="0" X2="1" Y1="1" Y2="1" StrokeThickness="4" Stretch="UniformToFill" StrokeStartLineCap="Square" StrokeEndLineCap="Square" Grid.Column="2" x:Name="upperWarnUpperSpan"/>
 
             </Grid>
@@ -107,7 +107,7 @@
                 </Grid.ColumnDefinitions>
 
                 <Line X1="0" X2="1" Y1="1" Y2="1" StrokeThickness="4" Stretch="UniformToFill" StrokeStartLineCap="Square" StrokeEndLineCap="Square" Grid.Column="0" x:Name="upperFailLowerSpan"/>
-                <Line X1="0" X2="0" Y1="0" Y2="1" StrokeThickness="2" Stretch="UniformToFill" StrokeStartLineCap="Square" StrokeEndLineCap="Square" Grid.Column="1" Stroke="White"/>
+                <Line X1="0" X2="0" Y1="0" Y2="1" StrokeThickness="2" Stretch="UniformToFill" StrokeStartLineCap="Square" StrokeEndLineCap="Square" Grid.Column="1" x:Name="upperFailMarker"/>
                 <Line X1="0" X2="1" Y1="1" Y2="1" StrokeThickness="4" Stretch="UniformToFill" StrokeStartLineCap="Square" StrokeEndLineCap="Square" Grid.Column="2" x:Name="upperFailUpperSpan"/>
 
             </Grid>
@@ -122,10 +122,8 @@
 
             <!-- Outside-limit arrows -->
 
-            <Polygon Points="8,0 0,5 8,10"  StrokeThickness="2" Stretch="UniformToFill" Grid.Column="0" Grid.Row="0"
-                     Stroke="White" x:Name="lowerLimitArrow"/>
-            <Polygon Points="0,0 8,5 0,10"  StrokeThickness="2" Stretch="UniformToFill" Grid.Column="12" Grid.Row="0"
-                     Stroke="White" x:Name="upperLimitArrow"/>
+            <Polygon Points="8,0 0,5 8,10"  StrokeThickness="2" Stretch="UniformToFill" Grid.Column="0" Grid.Row="0" x:Name="lowerLimitArrow"/>
+            <Polygon Points="0,0 8,5 0,10"  StrokeThickness="2" Stretch="UniformToFill" Grid.Column="12" Grid.Row="0" x:Name="upperLimitArrow"/>
 
             <!-- Marker Ellipse -->
 
@@ -136,8 +134,7 @@
                     <ColumnDefinition x:Name="measureValueColumnRight"/>
                 </Grid.ColumnDefinitions>
 
-                <Ellipse Width="16" Height="16" Stroke="White" Margin="-8, 0, 0, 0" Grid.Column="1"
-                         x:Name="measuredValueEllipse" StrokeThickness="2"
+                <Ellipse Width="16" Height="16" Margin="-8, 0, 0, 0" Grid.Column="1" x:Name="measuredValueEllipse" StrokeThickness="2"
                          HorizontalAlignment="Left" VerticalAlignment="Center"/>
 
             </Grid>

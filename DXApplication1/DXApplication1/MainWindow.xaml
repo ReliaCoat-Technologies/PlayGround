@@ -9,7 +9,7 @@
 
     <StackPanel Background="DarkGray">
 
-        <dxApplication1:SpecScaleBar Height="20" x:Name="specScaleBar"
+        <dxApplication1:SpecScaleBar x:Name="specScaleBar"
                         LowerFailLimit="{Binding lowerSpecLimit}"
                         LowerWarnLimit="{Binding lowerWarnLimit}"
                         SpecValue ="{Binding specValue}"

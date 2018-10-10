@@ -174,12 +174,33 @@ namespace DXApplication1
         private void updateScales()
         {
             resetChart();
-
+            
             if (_specValue == null) return;
             if (_scaleBarPadding == null) _scaleBarPadding = 0.1;
 
             if (!setMarkersAndWidths()) return;
+            setSpecTextblocks();
             setMeasuredValues();
+        }
+
+        private void setSpecTextblocks()
+        {
+            lowerFailLowerSpan.Stroke = _failColor;
+            lowerFailUpperSpan.Stroke = _lowerWarnWidth == 0 ? _passColor : _warnColor;
+            lowerWarnLowerSpan.Stroke = _warnColor;
+            lowerWarnUpperSpan.Stroke = _passColor;
+            specMarkerLowerSpan.Stroke = _passColor;
+            specMarkerUpperSpan.Stroke = _passColor;
+            upperWarnLowerSpan.Stroke = _passColor;
+            upperWarnUpperSpan.Stroke = _warnColor;
+            upperFailLowerSpan.Stroke = _upperWarnWidth == 0 ? _passColor : _warnColor;
+            upperFailUpperSpan.Stroke = _failColor;
+
+            lowerFailLimitTextBlock.Text = _lowerFailLimit.ToString();
+            lowerWarnLimitTextBlock.Text = _lowerWarnLimit.ToString();
+            specValueTextBlock.Text = _specValue.ToString();
+            upperWarnLimitTextBlock.Text = _upperWarnLimit.ToString();
+            upperFailLimitTextBlock.Text = _upperFailLimit.ToString();
         }
 
         private void resetChart()
@@ -194,6 +215,17 @@ namespace DXApplication1
             _upperPassWidth = 0;
             _upperWarnWidth = 0;
             _upperFailWidth = 0;
+
+            lowerFailLowerSpan.Stroke = _failColor;
+            lowerFailUpperSpan.Stroke = _warnColor;
+            lowerWarnLowerSpan.Stroke = _warnColor;
+            lowerWarnUpperSpan.Stroke = _passColor;
+            specMarkerLowerSpan.Stroke = _passColor;
+            specMarkerUpperSpan.Stroke = _passColor;
+            upperWarnLowerSpan.Stroke = _passColor;
+            upperWarnUpperSpan.Stroke = _warnColor;
+            upperFailLowerSpan.Stroke = _warnColor;
+            upperFailUpperSpan.Stroke = _failColor;
 
             measuredValueEllipse.Visibility = Visibility.Hidden;
             lowerLimitArrow.Visibility = Visibility.Hidden;
@@ -214,6 +246,12 @@ namespace DXApplication1
             measuredValueEllipse.Visibility = Visibility.Hidden;
             lowerLimitArrow.Visibility = Visibility.Hidden;
             upperLimitArrow.Visibility = Visibility.Hidden;
+
+            lowerFailLimitTextBlock.Text = string.Empty;
+            lowerWarnLimitTextBlock.Text = string.Empty;
+            specValueTextBlock.Text = string.Empty;
+            upperWarnLimitTextBlock.Text = string.Empty;
+            upperFailLimitTextBlock.Text = string.Empty;
         }
 
         private bool setMarkersAndWidths()
@@ -272,10 +310,10 @@ namespace DXApplication1
             _lowerPassWidth = _padValue;
             _upperPassWidth = _padValue;
 
-            lowerPassMarker.Width = new GridLength(0);
             lowerWarnMarker.Width = new GridLength(0);
+            lowerFailMarker.Width = new GridLength(0);
+            upperFailMarker.Width = new GridLength(0);
             upperWarnMarker.Width = new GridLength(0);
-            upperPassMarker.Width = new GridLength(0);
 
             return true;
         }
@@ -292,9 +330,10 @@ namespace DXApplication1
 
             _upperPassWidth += extraPassWidth;
 
-            lowerPassMarker.Width = GridLength.Auto;
-            upperPassMarker.Width = new GridLength(0);
+            lowerFailMarker.Width = GridLength.Auto;
             upperWarnMarker.Width = new GridLength(0);
+            upperFailMarker.Width = new GridLength(0);
+
             return true;
         }
 
@@ -310,9 +349,9 @@ namespace DXApplication1
 
             _lowerPassWidth += extraPassWidth;
 
-            lowerPassMarker.Width = new GridLength(0);
             lowerWarnMarker.Width = new GridLength(0);
-            upperPassMarker.Width = GridLength.Auto;
+            lowerFailMarker.Width = new GridLength(0);
+            upperFailMarker.Width = GridLength.Auto;
             return true;
         }
 
@@ -323,8 +362,8 @@ namespace DXApplication1
             _specMaximum = _upperFailLimit.Value;
             getSpanAndPadding(ref _lowerFailWidth, ref _upperFailWidth);
 
-            lowerPassMarker.Width = GridLength.Auto;
-            upperPassMarker.Width = GridLength.Auto;
+            upperFailMarker.Width = GridLength.Auto;
+            upperFailMarker.Width = GridLength.Auto;
             return true;
         }
 
@@ -435,11 +474,11 @@ namespace DXApplication1
             var upperWarnLimit = _upperWarnLimit ?? double.PositiveInfinity;
             var upperFailLimit = _upperFailLimit ?? double.PositiveInfinity;
 
-            if (_measuredValue < lowerFailLimit || _measuredValue > upperFailLimit)
+            if (_measuredValue <= lowerFailLimit || _measuredValue >+ upperFailLimit)
             {
                 return _failColor;
             }
-            if(MeasuredValue < lowerWarnLimit || _measuredValue > upperWarnLimit)
+            if(MeasuredValue <= lowerWarnLimit || _measuredValue >= upperWarnLimit)
             {
                 return _warnColor;
             }

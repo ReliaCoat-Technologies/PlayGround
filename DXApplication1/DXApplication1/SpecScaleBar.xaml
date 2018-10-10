@@ -8,56 +8,139 @@
     <Grid Margin="2">
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
 
-        <Polygon Points="8,0 0,5, 8,10"  StrokeThickness="2" Stretch="UniformToFill" Grid.Column="0" Stroke="White"
-                 x:Name="lowerLimitArrow"/>
-
-        <Polygon Points="0,0 8,5, 0,10"  StrokeThickness="2" Stretch="UniformToFill" Grid.Column="2" Stroke="White"
-                 x:Name="upperLimitArrow"/>
-
-        <Grid VerticalAlignment="Stretch" Grid.Column="1">
+        <Grid VerticalAlignment="Stretch" Grid.Column="1" Grid.Row="0">
             <Grid.ColumnDefinitions>
+                <ColumnDefinition x:Name="lowerArrowColumn" Width="13"/>
                 <ColumnDefinition x:Name="lowerFailWidth"/>
-                <ColumnDefinition x:Name="lowerWarnMarker" Width="Auto"/>
+                <ColumnDefinition x:Name="lowerFailMarker" Width="Auto"/>
                 <ColumnDefinition x:Name="lowerWarnWidth"/>
-                <ColumnDefinition x:Name="lowerPassMarker" Width="Auto"/>
+                <ColumnDefinition x:Name="lowerWarnMarker" Width="Auto"/>
                 <ColumnDefinition x:Name="lowerPassWidth"/>
                 <ColumnDefinition x:Name="specValueMarker" Width="Auto"/>
                 <ColumnDefinition x:Name="upperPassWidth"/>
-                <ColumnDefinition x:Name="upperPassMarker" Width="Auto"/>
-                <ColumnDefinition x:Name="upperWarnWidth"/>
                 <ColumnDefinition x:Name="upperWarnMarker" Width="Auto"/>
+                <ColumnDefinition x:Name="upperWarnWidth"/>
+                <ColumnDefinition x:Name="upperFailMarker" Width="Auto"/>
                 <ColumnDefinition x:Name="upperFailWidth"/>
+                <ColumnDefinition x:Name="upperArrowColumn" Width="13"/>
             </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
+            <!-- Span Lines -->
 
-            <Line X1="0" X2="1" Y1="1" Y2="1" StrokeThickness="4" Stretch="UniformToFill" Grid.Column="0" x:Name="lowFailBar"/>
-            <Line X1="0" X2="0" Y1="0" Y2="1" StrokeThickness="2" Stretch="UniformToFill" Grid.Column="1" Stroke="White" />
-            <Line X1="0" X2="1" Y1="1" Y2="1" StrokeThickness="4" Stretch="UniformToFill" Grid.Column="2" x:Name="lowWarnBar"/>
-            <Line X1="0" X2="0" Y1="0" Y2="1" StrokeThickness="2" Stretch="UniformToFill" Grid.Column="3" Stroke="White"/>
-            <Line X1="0" X2="1" Y1="1" Y2="1" StrokeThickness="4" Stretch="UniformToFill" Grid.Column="4" x:Name="lowPassBar"/>
-            <Line X1="0" X2="0" Y1="0" Y2="1" StrokeThickness="2" Stretch="UniformToFill" Grid.Column="5" Stroke="White"/>
-            <Line X1="0" X2="1" Y1="1" Y2="1" StrokeThickness="4" Stretch="UniformToFill" Grid.Column="6" x:Name="highPassBar"/>
-            <Line X1="0" X2="0" Y1="0" Y2="1" StrokeThickness="2" Stretch="UniformToFill" Grid.Column="7" Stroke="White"/>
-            <Line X1="0" X2="1" Y1="1" Y2="1" StrokeThickness="4" Stretch="UniformToFill" Grid.Column="8" x:Name="highWarnBar"/>
-            <Line X1="0" X2="0" Y1="0" Y2="1" StrokeThickness="2" Stretch="UniformToFill" Grid.Column="9" Stroke="White"/>
-            <Line X1="0" X2="1" Y1="1" Y2="1" StrokeThickness="4" Stretch="UniformToFill" Grid.Column="10" x:Name="highFailBar"/>
+            <Line X1="0" X2="1" Y1="1" Y2="1" StrokeThickness="4" Stretch="UniformToFill" StrokeStartLineCap="Square" StrokeEndLineCap="Square" Grid.Column="1" x:Name="lowFailBar" />
+            <Line X1="0" X2="1" Y1="1" Y2="1" StrokeThickness="4" Stretch="UniformToFill" StrokeStartLineCap="Square" StrokeEndLineCap="Square" Grid.Column="3" x:Name="lowWarnBar" />
+            <Line X1="0" X2="1" Y1="1" Y2="1" StrokeThickness="4" Stretch="UniformToFill" StrokeStartLineCap="Square" StrokeEndLineCap="Square" Grid.Column="5" x:Name="lowPassBar" />
+            <Line X1="0" X2="1" Y1="1" Y2="1" StrokeThickness="4" Stretch="UniformToFill" StrokeStartLineCap="Square" StrokeEndLineCap="Square" Grid.Column="7" x:Name="highPassBar"/>
+            <Line X1="0" X2="1" Y1="1" Y2="1" StrokeThickness="4" Stretch="UniformToFill" StrokeStartLineCap="Square" StrokeEndLineCap="Square" Grid.Column="9" x:Name="highWarnBar"/>
+            <Line X1="0" X2="1" Y1="1" Y2="1" StrokeThickness="4" Stretch="UniformToFill" StrokeStartLineCap="Square" StrokeEndLineCap="Square" Grid.Column="11" x:Name="highFailBar"/>
+            
+            <!-- Spec Markers -->
 
-        </Grid>
+            <Grid Grid.Column="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
 
-        <Grid Grid.Column="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition x:Name="measureValueColumnLeft"/>
-                <ColumnDefinition x:Name="measureValueColumnRight"/>
-            </Grid.ColumnDefinitions>
+                <Line X1="0" X2="1" Y1="1" Y2="1" StrokeThickness="4" Stretch="UniformToFill" StrokeStartLineCap="Square" StrokeEndLineCap="Square" Grid.Column="0" x:Name="lowerFailLowerSpan"/>
+                <Line X1="0" X2="0" Y1="0" Y2="1" StrokeThickness="2" Stretch="UniformToFill" StrokeStartLineCap="Square" StrokeEndLineCap="Square" Grid.Column="1" Stroke="White"/>
+                <Line X1="0" X2="1" Y1="1" Y2="1" StrokeThickness="4" Stretch="UniformToFill" StrokeStartLineCap="Square" StrokeEndLineCap="Square" Grid.Column="2" x:Name="lowerFailUpperSpan"/>
 
-            <Ellipse Width="16" Height="16" Stroke="White" Margin="-8, 0, 0, 0" Grid.Column="1"
-                     x:Name="measuredValueEllipse" StrokeThickness="2"
-                     HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            </Grid>
+
+            <Grid Grid.Column="4">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Line X1="0" X2="1" Y1="1" Y2="1" StrokeThickness="4" Stretch="UniformToFill" StrokeStartLineCap="Square" StrokeEndLineCap="Square" Grid.Column="0" x:Name="lowerWarnLowerSpan"/>
+                <Line X1="0" X2="0" Y1="0" Y2="1" StrokeThickness="2" Stretch="UniformToFill" StrokeStartLineCap="Square" StrokeEndLineCap="Square" Grid.Column="1" Stroke="White"/>
+                <Line X1="0" X2="1" Y1="1" Y2="1" StrokeThickness="4" Stretch="UniformToFill" StrokeStartLineCap="Square" StrokeEndLineCap="Square" Grid.Column="2" x:Name="lowerWarnUpperSpan"/>
+
+            </Grid>
+
+            <Grid Grid.Column="6">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Line X1="0" X2="1" Y1="1" Y2="1" StrokeThickness="4" Stretch="UniformToFill" StrokeStartLineCap="Square" StrokeEndLineCap="Square" Grid.Column="0" x:Name="specMarkerLowerSpan"/>
+                <Line X1="0" X2="0" Y1="0" Y2="1" StrokeThickness="2" Stretch="UniformToFill" StrokeStartLineCap="Square" StrokeEndLineCap="Square" Grid.Column="1" Stroke="White"/>
+                <Line X1="0" X2="1" Y1="1" Y2="1" StrokeThickness="4" Stretch="UniformToFill" StrokeStartLineCap="Square" StrokeEndLineCap="Square" Grid.Column="2" x:Name="specMarkerUpperSpan"/>
+
+            </Grid>
+
+            <Grid Grid.Column="8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Line X1="0" X2="1" Y1="1" Y2="1" StrokeThickness="4" Stretch="UniformToFill" StrokeStartLineCap="Square" StrokeEndLineCap="Square" Grid.Column="0" x:Name="upperWarnLowerSpan"/>
+                <Line X1="0" X2="0" Y1="0" Y2="1" StrokeThickness="2" Stretch="UniformToFill" StrokeStartLineCap="Square" StrokeEndLineCap="Square" Grid.Column="1" Stroke="White"/>
+                <Line X1="0" X2="1" Y1="1" Y2="1" StrokeThickness="4" Stretch="UniformToFill" StrokeStartLineCap="Square" StrokeEndLineCap="Square" Grid.Column="2" x:Name="upperWarnUpperSpan"/>
+
+            </Grid>
+
+            <Grid Grid.Column="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Line X1="0" X2="1" Y1="1" Y2="1" StrokeThickness="4" Stretch="UniformToFill" StrokeStartLineCap="Square" StrokeEndLineCap="Square" Grid.Column="0" x:Name="upperFailLowerSpan"/>
+                <Line X1="0" X2="0" Y1="0" Y2="1" StrokeThickness="2" Stretch="UniformToFill" StrokeStartLineCap="Square" StrokeEndLineCap="Square" Grid.Column="1" Stroke="White"/>
+                <Line X1="0" X2="1" Y1="1" Y2="1" StrokeThickness="4" Stretch="UniformToFill" StrokeStartLineCap="Square" StrokeEndLineCap="Square" Grid.Column="2" x:Name="upperFailUpperSpan"/>
+
+            </Grid>
+
+            <!-- Spec Value TextBlocks -->
+
+            <TextBlock Grid.Row="1" Grid.Column="2" x:Name="lowerFailLimitTextBlock"/>
+            <TextBlock Grid.Row="1" Grid.Column="4" x:Name="lowerWarnLimitTextBlock"/>
+            <TextBlock Grid.Row="1" Grid.Column="6" x:Name="specValueTextBlock"/>
+            <TextBlock Grid.Row="1" Grid.Column="8" x:Name="upperWarnLimitTextBlock"/>
+            <TextBlock Grid.Row="1" Grid.Column="10" x:Name="upperFailLimitTextBlock"/>
+
+            <!-- Outside-limit arrows -->
+
+            <Polygon Points="8,0 0,5 8,10"  StrokeThickness="2" Stretch="UniformToFill" Grid.Column="0" Grid.Row="0"
+                     Stroke="White" x:Name="lowerLimitArrow"/>
+            <Polygon Points="0,0 8,5 0,10"  StrokeThickness="2" Stretch="UniformToFill" Grid.Column="12" Grid.Row="0"
+                     Stroke="White" x:Name="upperLimitArrow"/>
+
+            <!-- Marker Ellipse -->
+
+            <Grid Grid.Column="1" Grid.ColumnSpan="11">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition x:Name="measureValueColumnLeft"/>
+                    <ColumnDefinition x:Name="measureValueColumnRight"/>
+                </Grid.ColumnDefinitions>
+
+                <Ellipse Width="16" Height="16" Stroke="White" Margin="-8, 0, 0, 0" Grid.Column="1"
+                         x:Name="measuredValueEllipse" StrokeThickness="2"
+                         HorizontalAlignment="Left" VerticalAlignment="Center"/>
+
+            </Grid>
 
         </Grid>
 

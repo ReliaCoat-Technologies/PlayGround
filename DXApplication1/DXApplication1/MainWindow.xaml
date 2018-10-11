@@ -10,14 +10,20 @@
 
     <StackPanel>
 
-        <dxApplication1:SpecScaleBar Margin="5"
+        <Border BorderBrush="White" Background="Black" BorderThickness="2">
+            <dxApplication1:SpecScaleBar Height="40" Margin="5" VerticalContentAlignment="Center"
                                      LowerFailLimit="{Binding lowerSpecLimit}"
                                      LowerWarnLimit="{Binding lowerWarnLimit}"
                                      SpecValue="{Binding specValue}"
                                      UpperWarnLimit="{Binding upperWarnLimit}"
                                      UpperFailLimit="{Binding upperSpecLimit}"
                                      SpecLimitPadding="{Binding specLimitPadding}"
-                                     MeasuredValue="{Binding measuredValue}"/>
+                                     MeasuredValue="{Binding measuredValue}"
+                                     PassColor="DarkGreen"
+                                     WarnColor="Goldenrod"
+                                     FailColor="DarkRed"
+                                     FontSize="16"/>
+        </Border>
 
         <DockPanel>
             <TextBlock Text="Lower Spec Limit" DockPanel.Dock="Left" VerticalAlignment="Center" Width="150"/>

@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using DevExpress.Xpf.Editors;
+using System.Windows.Shapes;
 using DevExpress.Xpf.Gauges;
 
 namespace DXApplication1
@@ -35,8 +35,8 @@ namespace DXApplication1
         public static readonly DependencyProperty PassColorProperty = DependencyProperty.Register(PassColorPropertyName, typeof(SolidColorBrush), typeof(SpecScaleBar), new PropertyMetadata(new SolidColorBrush(Colors.Green), PropertyChangedCallback));
         public static readonly DependencyProperty WarnColorProperty = DependencyProperty.Register(WarnColorPropertyName, typeof(SolidColorBrush), typeof(SpecScaleBar), new PropertyMetadata(new SolidColorBrush(Colors.Yellow), PropertyChangedCallback));
         public static readonly DependencyProperty FailColorProperty = DependencyProperty.Register(FailColorPropertyName, typeof(SolidColorBrush), typeof(SpecScaleBar), new PropertyMetadata(new SolidColorBrush(Colors.Red), PropertyChangedCallback));
-        public static readonly DependencyProperty ForegroundProperty = DependencyProperty.Register(ForegroundPropertyName, typeof(SolidColorBrush), typeof(SpecScaleBar), new PropertyMetadata(new SolidColorBrush(Colors.White), PropertyChangedCallback));
-        public static readonly DependencyProperty FontSizeProperty = DependencyProperty.Register(FontSizePropertyName, typeof(double), typeof(SpecScaleBar), new UIPropertyMetadata(12d, PropertyChangedCallback));
+        public new static readonly DependencyProperty ForegroundProperty = DependencyProperty.Register(ForegroundPropertyName, typeof(SolidColorBrush), typeof(SpecScaleBar), new PropertyMetadata(new SolidColorBrush(Colors.White), PropertyChangedCallback));
+        public new static readonly DependencyProperty FontSizeProperty = DependencyProperty.Register(FontSizePropertyName, typeof(double), typeof(SpecScaleBar), new UIPropertyMetadata(12d, PropertyChangedCallback));
 
         private static void PropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -101,7 +101,12 @@ namespace DXApplication1
         private SolidColorBrush _passColor;
         private SolidColorBrush _warnColor;
         private SolidColorBrush _failColor;
+        private SolidColorBrush _evaluationStatusColor;
         private SolidColorBrush _foreground;
+        private ControlTemplate _markerEllipse;
+        private ControlTemplate _lowerOutOfRangeArrow;
+        private ControlTemplate _upperOutOfRangeArrow;
+        private CustomLinearScaleMarkerPresentation _measuredPassMarkerPresentation;
         private double _fontSize;
 
         private double _specMaximum;
@@ -110,8 +115,6 @@ namespace DXApplication1
         private double _padValue;
         private double _scaleBarMinimum;
         private double _scaleBarMaximum;
-        private double _scaleBarSpan;
-        private double _scaleToValueRatio;
         #endregion
 
         #region Properties
@@ -181,13 +184,36 @@ namespace DXApplication1
         public SpecScaleBar()
         {
             InitializeComponent();
+
+            _markerEllipse = Resources["markerEllipse"] as ControlTemplate;
+            _lowerOutOfRangeArrow = Resources["lowerOutOfRangeArrow"] as ControlTemplate;
+            _upperOutOfRangeArrow = Resources["upperOutOfRangeArrow"] as ControlTemplate;
+            _evaluationStatusColor = Resources["evaluationStatusColor"] as SolidColorBrush;
+            _measuredPassMarkerPresentation = Resources["measuredPassMarkerPresentation"] as CustomLinearScaleMarkerPresentation;
+
             resetCharts();
         }
         #endregion
 
         #region Methods
+        public void setScaleColoring()
+        {
+            if (_passColor == null || _failColor == null || _warnColor == null) return;
+
+            var passColor = Resources["passColor"] as SolidColorBrush;
+            var warnColor = Resources["warnColor"] as SolidColorBrush;
+            var failColor = Resources["failColor"] as SolidColorBrush;
+
+            if (passColor != null) passColor.Color = _passColor.Color;
+            if (warnColor != null) warnColor.Color = _warnColor.Color;
+            if (failColor != null) failColor.Color = _failColor.Color;
+            if (_evaluationStatusColor != null) _evaluationStatusColor.Color = _passColor.Color;
+        }
+
         private void resetCharts()
         {
+            setScaleColoring();
+
             lowerFailRange.StartValue = lowerFailRange.EndValue =
             lowerWarnRange.StartValue = lowerWarnRange.EndValue =
             lowerPassRange.StartValue = lowerPassRange.EndValue =
@@ -195,6 +221,13 @@ namespace DXApplication1
             upperWarnRange.StartValue = upperWarnRange.EndValue =
             upperFailRange.StartValue = upperFailRange.EndValue =
             new RangeValue(0, RangeValueType.Absolute);
+
+            lowerFailMarker.Visible = false;
+            lowerWarnMarker.Visible = false;
+            specValueMarker.Visible = false;
+            upperWarnMarker.Visible = false;
+            upperFailMarker.Visible = false;
+            scaleMarker.Visible = false;
         }
 
         private void updateScales()
@@ -207,8 +240,7 @@ namespace DXApplication1
             if (_scaleBarPadding > 0.5) _scaleBarPadding = 0.5;
 
             setRanges();
-
-            scaleMarker.Value = _measuredValue ?? 0;
+            setMarkerValue();
         }
 
         private void setRanges()
@@ -228,6 +260,10 @@ namespace DXApplication1
 
                 lowerPassRange.StartValue = new RangeValue(_scaleBarMinimum, RangeValueType.Absolute);
                 upperPassRange.EndValue = new RangeValue(_scaleBarMaximum, RangeValueType.Absolute);
+
+                lowerFailMarker.Visible = lowerFailLabel.Visible = false;
+                specValueMarker.Visible = specValueLabel.Visible = true;
+                upperFailMarker.Visible = upperFailLabel.Visible = false;
             }
             else if (_lowerFailLimit == null && _upperFailLimit != null)
             {
@@ -239,6 +275,10 @@ namespace DXApplication1
                 upperPassRange.EndValue = upperWarnRange.StartValue = new RangeValue(adjustedUpperWarnLimit, RangeValueType.Absolute);
                 upperWarnRange.EndValue = upperFailRange.StartValue = new RangeValue(_upperFailLimit.Value, RangeValueType.Absolute);
                 upperFailRange.EndValue = new RangeValue(_scaleBarMaximum);
+
+                lowerFailMarker.Visible = lowerFailLabel.Visible = false;
+                specValueMarker.Visible = specValueLabel.Visible = true;
+                upperFailMarker.Visible = upperFailLabel.Visible = true;
             }
             else if (_lowerFailLimit != null && _upperFailLimit == null)
             {
@@ -250,6 +290,10 @@ namespace DXApplication1
                 lowerWarnRange.EndValue = lowerPassRange.StartValue = new RangeValue(adjustedLowerWarnLimit, RangeValueType.Absolute);
                 lowerPassRange.EndValue = upperPassRange.StartValue = new RangeValue(_specValue.Value, RangeValueType.Absolute);
                 upperPassRange.EndValue = new RangeValue(_scaleBarMaximum);
+
+                lowerFailMarker.Visible = lowerFailLabel.Visible = true;
+                specValueMarker.Visible = specValueLabel.Visible = true;
+                upperFailMarker.Visible = upperFailLabel.Visible = false;
             }
             else if (_lowerFailLimit != null && _upperFailLimit != null)
             {
@@ -262,10 +306,34 @@ namespace DXApplication1
                 upperPassRange.EndValue = upperWarnRange.StartValue = new RangeValue(adjustedUpperWarnLimit, RangeValueType.Absolute);
                 upperWarnRange.EndValue = upperFailRange.StartValue = new RangeValue(_upperFailLimit.Value, RangeValueType.Absolute);
                 upperFailRange.EndValue = new RangeValue(_scaleBarMaximum);
+
+                lowerFailMarker.Visible = lowerFailLabel.Visible = true;
+                specValueMarker.Visible = specValueLabel.Visible = true;
+                upperFailMarker.Visible = upperFailLabel.Visible = true;
             }
 
             linearScaleBar.StartValue = _scaleBarMinimum;
             linearScaleBar.EndValue = _scaleBarMaximum;
+
+            lowerFailMarker.Value = lowerFailLabel.Value = _lowerFailLimit.GetValueOrDefault();
+            lowerWarnMarker.Value = lowerWarnLabel.Value = _lowerWarnLimit.GetValueOrDefault();
+            specValueMarker.Value = specValueLabel.Value = _specValue.GetValueOrDefault();
+            upperWarnMarker.Value = upperWarnLabel.Value = _upperWarnLimit.GetValueOrDefault();
+            upperFailMarker.Value = upperFailLabel.Value = _upperFailLimit.GetValueOrDefault();
+
+            lowerFailLabel.Content =  _lowerFailLimit.GetValueOrDefault();
+            lowerWarnLabel.Content = _lowerWarnLimit.GetValueOrDefault();
+            specValueLabel.Content = _specValue.GetValueOrDefault();
+            upperWarnLabel.Content = _upperWarnLimit.GetValueOrDefault();
+            upperFailLabel.Content = _upperFailLimit.GetValueOrDefault();
+
+            if (_fontSize <= 0) _fontSize = 12;
+
+            lowerFailLabel.FontSize = _fontSize;
+            lowerWarnLabel.FontSize = _fontSize;
+            specValueLabel.FontSize = _fontSize;
+            upperWarnLabel.FontSize = _fontSize;
+            upperFailLabel.FontSize = _fontSize;
         }
 
         private void getWarnValues(out double adjustedLowerWarnLimit, out double adjustedUpperWarnLimit)
@@ -278,18 +346,36 @@ namespace DXApplication1
             }
 
             if (_lowerFailLimit == null)
+            {
                 adjustedLowerWarnLimit = 0;
+                lowerWarnMarker.Visible = lowerWarnLabel.Visible = false;
+            }
             else if (_lowerWarnLimit == null || _lowerWarnLimit.Value < _lowerFailLimit.Value || _lowerWarnLimit.Value > _specValue.Value)
+            {
                 adjustedLowerWarnLimit = _lowerFailLimit.Value;
+                lowerWarnMarker.Visible = lowerWarnLabel.Visible = false;
+            }
             else
+            {
                 adjustedLowerWarnLimit = _lowerWarnLimit.Value;
+                lowerWarnMarker.Visible = lowerWarnLabel.Visible = true;
+            }
 
             if (_upperFailLimit == null)
+            {
                 adjustedUpperWarnLimit = 0;
+                upperWarnMarker.Visible = upperWarnLabel.Visible = false;
+            }
             else if (_upperWarnLimit == null || _upperWarnLimit.Value > _upperFailLimit.Value || _upperWarnLimit.Value < _specValue.Value)
+            {
                 adjustedUpperWarnLimit = _upperFailLimit.Value;
+                upperWarnMarker.Visible = upperWarnLabel.Visible = false;
+            }
             else
+            {
                 adjustedUpperWarnLimit = _upperWarnLimit.Value;
+                upperWarnMarker.Visible = upperWarnLabel.Visible = true;
+            }
         }
 
         private void setSpanAndPadding(double specMinimum, double specMaximum)
@@ -304,6 +390,33 @@ namespace DXApplication1
             _scaleBarMaximum = _specMaximum + _padValue;
         }
 
+        private void setMarkerValue()
+        {
+            scaleMarker.Visible = _measuredValue != null;
+
+            if (_measuredValue == null) return;
+
+            scaleMarker.Value = _measuredValue.Value;
+
+            var lowerFailLimit = _lowerFailLimit ?? double.NegativeInfinity;
+            var lowerWarnLimit = _lowerWarnLimit ?? double.NegativeInfinity;
+            var upperWarnLimit = _upperWarnLimit ?? double.PositiveInfinity;
+            var upperFailLimit = _upperFailLimit ?? double.PositiveInfinity;
+
+            if (_measuredValue.Value < _scaleBarMinimum)
+                _measuredPassMarkerPresentation.MarkerTemplate = _lowerOutOfRangeArrow;
+            else if (_measuredValue.Value > _scaleBarMaximum)
+                _measuredPassMarkerPresentation.MarkerTemplate = _upperOutOfRangeArrow;
+            else
+                _measuredPassMarkerPresentation.MarkerTemplate = _markerEllipse;
+
+            if (_measuredValue.Value <= lowerFailLimit || _measuredValue.Value >= upperFailLimit)
+                _evaluationStatusColor.Color = _failColor.Color;
+            else if (_measuredValue.Value <= lowerWarnLimit || _measuredValue.Value >= upperWarnLimit)
+                _evaluationStatusColor.Color = _warnColor.Color;
+            else
+                _evaluationStatusColor.Color = _passColor.Color;
+        }
         #endregion
     }
 }

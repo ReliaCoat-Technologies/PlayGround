@@ -6,115 +6,105 @@
              xmlns:dxga="http://schemas.devexpress.com/winfx/2008/xaml/gauges"
              mc:Ignorable="d">
 
-    <Border BorderThickness="2" BorderBrush="White" Background="Black" MinHeight="50">
+    <UserControl.Resources>
 
-        <dxga:LinearGaugeControl EnableAnimation="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0" Height="45">
-            <dxga:LinearGaugeControl.Scales>
-                <dxga:LinearScale LayoutMode="LeftToRight" StartValue="10" EndValue="60" Foreground="White" ShowMinorTickmarks="True"
-                                  Margin="0,-23,0,-23" x:Name="linearScaleBar">
-                    <dxga:LinearScale.LabelPresentation>
-                        <dxga:CustomScaleLabelPresentation>
-                            <dxga:CustomScaleLabelPresentation.LabelTemplate>
-                                <ControlTemplate>
-                                    <TextBlock Text="{Binding Text}" TextAlignment="Center" RenderTransformOrigin="0.5, 0.5" Foreground="White"/>
-                                </ControlTemplate>
-                            </dxga:CustomScaleLabelPresentation.LabelTemplate>
-                        </dxga:CustomScaleLabelPresentation>
-                    </dxga:LinearScale.LabelPresentation>
-                    <dxga:LinearScale.LabelOptions>
-                        <dxga:LinearScaleLabelOptions Offset="-29"/>
-                    </dxga:LinearScale.LabelOptions>
-                    <dxga:LinearScale.TickmarksPresentation>
-                        <dxga:CustomTickmarksPresentation>
-                            <dxga:CustomTickmarksPresentation.MajorTickmarkTemplate>
-                                <ControlTemplate>
-                                    <Line X1="10" Stroke="White" StrokeThickness="2"/>
-                                </ControlTemplate>
-                            </dxga:CustomTickmarksPresentation.MajorTickmarkTemplate>
-                            <dxga:CustomTickmarksPresentation.MinorTickmarkTemplate>
-                                <ControlTemplate>
-                                    <Line X1="8" Stroke="White" StrokeThickness="1"/>
-                                </ControlTemplate>
-                            </dxga:CustomTickmarksPresentation.MinorTickmarkTemplate>
-                        </dxga:CustomTickmarksPresentation>
-                    </dxga:LinearScale.TickmarksPresentation>
-                    <dxga:LinearScale.MajorTickmarkOptions>
-                        <dxga:MajorTickmarkOptions Offset="-17"/>
-                    </dxga:LinearScale.MajorTickmarkOptions>
-                    <dxga:LinearScale.MinorTickmarkOptions>
-                        <dxga:MinorTickmarkOptions Offset="-15"/>
-                    </dxga:LinearScale.MinorTickmarkOptions>
-                    <dxga:LinearScale.Markers>
-                        <dxga:LinearScaleMarker x:Name="scaleMarker" Value="33.5">
-                            <dxga:LinearScaleMarker.Options>
-                                <dxga:LinearScaleMarkerOptions Offset="-10" Orientation="Normal" FactorHeight="1" FactorWidth="1" />
-                            </dxga:LinearScaleMarker.Options>
-                            <dxga:LinearScaleMarker.Presentation>
-                                <dxga:CustomLinearScaleMarkerPresentation>
-                                    <dxga:CustomLinearScaleMarkerPresentation.MarkerTemplate>
-                                        <ControlTemplate>
-                                            <Ellipse Height="16" Width="16" Stroke="White" StrokeThickness="2"
-                                                         RenderTransformOrigin="0.5, 0.5" Fill="Green"/>
-                                        </ControlTemplate>
-                                    </dxga:CustomLinearScaleMarkerPresentation.MarkerTemplate>
-                                </dxga:CustomLinearScaleMarkerPresentation>
-                            </dxga:LinearScaleMarker.Presentation>
-                        </dxga:LinearScaleMarker>
-                    </dxga:LinearScale.Markers>
-                    <dxga:LinearScale.Ranges>
-                        <dxga:LinearScaleRange Visible="True" x:Name="lowerFailRange">
-                            <dxga:LinearScaleRange.Presentation>
-                                <dxga:DefaultLinearScaleRangePresentation Fill="Red"/>
-                            </dxga:LinearScaleRange.Presentation>
-                            <dxga:LinearScaleRange.Options>
-                                <dxga:RangeOptions Offset="-10" Thickness="4"/>
-                            </dxga:LinearScaleRange.Options>
-                        </dxga:LinearScaleRange>
-                        <dxga:LinearScaleRange Visible="True" x:Name="lowerWarnRange">
-                            <dxga:LinearScaleRange.Presentation>
-                                <dxga:DefaultLinearScaleRangePresentation Fill="Yellow"/>
-                            </dxga:LinearScaleRange.Presentation>
-                            <dxga:LinearScaleRange.Options>
-                                <dxga:RangeOptions Offset="-10" Thickness="4"/>
-                            </dxga:LinearScaleRange.Options>
-                        </dxga:LinearScaleRange>
-                        <dxga:LinearScaleRange Visible="True" x:Name="lowerPassRange">
-                            <dxga:LinearScaleRange.Presentation>
-                                <dxga:DefaultLinearScaleRangePresentation Fill="Green"/>
-                            </dxga:LinearScaleRange.Presentation>
-                            <dxga:LinearScaleRange.Options>
-                                <dxga:RangeOptions Offset="-10" Thickness="4"/>
-                            </dxga:LinearScaleRange.Options>
-                        </dxga:LinearScaleRange>
-                        <dxga:LinearScaleRange Visible="True" x:Name="upperPassRange">
-                            <dxga:LinearScaleRange.Presentation>
-                                <dxga:DefaultLinearScaleRangePresentation Fill="Green"/>
-                            </dxga:LinearScaleRange.Presentation>
-                            <dxga:LinearScaleRange.Options>
-                                <dxga:RangeOptions Offset="-10" Thickness="4"/>
-                            </dxga:LinearScaleRange.Options>
-                        </dxga:LinearScaleRange>
-                        <dxga:LinearScaleRange Visible="True" x:Name="upperWarnRange">
-                            <dxga:LinearScaleRange.Presentation>
-                                <dxga:DefaultLinearScaleRangePresentation Fill="Yellow"/>
-                            </dxga:LinearScaleRange.Presentation>
-                            <dxga:LinearScaleRange.Options>
-                                <dxga:RangeOptions Offset="-10" Thickness="4"/>
-                            </dxga:LinearScaleRange.Options>
-                        </dxga:LinearScaleRange>
-                        <dxga:LinearScaleRange Visible="True" x:Name="upperFailRange">
-                            <dxga:LinearScaleRange.Presentation>
-                                <dxga:DefaultLinearScaleRangePresentation Fill="Red" />
-                            </dxga:LinearScaleRange.Presentation>
-                            <dxga:LinearScaleRange.Options>
-                                <dxga:RangeOptions Offset="-10" Thickness="4"/>
-                            </dxga:LinearScaleRange.Options>
-                        </dxga:LinearScaleRange>
-                    </dxga:LinearScale.Ranges>
-                </dxga:LinearScale>
-            </dxga:LinearGaugeControl.Scales>
-        </dxga:LinearGaugeControl>
+        <dxga:LinearScaleMarkerOptions Offset="-10" Orientation="Normal" FactorHeight="1" FactorWidth="1" x:Key="scaleMarkerOptions" />
 
-    </Border>
+        <dxga:CustomLinearScaleMarkerPresentation x:Key="tickMarkerPresentation">
+            <dxga:CustomLinearScaleMarkerPresentation.MarkerTemplate>
+                <ControlTemplate>
+                    <Line X2="10" Stroke="White" StrokeThickness="2" RenderTransformOrigin="0.5, 0.5"/>
+                </ControlTemplate>
+            </dxga:CustomLinearScaleMarkerPresentation.MarkerTemplate>
+        </dxga:CustomLinearScaleMarkerPresentation>
+
+        <SolidColorBrush x:Key="passColor"/>
+        <SolidColorBrush x:Key="warnColor"/>
+        <SolidColorBrush x:Key="failColor"/>
+        <SolidColorBrush x:Key="evaluationStatusColor"/>
+
+        <ControlTemplate x:Key="markerEllipse">
+            <Ellipse Height="16" Width="16" Stroke="White" StrokeThickness="2"
+                     RenderTransformOrigin="0.5, 0.5" Fill="{StaticResource evaluationStatusColor}"/>
+        </ControlTemplate>
+
+        <ControlTemplate x:Key="lowerOutOfRangeArrow">
+            <Polygon Height="16" Width="16" Stroke="White" StrokeThickness="2" Points="0,0 8,5, 0,10"
+                     Fill="{StaticResource evaluationStatusColor}" RenderTransformOrigin="0.5, 0.5">
+                <Polygon.RenderTransform>
+                    <TransformGroup>
+                        <RotateTransform Angle="90"/>
+                        <TranslateTransform X="-3"/>
+                    </TransformGroup>
+                </Polygon.RenderTransform>
+            </Polygon>
+        </ControlTemplate>
+
+        <ControlTemplate x:Key="upperOutOfRangeArrow">
+            <Polygon Height="16" Width="16" Stroke="White" StrokeThickness="2" Points="8,0 0,5, 8,10"
+                     Fill="{StaticResource evaluationStatusColor}" RenderTransformOrigin="0.5, 0.5">
+                <Polygon.RenderTransform>
+                    <TransformGroup>
+                        <RotateTransform Angle="90"/>
+                        <TranslateTransform X="-3"/>
+                    </TransformGroup>
+                </Polygon.RenderTransform>
+            </Polygon>
+        </ControlTemplate>
+
+        <dxga:CustomLinearScaleMarkerPresentation x:Key="measuredPassMarkerPresentation" MarkerTemplate="{StaticResource markerEllipse}"/>
+
+        <dxga:DefaultLinearScaleRangePresentation x:Key="scaleRangeFailPresentation" Fill="{StaticResource failColor}"/>
+        <dxga:DefaultLinearScaleRangePresentation x:Key="scaleRangeWarnPresentation" Fill="{StaticResource warnColor}"/>
+        <dxga:DefaultLinearScaleRangePresentation x:Key="scaleRangePassPresentation" Fill="{StaticResource passColor}"/>
+
+        <dxga:RangeOptions Offset="-10" Thickness="4" x:Key="rangeOptions"/>
+
+    </UserControl.Resources>
+
+    <dxga:LinearGaugeControl EnableAnimation="False" Margin="0" MinHeight="40">
+        <dxga:LinearGaugeControl.Scales>
+            <dxga:LinearScale LayoutMode="LeftToRight" StartValue="10" EndValue="60" Foreground="White"
+                              HorizontalAlignment="Center" VerticalAlignment="Center"
+                              ShowMajorTickmarks="False" ShowMinorTickmarks="False" ShowLabels="False"
+                              Margin="0,-40,0,-30" x:Name="linearScaleBar">
+                <dxga:LinearScale.LabelPresentation>
+                    <dxga:CustomScaleLabelPresentation>
+                        <dxga:CustomScaleLabelPresentation.LabelTemplate>
+                            <ControlTemplate>
+                                <TextBlock Text="{Binding Text}" TextAlignment="Center" RenderTransformOrigin="0.5, 0.5" Foreground="White"/>
+                            </ControlTemplate>
+                        </dxga:CustomScaleLabelPresentation.LabelTemplate>
+                    </dxga:CustomScaleLabelPresentation>
+                </dxga:LinearScale.LabelPresentation>
+                <dxga:LinearScale.LabelOptions>
+                    <dxga:LinearScaleLabelOptions Offset="-29" FormatString="{}{0:#.##}"/>
+                </dxga:LinearScale.LabelOptions>
+                <dxga:LinearScale.Markers>
+                    <dxga:LinearScaleMarker x:Name="lowerFailMarker" Options="{StaticResource scaleMarkerOptions}" Presentation="{StaticResource tickMarkerPresentation}"/>
+                    <dxga:LinearScaleMarker x:Name="lowerWarnMarker" Options="{StaticResource scaleMarkerOptions}" Presentation="{StaticResource tickMarkerPresentation}"/>
+                    <dxga:LinearScaleMarker x:Name="specValueMarker" Options="{StaticResource scaleMarkerOptions}" Presentation="{StaticResource tickMarkerPresentation}"/>
+                    <dxga:LinearScaleMarker x:Name="upperWarnMarker" Options="{StaticResource scaleMarkerOptions}" Presentation="{StaticResource tickMarkerPresentation}"/>
+                    <dxga:LinearScaleMarker x:Name="upperFailMarker" Options="{StaticResource scaleMarkerOptions}" Presentation="{StaticResource tickMarkerPresentation}"/>
+                    <dxga:LinearScaleMarker x:Name="scaleMarker" Options="{StaticResource scaleMarkerOptions}" Presentation="{StaticResource measuredPassMarkerPresentation}"/>
+                </dxga:LinearScale.Markers>
+                <dxga:LinearScale.CustomLabels>
+                    <dxga:ScaleCustomLabel x:Name="lowerFailLabel" Offset="-19" RenderTransformOrigin="0.5, 1"/>
+                    <dxga:ScaleCustomLabel x:Name="lowerWarnLabel" Offset="-19" RenderTransformOrigin="0.5, 1"/>
+                    <dxga:ScaleCustomLabel x:Name="specValueLabel" Offset="-19" RenderTransformOrigin="0.5, 1"/>
+                    <dxga:ScaleCustomLabel x:Name="upperWarnLabel" Offset="-19" RenderTransformOrigin="0.5, 1"/>
+                    <dxga:ScaleCustomLabel x:Name="upperFailLabel" Offset="-19" RenderTransformOrigin="0.5, 1"/>
+                </dxga:LinearScale.CustomLabels>
+                <dxga:LinearScale.Ranges>
+                    <dxga:LinearScaleRange Visible="True" x:Name="lowerFailRange" Presentation="{StaticResource scaleRangeFailPresentation}" Options="{StaticResource rangeOptions}"/>
+                    <dxga:LinearScaleRange Visible="True" x:Name="lowerWarnRange" Presentation="{StaticResource scaleRangeWarnPresentation}" Options="{StaticResource rangeOptions}"/>
+                    <dxga:LinearScaleRange Visible="True" x:Name="lowerPassRange" Presentation="{StaticResource scaleRangePassPresentation}" Options="{StaticResource rangeOptions}"/>
+                    <dxga:LinearScaleRange Visible="True" x:Name="upperPassRange" Presentation="{StaticResource scaleRangePassPresentation}" Options="{StaticResource rangeOptions}"/>
+                    <dxga:LinearScaleRange Visible="True" x:Name="upperWarnRange" Presentation="{StaticResource scaleRangeWarnPresentation}" Options="{StaticResource rangeOptions}"/>
+                    <dxga:LinearScaleRange Visible="True" x:Name="upperFailRange" Presentation="{StaticResource scaleRangeFailPresentation}" Options="{StaticResource rangeOptions}"/>
+                </dxga:LinearScale.Ranges>
+            </dxga:LinearScale>
+        </dxga:LinearGaugeControl.Scales>
+    </dxga:LinearGaugeControl>
 
 </UserControl>

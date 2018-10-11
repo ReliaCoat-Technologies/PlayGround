@@ -1,8 +1,9 @@
 ﻿using System;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using DevExpress.Xpf.Editors;
+using DevExpress.Xpf.Gauges;
 
 namespace DXApplication1
 {
@@ -111,17 +112,6 @@ namespace DXApplication1
         private double _scaleBarMaximum;
         private double _scaleBarSpan;
         private double _scaleToValueRatio;
-
-        private double _lowerFailWidth;
-        private double _lowerWarnWidth;
-        private double _lowerPassWidth;
-        private double _upperPassWidth;
-        private double _upperWarnWidth;
-        private double _upperFailWidth;
-        private double _measureWidthLeft;
-        private double _measureWidthRight;
-        private double _leftSideMarkerPadding;
-        private double _rightSideMarkerPadding;
         #endregion
 
         #region Properties
@@ -191,348 +181,129 @@ namespace DXApplication1
         public SpecScaleBar()
         {
             InitializeComponent();
-            resetChart();
+            resetCharts();
         }
         #endregion
 
         #region Methods
+        private void resetCharts()
+        {
+            lowerFailRange.StartValue = lowerFailRange.EndValue =
+            lowerWarnRange.StartValue = lowerWarnRange.EndValue =
+            lowerPassRange.StartValue = lowerPassRange.EndValue =
+            upperPassRange.StartValue = upperPassRange.EndValue =
+            upperWarnRange.StartValue = upperWarnRange.EndValue =
+            upperFailRange.StartValue = upperFailRange.EndValue =
+            new RangeValue(0, RangeValueType.Absolute);
+        }
+
         private void updateScales()
         {
-            resetChart();
+            resetCharts();
 
             if (_specValue == null) return;
-            if (_scaleBarPadding == null) _scaleBarPadding = 0.1;
 
-            if (!setMarkersAndWidths()) return;
-            setSpecTextBlocks();
-            setMeasuredValues();
+            if (_scaleBarPadding == null || _scaleBarPadding < 0.1) _scaleBarPadding = 0.1;
+            if (_scaleBarPadding > 0.5) _scaleBarPadding = 0.5;
+
+            setRanges();
+
+            scaleMarker.Value = _measuredValue ?? 0;
         }
 
-        private void setSpecTextBlocks()
+        private void setRanges()
         {
-            lowerFailLowerSpan.Stroke = _failColor;
-            lowerFailUpperSpan.Stroke = _lowerWarnWidth == 0 ? _passColor : _warnColor;
-            lowerWarnLowerSpan.Stroke = _warnColor;
-            lowerWarnUpperSpan.Stroke = _passColor;
-            specMarkerLowerSpan.Stroke = _passColor;
-            specMarkerUpperSpan.Stroke = _passColor;
-            upperWarnLowerSpan.Stroke = _passColor;
-            upperWarnUpperSpan.Stroke = _warnColor;
-            upperFailLowerSpan.Stroke = _upperWarnWidth == 0 ? _passColor : _warnColor;
-            upperFailUpperSpan.Stroke = _failColor;
+            if (_specValue == null) return;
+            if (_scaleBarPadding == null) return;
 
-            lowerFailLimitTextBlock.Text = _lowerFailLimit.ToString();
-            lowerWarnLimitTextBlock.Text = _lowerWarnLimit.ToString();
-            specValueTextBlock.Text = _specValue.ToString();
-            upperWarnLimitTextBlock.Text = _upperWarnLimit.ToString();
-            upperFailLimitTextBlock.Text = _upperFailLimit.ToString();
-        }
-
-        private void resetChart()
-        {
-            if (_fontSize <= 0) _fontSize = 12;
-
-            lowFailBar.Stroke = highFailBar.Stroke = _failColor;
-            lowWarnBar.Stroke = highWarnBar.Stroke = _warnColor;
-            lowPassBar.Stroke = highPassBar.Stroke = _passColor;
-
-            _lowerFailWidth = 0;
-            _lowerWarnWidth = 0;
-            _lowerPassWidth = 0;
-            _upperPassWidth = 0;
-            _upperWarnWidth = 0;
-            _upperFailWidth = 0;
-
-            lowerFailLowerSpan.Stroke = _failColor;
-            lowerFailUpperSpan.Stroke = _warnColor;
-            lowerWarnLowerSpan.Stroke = _warnColor;
-            lowerWarnUpperSpan.Stroke = _passColor;
-            specMarkerLowerSpan.Stroke = _passColor;
-            specMarkerUpperSpan.Stroke = _passColor;
-            upperWarnLowerSpan.Stroke = _passColor;
-            upperWarnUpperSpan.Stroke = _warnColor;
-            upperFailLowerSpan.Stroke = _warnColor;
-            upperFailUpperSpan.Stroke = _failColor;
-
-            lowerFailMarker.Stroke = _foreground;
-            lowerWarnMarker.Stroke = _foreground;
-            specMarker.Stroke = _foreground;
-            upperWarnMarker.Stroke = _foreground;
-            upperFailMarker.Stroke = _foreground;
-            lowerLimitArrow.Stroke = _foreground;
-            upperLimitArrow.Stroke = _foreground;
-            measuredValueEllipse.Stroke = _foreground;
-
-            lowerFailLimitTextBlock.Foreground = _foreground;
-            lowerWarnLimitTextBlock.Foreground = _foreground;
-            specValueTextBlock.Foreground = _foreground;
-            upperWarnLimitTextBlock.Foreground = _foreground;
-            upperFailLimitTextBlock.Foreground = _foreground;
-
-            lowerFailLimitTextBlock.FontSize = _fontSize;
-            lowerWarnLimitTextBlock.FontSize = _fontSize;
-            specValueTextBlock.FontSize = _fontSize;
-            upperWarnLimitTextBlock.FontSize = _fontSize;
-            upperFailLimitTextBlock.FontSize = _fontSize;
-
-            measuredValueEllipse.Visibility = Visibility.Hidden;
-            lowerLimitArrow.Visibility = Visibility.Hidden;
-            upperLimitArrow.Visibility = Visibility.Hidden;
-        }
-
-        private void setDefaultValues()
-        {
-            _lowerFailWidth = 10;
-            _lowerWarnWidth = 10;
-            _lowerPassWidth = 10;
-            _upperPassWidth = 10;
-            _upperWarnWidth = 10;
-            _upperFailWidth = 10;
-
-            _scaleToValueRatio = 100d / 60d;
-
-            measuredValueEllipse.Visibility = Visibility.Hidden;
-            lowerLimitArrow.Visibility = Visibility.Hidden;
-            upperLimitArrow.Visibility = Visibility.Hidden;
-
-            lowerFailLimitTextBlock.Text = string.Empty;
-            lowerWarnLimitTextBlock.Text = string.Empty;
-            specValueTextBlock.Text = string.Empty;
-            upperWarnLimitTextBlock.Text = string.Empty;
-            upperFailLimitTextBlock.Text = string.Empty;
-        }
-
-        private bool setMarkersAndWidths()
-        {
-            if (_specValue == null) return false;
-            if (_scaleBarPadding == null) _scaleBarPadding = 0.1;
-
-            bool setLimitsSuccessful;
+            double adjustedLowerWarnLimit, adjustedUpperWarnLimit;
+            getWarnValues(out adjustedLowerWarnLimit, out adjustedUpperWarnLimit);
 
             if (_lowerFailLimit == null && _upperFailLimit == null)
             {
-                setLimitsSuccessful = setNeitherLimits();
+                _padValue = _specValue.Value * _scaleBarPadding.Value;
+
+                _scaleBarMinimum = _specValue.Value - _padValue;
+                _scaleBarMaximum = _specValue.Value + _padValue;
+
+                lowerPassRange.StartValue = new RangeValue(_scaleBarMinimum, RangeValueType.Absolute);
+                upperPassRange.EndValue = new RangeValue(_scaleBarMaximum, RangeValueType.Absolute);
             }
-            else if (_lowerFailLimit == null)
+            else if (_lowerFailLimit == null && _upperFailLimit != null)
             {
-                setLimitsSuccessful = setUpperLimits();
+                var passFailDifference = _upperFailLimit.Value - _specValue.Value;
+                setSpanAndPadding(_specValue.Value - passFailDifference, _upperFailLimit.Value);
+
+                lowerPassRange.StartValue = new RangeValue(_scaleBarMinimum);
+                lowerPassRange.EndValue = upperPassRange.StartValue = new RangeValue(_specValue.Value, RangeValueType.Absolute);
+                upperPassRange.EndValue = upperWarnRange.StartValue = new RangeValue(adjustedUpperWarnLimit, RangeValueType.Absolute);
+                upperWarnRange.EndValue = upperFailRange.StartValue = new RangeValue(_upperFailLimit.Value, RangeValueType.Absolute);
+                upperFailRange.EndValue = new RangeValue(_scaleBarMaximum);
             }
-            else if (_upperFailLimit == null)
+            else if (_lowerFailLimit != null && _upperFailLimit == null)
             {
-                setLimitsSuccessful = setLowerLimits();
+                var passFailDifference = _specValue.Value - _lowerFailLimit.Value;
+                setSpanAndPadding(_lowerFailLimit.Value, _specValue.Value + passFailDifference);
+
+                lowerFailRange.StartValue = new RangeValue(_scaleBarMinimum);
+                lowerFailRange.EndValue = lowerWarnRange.StartValue = new RangeValue(_lowerFailLimit.Value, RangeValueType.Absolute);
+                lowerWarnRange.EndValue = lowerPassRange.StartValue = new RangeValue(adjustedLowerWarnLimit, RangeValueType.Absolute);
+                lowerPassRange.EndValue = upperPassRange.StartValue = new RangeValue(_specValue.Value, RangeValueType.Absolute);
+                upperPassRange.EndValue = new RangeValue(_scaleBarMaximum);
             }
+            else if (_lowerFailLimit != null && _upperFailLimit != null)
+            {
+                setSpanAndPadding(_lowerFailLimit.Value, _upperFailLimit.Value);
+
+                lowerFailRange.StartValue = new RangeValue(_scaleBarMinimum);
+                lowerFailRange.EndValue = lowerWarnRange.StartValue = new RangeValue(_lowerFailLimit.Value, RangeValueType.Absolute);
+                lowerWarnRange.EndValue = lowerPassRange.StartValue = new RangeValue(adjustedLowerWarnLimit, RangeValueType.Absolute);
+                lowerPassRange.EndValue = upperPassRange.StartValue = new RangeValue(_specValue.Value, RangeValueType.Absolute);
+                upperPassRange.EndValue = upperWarnRange.StartValue = new RangeValue(adjustedUpperWarnLimit, RangeValueType.Absolute);
+                upperWarnRange.EndValue = upperFailRange.StartValue = new RangeValue(_upperFailLimit.Value, RangeValueType.Absolute);
+                upperFailRange.EndValue = new RangeValue(_scaleBarMaximum);
+            }
+
+            linearScaleBar.StartValue = _scaleBarMinimum;
+            linearScaleBar.EndValue = _scaleBarMaximum;
+        }
+
+        private void getWarnValues(out double adjustedLowerWarnLimit, out double adjustedUpperWarnLimit)
+        {
+            if (_specValue == null)
+            {
+                adjustedUpperWarnLimit = 0;
+                adjustedLowerWarnLimit = 0;
+                return;
+            }
+
+            if (_lowerFailLimit == null)
+                adjustedLowerWarnLimit = 0;
+            else if (_lowerWarnLimit == null || _lowerWarnLimit.Value < _lowerFailLimit.Value || _lowerWarnLimit.Value > _specValue.Value)
+                adjustedLowerWarnLimit = _lowerFailLimit.Value;
             else
-            {
-                setLimitsSuccessful = setBothLimits();
-            }
+                adjustedLowerWarnLimit = _lowerWarnLimit.Value;
 
-            if (!setLimitsSuccessful)
-                setDefaultValues();
-
-            setScaleSpan();
-
-            if (_scaleBarSpan <= 0 || _scaleToValueRatio <= 0)
-            {
-                setLimitsSuccessful = false;
-                setDefaultValues();
-            }
-
-            setChartWidths();
-
-            return setLimitsSuccessful;
+            if (_upperFailLimit == null)
+                adjustedUpperWarnLimit = 0;
+            else if (_upperWarnLimit == null || _upperWarnLimit.Value > _upperFailLimit.Value || _upperWarnLimit.Value < _specValue.Value)
+                adjustedUpperWarnLimit = _upperFailLimit.Value;
+            else
+                adjustedUpperWarnLimit = _upperWarnLimit.Value;
         }
 
-        private bool setNeitherLimits()
+        private void setSpanAndPadding(double specMinimum, double specMaximum)
         {
-            _specMinimum = _specMaximum = _specValue.Value;
-            _padValue = _specValue.Value * _scaleBarPadding.Value;
-            _lowerPassWidth = _padValue;
-            _upperPassWidth = _padValue;
+            _specMinimum = specMinimum;
+            _specMaximum = specMaximum;
 
-            lowerWarnMarkerColumn.Width = new GridLength(0);
-            lowerFailMarkerColumn.Width = new GridLength(0);
-            upperFailMarkerColumn.Width = new GridLength(0);
-            upperWarnMarkerColumn.Width = new GridLength(0);
-
-            return true;
-        }
-
-        private void getSpanAndPadding(ref double lowerEdgeWidth, ref double upperEdgeWidth)
-        {
-            _specSpan = _specMaximum - _specMinimum;
+            _specSpan = specMaximum - specMinimum;
             _padValue = _specSpan * _scaleBarPadding.Value;
 
-            lowerEdgeWidth = _padValue;
-            upperEdgeWidth = _padValue;
-        }
-
-        private bool setLowerLimits()
-        {
-            if (!setLowerWarnLimit()) return false;
-
-            var extraPassWidth = _specValue.Value - _lowerFailLimit.Value;
-
-            _specMinimum = _lowerFailLimit.Value;
-            _specMaximum = _specValue.Value + extraPassWidth;
-            getSpanAndPadding(ref _lowerFailWidth, ref _upperPassWidth);
-
-            _upperPassWidth += extraPassWidth;
-
-            lowerFailMarkerColumn.Width = GridLength.Auto;
-            upperWarnMarkerColumn.Width = new GridLength(0);
-            upperFailMarkerColumn.Width = new GridLength(0);
-
-            return true;
-        }
-
-        private bool setUpperLimits()
-        {
-            if (!setUpperWarnLimit()) return false;
-
-            var extraPassWidth = _upperFailLimit.Value - _specValue.Value;
-
-            _specMinimum = _specValue.Value - extraPassWidth;
-            _specMaximum = _upperFailLimit.Value;
-            getSpanAndPadding(ref _lowerPassWidth, ref _upperFailWidth);
-
-            _lowerPassWidth += extraPassWidth;
-
-            lowerWarnMarkerColumn.Width = new GridLength(0);
-            lowerFailMarkerColumn.Width = new GridLength(0);
-            upperFailMarkerColumn.Width = GridLength.Auto;
-            return true;
-        }
-
-        private bool setBothLimits()
-        {
-            if (!setLowerWarnLimit() || !setUpperWarnLimit()) return false;
-            _specMinimum = _lowerFailLimit.Value;
-            _specMaximum = _upperFailLimit.Value;
-            getSpanAndPadding(ref _lowerFailWidth, ref _upperFailWidth);
-
-            lowerFailMarkerColumn.Width = GridLength.Auto;
-            upperFailMarkerColumn.Width = GridLength.Auto;
-            return true;
-        }
-
-        private void setScaleSpan()
-        {
             _scaleBarMinimum = _specMinimum - _padValue;
             _scaleBarMaximum = _specMaximum + _padValue;
-            _scaleBarSpan = _scaleBarMaximum - _scaleBarMinimum;
-            _scaleToValueRatio = 100 / _scaleBarSpan;
         }
 
-        private void setChartWidths()
-        {
-            lowerFailWidth.Width = new GridLength(_lowerFailWidth * _scaleToValueRatio, GridUnitType.Star);
-            lowerWarnWidth.Width = new GridLength(_lowerWarnWidth * _scaleToValueRatio, GridUnitType.Star);
-            lowerPassWidth.Width = new GridLength(_lowerPassWidth * _scaleToValueRatio, GridUnitType.Star);
-            upperPassWidth.Width = new GridLength(_upperPassWidth * _scaleToValueRatio, GridUnitType.Star);
-            upperWarnWidth.Width = new GridLength(_upperWarnWidth * _scaleToValueRatio, GridUnitType.Star);
-            upperFailWidth.Width = new GridLength(_upperFailWidth * _scaleToValueRatio, GridUnitType.Star);
-        }
-
-        private bool setLowerWarnLimit()
-        {
-            if (_lowerWarnLimit == null)
-            {
-                if (_specValue.Value < _lowerFailLimit.Value) return false;
-
-                _lowerPassWidth = _specValue.Value - _lowerFailLimit.Value;
-                _lowerWarnWidth = 0;
-                lowerWarnMarkerColumn.Width = new GridLength(0);
-            }
-            else
-            {
-                if (_specValue.Value < _lowerWarnLimit.Value || _lowerFailLimit.Value > _lowerWarnLimit.Value)
-                    return false;
-
-                _lowerPassWidth = _specValue.Value - _lowerWarnLimit.Value;
-                _lowerWarnWidth = _lowerWarnLimit.Value - _lowerFailLimit.Value;
-                lowerWarnMarkerColumn.Width = GridLength.Auto;
-            }
-
-            return true;
-        }
-
-        private bool setUpperWarnLimit()
-        {
-            if (_upperWarnLimit == null)
-            {
-                _upperPassWidth = _upperFailLimit.Value - _specValue.Value;
-                _upperWarnWidth = 0;
-                upperWarnMarkerColumn.Width = new GridLength(0);
-            }
-            else
-            {
-                if (_specValue.Value > _upperWarnLimit.Value || _upperWarnLimit.Value > _upperFailLimit.Value)
-                    return false;
-
-                _upperPassWidth = _upperWarnLimit.Value - _specValue.Value;
-                _upperWarnWidth = _upperFailLimit.Value - _upperWarnLimit.Value;
-                upperWarnMarkerColumn.Width = GridLength.Auto;
-            }
-
-            return true;
-        }
-
-
-        private void setMeasuredValues()
-        {
-            if (_measuredValue == null)
-            {
-                measuredValueEllipse.Visibility = Visibility.Hidden;
-                lowerLimitArrow.Visibility = Visibility.Hidden;
-                upperLimitArrow.Visibility = Visibility.Hidden;
-            }
-            else if (_measuredValue.Value > _scaleBarMaximum)
-            {
-                measuredValueEllipse.Visibility = Visibility.Hidden;
-                lowerLimitArrow.Visibility = Visibility.Hidden;
-
-                upperLimitArrow.Visibility = Visibility.Visible;
-                upperLimitArrow.Fill = getEvaluationFillColor();
-            }
-            else if (_measuredValue.Value < _scaleBarMinimum)
-            {
-                measuredValueEllipse.Visibility = Visibility.Hidden;
-                upperLimitArrow.Visibility = Visibility.Hidden;
-
-                lowerLimitArrow.Visibility = Visibility.Visible;
-                lowerLimitArrow.Fill = getEvaluationFillColor();
-            }
-            else
-            {
-                measuredValueEllipse.Visibility = Visibility.Visible;
-                measuredValueEllipse.Fill = getEvaluationFillColor();
-
-                _measureWidthLeft = (_measuredValue.Value - _specMinimum + _padValue);
-                _measureWidthRight = _scaleBarSpan - _measureWidthLeft;
-
-                measureValueColumnLeft.Width = new GridLength(_measureWidthLeft * _scaleToValueRatio, GridUnitType.Star);
-                measureValueColumnRight.Width = new GridLength(_measureWidthRight * _scaleToValueRatio, GridUnitType.Star);
-            }
-        }
-
-        private SolidColorBrush getEvaluationFillColor()
-        {
-            var lowerFailLimit = _lowerFailLimit ?? double.NegativeInfinity;
-            var lowerWarnLimit = _lowerWarnLimit ?? double.NegativeInfinity;
-            var upperWarnLimit = _upperWarnLimit ?? double.PositiveInfinity;
-            var upperFailLimit = _upperFailLimit ?? double.PositiveInfinity;
-
-            if (_measuredValue <= lowerFailLimit || _measuredValue >= upperFailLimit)
-            {
-                return _failColor;
-            }
-            if (MeasuredValue <= lowerWarnLimit || _measuredValue >= upperWarnLimit)
-            {
-                return _warnColor;
-            }
-
-            return _passColor;
-        }
         #endregion
     }
 }

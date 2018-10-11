@@ -2,145 +2,119 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:dxga="http://schemas.devexpress.com/winfx/2008/xaml/gauges"
              mc:Ignorable="d">
 
-    <Grid Margin="15, 2">
+    <Border BorderThickness="2" BorderBrush="White" Background="Black" MinHeight="50">
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+        <dxga:LinearGaugeControl EnableAnimation="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0" Height="45">
+            <dxga:LinearGaugeControl.Scales>
+                <dxga:LinearScale LayoutMode="LeftToRight" StartValue="10" EndValue="60" Foreground="White" ShowMinorTickmarks="True"
+                                  Margin="0,-23,0,-23" x:Name="linearScaleBar">
+                    <dxga:LinearScale.LabelPresentation>
+                        <dxga:CustomScaleLabelPresentation>
+                            <dxga:CustomScaleLabelPresentation.LabelTemplate>
+                                <ControlTemplate>
+                                    <TextBlock Text="{Binding Text}" TextAlignment="Center" RenderTransformOrigin="0.5, 0.5" Foreground="White"/>
+                                </ControlTemplate>
+                            </dxga:CustomScaleLabelPresentation.LabelTemplate>
+                        </dxga:CustomScaleLabelPresentation>
+                    </dxga:LinearScale.LabelPresentation>
+                    <dxga:LinearScale.LabelOptions>
+                        <dxga:LinearScaleLabelOptions Offset="-29"/>
+                    </dxga:LinearScale.LabelOptions>
+                    <dxga:LinearScale.TickmarksPresentation>
+                        <dxga:CustomTickmarksPresentation>
+                            <dxga:CustomTickmarksPresentation.MajorTickmarkTemplate>
+                                <ControlTemplate>
+                                    <Line X1="10" Stroke="White" StrokeThickness="2"/>
+                                </ControlTemplate>
+                            </dxga:CustomTickmarksPresentation.MajorTickmarkTemplate>
+                            <dxga:CustomTickmarksPresentation.MinorTickmarkTemplate>
+                                <ControlTemplate>
+                                    <Line X1="8" Stroke="White" StrokeThickness="1"/>
+                                </ControlTemplate>
+                            </dxga:CustomTickmarksPresentation.MinorTickmarkTemplate>
+                        </dxga:CustomTickmarksPresentation>
+                    </dxga:LinearScale.TickmarksPresentation>
+                    <dxga:LinearScale.MajorTickmarkOptions>
+                        <dxga:MajorTickmarkOptions Offset="-17"/>
+                    </dxga:LinearScale.MajorTickmarkOptions>
+                    <dxga:LinearScale.MinorTickmarkOptions>
+                        <dxga:MinorTickmarkOptions Offset="-15"/>
+                    </dxga:LinearScale.MinorTickmarkOptions>
+                    <dxga:LinearScale.Markers>
+                        <dxga:LinearScaleMarker x:Name="scaleMarker" Value="33.5">
+                            <dxga:LinearScaleMarker.Options>
+                                <dxga:LinearScaleMarkerOptions Offset="-10" Orientation="Normal" FactorHeight="1" FactorWidth="1" />
+                            </dxga:LinearScaleMarker.Options>
+                            <dxga:LinearScaleMarker.Presentation>
+                                <dxga:CustomLinearScaleMarkerPresentation>
+                                    <dxga:CustomLinearScaleMarkerPresentation.MarkerTemplate>
+                                        <ControlTemplate>
+                                            <Ellipse Height="16" Width="16" Stroke="White" StrokeThickness="2"
+                                                         RenderTransformOrigin="0.5, 0.5" Fill="Green"/>
+                                        </ControlTemplate>
+                                    </dxga:CustomLinearScaleMarkerPresentation.MarkerTemplate>
+                                </dxga:CustomLinearScaleMarkerPresentation>
+                            </dxga:LinearScaleMarker.Presentation>
+                        </dxga:LinearScaleMarker>
+                    </dxga:LinearScale.Markers>
+                    <dxga:LinearScale.Ranges>
+                        <dxga:LinearScaleRange Visible="True" x:Name="lowerFailRange">
+                            <dxga:LinearScaleRange.Presentation>
+                                <dxga:DefaultLinearScaleRangePresentation Fill="Red"/>
+                            </dxga:LinearScaleRange.Presentation>
+                            <dxga:LinearScaleRange.Options>
+                                <dxga:RangeOptions Offset="-10" Thickness="4"/>
+                            </dxga:LinearScaleRange.Options>
+                        </dxga:LinearScaleRange>
+                        <dxga:LinearScaleRange Visible="True" x:Name="lowerWarnRange">
+                            <dxga:LinearScaleRange.Presentation>
+                                <dxga:DefaultLinearScaleRangePresentation Fill="Yellow"/>
+                            </dxga:LinearScaleRange.Presentation>
+                            <dxga:LinearScaleRange.Options>
+                                <dxga:RangeOptions Offset="-10" Thickness="4"/>
+                            </dxga:LinearScaleRange.Options>
+                        </dxga:LinearScaleRange>
+                        <dxga:LinearScaleRange Visible="True" x:Name="lowerPassRange">
+                            <dxga:LinearScaleRange.Presentation>
+                                <dxga:DefaultLinearScaleRangePresentation Fill="Green"/>
+                            </dxga:LinearScaleRange.Presentation>
+                            <dxga:LinearScaleRange.Options>
+                                <dxga:RangeOptions Offset="-10" Thickness="4"/>
+                            </dxga:LinearScaleRange.Options>
+                        </dxga:LinearScaleRange>
+                        <dxga:LinearScaleRange Visible="True" x:Name="upperPassRange">
+                            <dxga:LinearScaleRange.Presentation>
+                                <dxga:DefaultLinearScaleRangePresentation Fill="Green"/>
+                            </dxga:LinearScaleRange.Presentation>
+                            <dxga:LinearScaleRange.Options>
+                                <dxga:RangeOptions Offset="-10" Thickness="4"/>
+                            </dxga:LinearScaleRange.Options>
+                        </dxga:LinearScaleRange>
+                        <dxga:LinearScaleRange Visible="True" x:Name="upperWarnRange">
+                            <dxga:LinearScaleRange.Presentation>
+                                <dxga:DefaultLinearScaleRangePresentation Fill="Yellow"/>
+                            </dxga:LinearScaleRange.Presentation>
+                            <dxga:LinearScaleRange.Options>
+                                <dxga:RangeOptions Offset="-10" Thickness="4"/>
+                            </dxga:LinearScaleRange.Options>
+                        </dxga:LinearScaleRange>
+                        <dxga:LinearScaleRange Visible="True" x:Name="upperFailRange">
+                            <dxga:LinearScaleRange.Presentation>
+                                <dxga:DefaultLinearScaleRangePresentation Fill="Red" />
+                            </dxga:LinearScaleRange.Presentation>
+                            <dxga:LinearScaleRange.Options>
+                                <dxga:RangeOptions Offset="-10" Thickness="4"/>
+                            </dxga:LinearScaleRange.Options>
+                        </dxga:LinearScaleRange>
+                    </dxga:LinearScale.Ranges>
+                </dxga:LinearScale>
+            </dxga:LinearGaugeControl.Scales>
+        </dxga:LinearGaugeControl>
 
-        <Grid VerticalAlignment="Stretch" Grid.Column="1" Grid.Row="0" x:Name="markerSpanGrid">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition x:Name="lowerArrowColumn" Width="13"/>
-                <ColumnDefinition x:Name="lowerFailWidth"/>
-                <ColumnDefinition x:Name="lowerFailMarkerColumn" Width="Auto"/>
-                <ColumnDefinition x:Name="lowerWarnWidth"/>
-                <ColumnDefinition x:Name="lowerWarnMarkerColumn" Width="Auto"/>
-                <ColumnDefinition x:Name="lowerPassWidth"/>
-                <ColumnDefinition x:Name="specValueMarkerColumn" Width="Auto"/>
-                <ColumnDefinition x:Name="upperPassWidth"/>
-                <ColumnDefinition x:Name="upperWarnMarkerColumn" Width="Auto"/>
-                <ColumnDefinition x:Name="upperWarnWidth"/>
-                <ColumnDefinition x:Name="upperFailMarkerColumn" Width="Auto"/>
-                <ColumnDefinition x:Name="upperFailWidth"/>
-                <ColumnDefinition x:Name="upperArrowColumn" Width="13"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-
-            <!-- Span Lines -->
-
-            <Line X1="0" X2="1" Y1="1" Y2="1" StrokeThickness="4" Stretch="UniformToFill" StrokeStartLineCap="Square" StrokeEndLineCap="Square" Grid.Column="1" x:Name="lowFailBar" />
-            <Line X1="0" X2="1" Y1="1" Y2="1" StrokeThickness="4" Stretch="UniformToFill" StrokeStartLineCap="Square" StrokeEndLineCap="Square" Grid.Column="3" x:Name="lowWarnBar" />
-            <Line X1="0" X2="1" Y1="1" Y2="1" StrokeThickness="4" Stretch="UniformToFill" StrokeStartLineCap="Square" StrokeEndLineCap="Square" Grid.Column="5" x:Name="lowPassBar" />
-            <Line X1="0" X2="1" Y1="1" Y2="1" StrokeThickness="4" Stretch="UniformToFill" StrokeStartLineCap="Square" StrokeEndLineCap="Square" Grid.Column="7" x:Name="highPassBar"/>
-            <Line X1="0" X2="1" Y1="1" Y2="1" StrokeThickness="4" Stretch="UniformToFill" StrokeStartLineCap="Square" StrokeEndLineCap="Square" Grid.Column="9" x:Name="highWarnBar"/>
-            <Line X1="0" X2="1" Y1="1" Y2="1" StrokeThickness="4" Stretch="UniformToFill" StrokeStartLineCap="Square" StrokeEndLineCap="Square" Grid.Column="11" x:Name="highFailBar"/>
-            
-            <!-- Spec Markers -->
-
-            <Grid Grid.Column="2">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-
-                <Line X1="0" X2="1" Y1="1" Y2="1" StrokeThickness="4" Stretch="UniformToFill" StrokeStartLineCap="Square" StrokeEndLineCap="Square" Grid.Column="0" x:Name="lowerFailLowerSpan"/>
-                <Line X1="0" X2="0" Y1="0" Y2="1" StrokeThickness="2" Stretch="UniformToFill" StrokeStartLineCap="Square" StrokeEndLineCap="Square" Grid.Column="1" x:Name="lowerFailMarker"/>
-                <Line X1="0" X2="1" Y1="1" Y2="1" StrokeThickness="4" Stretch="UniformToFill" StrokeStartLineCap="Square" StrokeEndLineCap="Square" Grid.Column="2" x:Name="lowerFailUpperSpan"/>
-
-            </Grid>
-
-            <Grid Grid.Column="4">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-
-                <Line X1="0" X2="1" Y1="1" Y2="1" StrokeThickness="4" Stretch="UniformToFill" StrokeStartLineCap="Square" StrokeEndLineCap="Square" Grid.Column="0" x:Name="lowerWarnLowerSpan"/>
-                <Line X1="0" X2="0" Y1="0" Y2="1" StrokeThickness="2" Stretch="UniformToFill" StrokeStartLineCap="Square" StrokeEndLineCap="Square" Grid.Column="1" x:Name="lowerWarnMarker"/>
-                <Line X1="0" X2="1" Y1="1" Y2="1" StrokeThickness="4" Stretch="UniformToFill" StrokeStartLineCap="Square" StrokeEndLineCap="Square" Grid.Column="2" x:Name="lowerWarnUpperSpan"/>
-
-            </Grid>
-
-            <Grid Grid.Column="6">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-
-                <Line X1="0" X2="1" Y1="1" Y2="1" StrokeThickness="4" Stretch="UniformToFill" StrokeStartLineCap="Square" StrokeEndLineCap="Square" Grid.Column="0" x:Name="specMarkerLowerSpan"/>
-                <Line X1="0" X2="0" Y1="0" Y2="1" StrokeThickness="2" Stretch="UniformToFill" StrokeStartLineCap="Square" StrokeEndLineCap="Square" Grid.Column="1" x:Name="specMarker"/>
-                <Line X1="0" X2="1" Y1="1" Y2="1" StrokeThickness="4" Stretch="UniformToFill" StrokeStartLineCap="Square" StrokeEndLineCap="Square" Grid.Column="2" x:Name="specMarkerUpperSpan"/>
-
-            </Grid>
-
-            <Grid Grid.Column="8">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-
-                <Line X1="0" X2="1" Y1="1" Y2="1" StrokeThickness="4" Stretch="UniformToFill" StrokeStartLineCap="Square" StrokeEndLineCap="Square" Grid.Column="0" x:Name="upperWarnLowerSpan"/>
-                <Line X1="0" X2="0" Y1="0" Y2="1" StrokeThickness="2" Stretch="UniformToFill" StrokeStartLineCap="Square" StrokeEndLineCap="Square" Grid.Column="1" x:Name="upperWarnMarker"/>
-                <Line X1="0" X2="1" Y1="1" Y2="1" StrokeThickness="4" Stretch="UniformToFill" StrokeStartLineCap="Square" StrokeEndLineCap="Square" Grid.Column="2" x:Name="upperWarnUpperSpan"/>
-
-            </Grid>
-
-            <Grid Grid.Column="10">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-
-                <Line X1="0" X2="1" Y1="1" Y2="1" StrokeThickness="4" Stretch="UniformToFill" StrokeStartLineCap="Square" StrokeEndLineCap="Square" Grid.Column="0" x:Name="upperFailLowerSpan"/>
-                <Line X1="0" X2="0" Y1="0" Y2="1" StrokeThickness="2" Stretch="UniformToFill" StrokeStartLineCap="Square" StrokeEndLineCap="Square" Grid.Column="1" x:Name="upperFailMarker"/>
-                <Line X1="0" X2="1" Y1="1" Y2="1" StrokeThickness="4" Stretch="UniformToFill" StrokeStartLineCap="Square" StrokeEndLineCap="Square" Grid.Column="2" x:Name="upperFailUpperSpan"/>
-
-            </Grid>
-
-            <!-- Spec Value TextBlocks -->
-
-            <TextBlock Grid.Row="1" Grid.Column="2" x:Name="lowerFailLimitTextBlock"/>
-            <TextBlock Grid.Row="1" Grid.Column="4" x:Name="lowerWarnLimitTextBlock"/>
-            <TextBlock Grid.Row="1" Grid.Column="6" x:Name="specValueTextBlock"/>
-            <TextBlock Grid.Row="1" Grid.Column="8" x:Name="upperWarnLimitTextBlock"/>
-            <TextBlock Grid.Row="1" Grid.Column="10" x:Name="upperFailLimitTextBlock"/>
-
-            <!-- Outside-limit arrows -->
-
-            <Polygon Points="8,0 0,5 8,10"  StrokeThickness="2" Stretch="UniformToFill" Grid.Column="0" Grid.Row="0" x:Name="lowerLimitArrow"/>
-            <Polygon Points="0,0 8,5 0,10"  StrokeThickness="2" Stretch="UniformToFill" Grid.Column="12" Grid.Row="0" x:Name="upperLimitArrow"/>
-
-            <!-- Marker Ellipse -->
-
-            <Grid Grid.Column="1" Grid.ColumnSpan="11">
-
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition x:Name="measureValueColumnLeft"/>
-                    <ColumnDefinition x:Name="measureValueColumnRight"/>
-                </Grid.ColumnDefinitions>
-
-                <Ellipse Width="16" Height="16" Margin="-8, 0, 0, 0" Grid.Column="1" x:Name="measuredValueEllipse" StrokeThickness="2"
-                         HorizontalAlignment="Left" VerticalAlignment="Center"/>
-
-            </Grid>
-
-        </Grid>
-
-    </Grid>
+    </Border>
 
 </UserControl>

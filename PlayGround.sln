@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ANTLRWorkspace", "ANTLRWorkspace\ANTLRWorkspace.csproj", "{7EF0C065-BF36-4D6E-97AE-4C3D0EE7450F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFTPTesting", "SFTPTesting\SFTPTesting.csproj", "{DD9256AB-D1BC-48A3-B95F-D6199843D26B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DXApplication1", "DXApplication1\DXApplication1\DXApplication1.csproj", "{E799132F-8FB6-4DAD-BC6D-6038F8A4D52B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnumRadioButtonDesigner", "DXApplication2\EnumRadioButtonDesigner\EnumRadioButtonDesigner.csproj", "{F9426089-2820-4468-9717-03AA82958A72}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GridDrag", "DXApplication3\GridDrag\GridDrag.csproj", "{048640ED-93E1-4BFF-8E5B-F2A2FBAB59BC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,14 +15,18 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{7EF0C065-BF36-4D6E-97AE-4C3D0EE7450F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7EF0C065-BF36-4D6E-97AE-4C3D0EE7450F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7EF0C065-BF36-4D6E-97AE-4C3D0EE7450F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7EF0C065-BF36-4D6E-97AE-4C3D0EE7450F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E799132F-8FB6-4DAD-BC6D-6038F8A4D52B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E799132F-8FB6-4DAD-BC6D-6038F8A4D52B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E799132F-8FB6-4DAD-BC6D-6038F8A4D52B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E799132F-8FB6-4DAD-BC6D-6038F8A4D52B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD9256AB-D1BC-48A3-B95F-D6199843D26B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD9256AB-D1BC-48A3-B95F-D6199843D26B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD9256AB-D1BC-48A3-B95F-D6199843D26B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD9256AB-D1BC-48A3-B95F-D6199843D26B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9426089-2820-4468-9717-03AA82958A72}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9426089-2820-4468-9717-03AA82958A72}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9426089-2820-4468-9717-03AA82958A72}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9426089-2820-4468-9717-03AA82958A72}.Release|Any CPU.Build.0 = Release|Any CPU
+		{048640ED-93E1-4BFF-8E5B-F2A2FBAB59BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{048640ED-93E1-4BFF-8E5B-F2A2FBAB59BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{048640ED-93E1-4BFF-8E5B-F2A2FBAB59BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{048640ED-93E1-4BFF-8E5B-F2A2FBAB59BC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,65 +1,9 @@
-﻿<dx:DXWindow xmlns:dxga="http://schemas.devexpress.com/winfx/2008/xaml/gauges"  x:Class="DXApplication1.MainWindow"
+﻿<dx:DXWindow x:Class="DXApplication1.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
-        xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
-        xmlns:system="clr-namespace:System;assembly=mscorlib"
-        xmlns:dxApplication1="clr-namespace:DXApplication1"
-        dx:ThemeManager.Theme="MetropolisDark"
-        Title="MainWindow" Height="700" Width="1200" WindowStartupLocation="CenterScreen">
-
-    <StackPanel>
-
-        <Border BorderBrush="White" Background="Black" BorderThickness="2">
-            <dxApplication1:SpecScaleBar Height="40" Margin="5" VerticalContentAlignment="Center"
-                                     LowerFailLimit="{Binding lowerSpecLimit}"
-                                     LowerWarnLimit="{Binding lowerWarnLimit}"
-                                     SpecValue="{Binding specValue}"
-                                     UpperWarnLimit="{Binding upperWarnLimit}"
-                                     UpperFailLimit="{Binding upperSpecLimit}"
-                                     SpecLimitPadding="{Binding specLimitPadding}"
-                                     MeasuredValue="{Binding measuredValue}"
-                                     PassColor="DarkGreen"
-                                     WarnColor="Goldenrod"
-                                     FailColor="DarkRed"
-                                     FontSize="16"/>
-        </Border>
-
-        <DockPanel>
-            <TextBlock Text="Lower Spec Limit" DockPanel.Dock="Left" VerticalAlignment="Center" Width="150"/>
-            <dxe:TextEdit Text="{Binding lowerSpecLimit, Mode=TwoWay, UpdateSourceTrigger=LostFocus, TargetNullValue={x:Static system:String.Empty}}"/>
-        </DockPanel>
-
-        <DockPanel>
-            <TextBlock Text="Lower Warn Limit" DockPanel.Dock="Left" VerticalAlignment="Center" Width="150"/>
-            <dxe:TextEdit Text="{Binding lowerWarnLimit, Mode=TwoWay, UpdateSourceTrigger=LostFocus, TargetNullValue={x:Static system:String.Empty}}"/>
-        </DockPanel>
-
-        <DockPanel>
-            <TextBlock Text="Specification Value" DockPanel.Dock="Left" VerticalAlignment="Center" Width="150"/>
-            <dxe:TextEdit Text="{Binding specValue, Mode=TwoWay, UpdateSourceTrigger=LostFocus, TargetNullValue={x:Static system:String.Empty}}"/>
-        </DockPanel>
-
-        <DockPanel>
-            <TextBlock Text="Upper Warn Limit" DockPanel.Dock="Left" VerticalAlignment="Center" Width="150"/>
-            <dxe:TextEdit Text="{Binding upperWarnLimit, Mode=TwoWay, UpdateSourceTrigger=LostFocus, TargetNullValue={x:Static system:String.Empty}}"/>
-        </DockPanel>
-
-        <DockPanel>
-            <TextBlock Text="Upper Spec Limit" DockPanel.Dock="Left" VerticalAlignment="Center" Width="150"/>
-            <dxe:TextEdit Text="{Binding upperSpecLimit, Mode=TwoWay, UpdateSourceTrigger=LostFocus, TargetNullValue={x:Static system:String.Empty}}"/>
-        </DockPanel>
-
-        <DockPanel>
-            <TextBlock Text="Limit Padding" DockPanel.Dock="Left" VerticalAlignment="Center" Width="150"/>
-            <dxe:TextEdit Text="{Binding specLimitPadding, Mode=TwoWay, UpdateSourceTrigger=LostFocus, TargetNullValue={x:Static system:String.Empty}}"/>
-        </DockPanel>
-
-        <DockPanel>
-            <TextBlock Text="Measured Value" DockPanel.Dock="Left" VerticalAlignment="Center" Width="150"/>
-            <dxe:TextEdit Text="{Binding measuredValue, Mode=TwoWay, UpdateSourceTrigger=LostFocus, TargetNullValue={x:Static system:String.Empty}}"/>
-        </DockPanel>
-
-    </StackPanel>
-
+        xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+        Title="MainWindow" Height="350" Width="525">
+    <Grid>
+    </Grid>
 </dx:DXWindow>

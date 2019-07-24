@@ -1,0 +1,12 @@
+﻿<dx:DXWindow x:Class="EnumRadioButtonDesigner.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+        xmlns:views="clr-namespace:EnumRadioButtonDesigner.Views"
+        xmlns:model="clr-namespace:EnumRadioButtonDesigner.Model"
+        Title="MainWindow" Height="350" Width="525">
+
+    <views:EnumRadioButtonSelector EnumType="{x:Type model:TestEnumerator}"
+                                   SelectedItem="{Binding testEnumValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+</dx:DXWindow>

@@ -11,16 +11,15 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using DevExpress.Xpf.Core;
 
-namespace DXApplication1
+namespace DXApplication1.Views
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for View1.xaml
     /// </summary>
-    public partial class MainWindow : DXWindow
+    public partial class View1 : UserControl
     {
-        public MainWindow()
+        public View1()
         {
             InitializeComponent();
         }

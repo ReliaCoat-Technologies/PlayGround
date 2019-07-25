@@ -32,7 +32,8 @@ namespace GridDrag
             var adornerLayers = AdornerLayer.GetAdornerLayer(border);
             var adorner = new SimpleAdorner(border);
 
-            adorner.dragging += onDragging;
+            adorner.centerDragging += onCenterAdornerDragging;
+            adorner.edgeDragging += onEdgeAdornerDragging;
             adorner.dragCompleted += onDragCompleted;
 
             adornerLayers?.Add(adorner);
@@ -63,7 +64,7 @@ namespace GridDrag
             }
         }
 
-        private void onDragging(object sender, DragDeltaEventArgs e)
+        private void onCenterAdornerDragging(object sender, DragDeltaEventArgs e)
         {
             var adorner = sender as Adorner;
 
@@ -78,33 +79,115 @@ namespace GridDrag
 
             var column = Grid.GetColumn(border);
             var row = Grid.GetRow(border);
+            var columnSpan = Grid.GetColumnSpan(border);
+            var rowSpan = Grid.GetRowSpan(border);
 
             Grid.SetColumn(traceBorder, column);
             Grid.SetRow(traceBorder, row);
+            Grid.SetColumnSpan(traceBorder, columnSpan);
+            Grid.SetRowSpan(traceBorder, rowSpan);
+
+            var newColumn = getAdjustedCellValue(column,
+                columnSpan,
+                parentGrid.ColumnDefinitions.Count,
+                e.HorizontalChange,
+                i => parentGrid.ColumnDefinitions[i].ActualWidth);
+
+            Grid.SetColumn(traceBorder, newColumn);
+
+            var newRow = getAdjustedCellValue(row,
+                rowSpan,
+                parentGrid.RowDefinitions.Count,
+                e.VerticalChange,
+                i => parentGrid.RowDefinitions[i].ActualHeight);
+
+            Grid.SetRow(traceBorder, newRow);
+        }
+
+        private void onEdgeAdornerDragging(object sender, DragDeltaEventArgs e)
+        {
+            var adorner = sender as Adorner;
+
+            if (adorner == null) return;
+
+            var border = getAdornerParentBorder(adorner);
+
+            if (border == null) return;
+
+            if (traceBorder.Visibility == Visibility.Hidden)
+                traceBorder.Visibility = Visibility.Visible;
+
+            var column = Grid.GetColumn(border);
+            var row = Grid.GetRow(border);
+            var columnSpan = Grid.GetColumnSpan(border);
+            var rowSpan = Grid.GetRowSpan(border);
+
+            Grid.SetColumn(traceBorder, column);
+            Grid.SetRow(traceBorder, row);
+            Grid.SetColumnSpan(traceBorder, columnSpan);
+            Grid.SetRowSpan(traceBorder, rowSpan);
 
             var newColumnSpan = getAdjustedSpan(border.ActualWidth,
-                e.HorizontalChange,
                 column,
                 parentGrid.ColumnDefinitions.Count,
+                e.HorizontalChange,
                 i => parentGrid.ColumnDefinitions[i].ActualWidth);
 
             Grid.SetColumnSpan(traceBorder, newColumnSpan);
 
             var newRowSpan = getAdjustedSpan(border.ActualHeight,
-                e.VerticalChange,
                 row,
                 parentGrid.RowDefinitions.Count,
+                e.VerticalChange,
                 i => parentGrid.RowDefinitions[i].ActualHeight);
 
             Grid.SetRowSpan(traceBorder, newRowSpan);
         }
 
-        private static int getAdjustedSpan(double actualCellDimensionValue,
+        public static int getAdjustedCellValue(int actualCellDimensionValue,
+            int cellDimensionSpan,
+            int dimensionDefinitionCount,
             double deltaCellDimensionValue,
+            Func<int, double> getCellDimensionValue)
+        {
+            var currentCellDimensionPosition = 0d;
+
+            for (var i = 0; i < actualCellDimensionValue; i++)
+            {
+                var currentCellDimensionValue = getCellDimensionValue?.Invoke(actualCellDimensionValue);
+
+                if (!currentCellDimensionValue.HasValue)
+                    throw new Exception("Could not get cell dimension width/height");
+
+                currentCellDimensionPosition += currentCellDimensionValue.Value;
+            }
+
+            var adjustedCellPosition = currentCellDimensionPosition + deltaCellDimensionValue;
+
+            var remainingValue = adjustedCellPosition;
+            var newCellDimensionValue = 0;
+
+            while (remainingValue > 10)
+            {
+                var currentCellDimensionValue = getCellDimensionValue?.Invoke(actualCellDimensionValue);
+
+                if (!currentCellDimensionValue.HasValue)
+                    throw new Exception("Could not get cell dimension width/height");
+
+                remainingValue -= currentCellDimensionValue.Value;
+                newCellDimensionValue++;
+            }
+
+            return newCellDimensionValue > dimensionDefinitionCount - cellDimensionSpan ?
+                dimensionDefinitionCount - cellDimensionSpan
+                : newCellDimensionValue;
+        }
+
+        private static int getAdjustedSpan(double actualCellDimensionValue,
             int cellDimensionNumber,
             int dimensionDefinitionCount,
-            Func<int, double> getCellDimensionValue
-            )
+            double deltaCellDimensionValue,
+            Func<int, double> getCellDimensionValue)
         {
             var adjustedElementValue = actualCellDimensionValue + deltaCellDimensionValue;
 
@@ -126,7 +209,12 @@ namespace GridDrag
                 newSpanValue++;
             }
 
-            return newSpanValue == 0 ? 1 : newSpanValue;
+            if (newSpanValue > dimensionDefinitionCount - cellDimensionNumber)
+                newSpanValue = dimensionDefinitionCount - cellDimensionNumber;
+            else if (newSpanValue == 0)
+                newSpanValue = 1;
+
+            return newSpanValue;
         }
 
         private Border getAdornerParentBorder(object sender)

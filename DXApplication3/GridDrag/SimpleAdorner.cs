@@ -15,6 +15,7 @@ namespace GridDrag
         #endregion
 
         #region Delegates
+        public EventHandler<DragStartedEventArgs> dragStarted;
         public EventHandler<DragDeltaEventArgs> centerDragging;
         public EventHandler<DragDeltaEventArgs> edgeDragging;
         public EventHandler<DragCompletedEventArgs> dragCompleted;
@@ -32,8 +33,11 @@ namespace GridDrag
             buildAdornerCenter(ref center);
             buildAdornerEdge(ref bottomRight, Cursors.SizeNWSE);
 
-            center.DragDelta += centerDrag;
-            bottomRight.DragDelta += bottomRightDrag;
+            center.DragStarted += (s, e) => dragStarted?.Invoke(this, e);
+            bottomRight.DragStarted += (s, e) => dragStarted?.Invoke(this, e);
+
+            center.DragDelta += (s, e) => centerDragging?.Invoke(this, e); ;
+            bottomRight.DragDelta += (s, e) => edgeDragging?.Invoke(this, e); ;
 
             center.DragCompleted += (s, e) => dragCompleted?.Invoke(this, e);
             bottomRight.DragCompleted += (s, e) => dragCompleted?.Invoke(this, e);
@@ -86,16 +90,6 @@ namespace GridDrag
             };
 
             children.Add(edgeThumb);
-        }
-
-        private void centerDrag(object sender, DragDeltaEventArgs e)
-        {
-            centerDragging?.Invoke(this, e);
-        }
-
-        private void bottomRightDrag(object sender, DragDeltaEventArgs e)
-        {
-            edgeDragging?.Invoke(this, e);
         }
 
         protected override Visual GetVisualChild(int index)

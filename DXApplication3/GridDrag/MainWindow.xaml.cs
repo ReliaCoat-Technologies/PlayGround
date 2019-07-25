@@ -23,6 +23,8 @@ namespace GridDrag
 
         private void activateAdorners(object sender, MouseEventArgs e)
         {
+            if (_isDragging) return;
+
             clearAdorners();
 
             var border = sender as Border;
@@ -74,6 +76,8 @@ namespace GridDrag
 
             if (border == null) return;
 
+            _isDragging = true;
+
             if (traceBorder.Visibility == Visibility.Hidden)
                 traceBorder.Visibility = Visibility.Visible;
 
@@ -113,6 +117,8 @@ namespace GridDrag
             var border = getAdornerParentBorder(adorner);
 
             if (border == null) return;
+
+            _isDragging = true;
 
             if (traceBorder.Visibility == Visibility.Hidden)
                 traceBorder.Visibility = Visibility.Visible;
@@ -237,6 +243,8 @@ namespace GridDrag
 
         private void onDragCompleted(object sender, DragCompletedEventArgs e)
         {
+            _isDragging = false;
+
             if (traceBorder.Visibility == Visibility.Visible)
                 traceBorder.Visibility = Visibility.Hidden;
 

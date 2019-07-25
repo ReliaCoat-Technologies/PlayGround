@@ -50,14 +50,13 @@ namespace GridDrag
         {
             base.ArrangeOverride(finalSize);
 
-            var renderWidth = AdornedElement.RenderSize.Width;
-            var renderHeight = AdornedElement.RenderSize.Height;
+            var renderWidth = finalSize.Width;
+            var renderHeight = finalSize.Height;
 
-            var adornerWidth = DesiredSize.Width;
-            var adornerHeight = DesiredSize.Height;
+            var centerRectangle = new Rect(0, 0, renderWidth, renderHeight);
+            center.Arrange(centerRectangle);
 
-            center.Arrange(new Rect(0, 0, renderWidth, renderHeight));
-            bottomRight.Arrange(new Rect(renderWidth - adornerWidth / 2, renderHeight - adornerHeight / 2, adornerWidth, adornerHeight));
+            bottomRight.Arrange(new Rect(renderWidth - bottomRight.Width, renderHeight - bottomRight.Height, bottomRight.Width, bottomRight.Height));
 
             return finalSize;
         }
@@ -83,9 +82,11 @@ namespace GridDrag
             edgeThumb = new Thumb
             {
                 Cursor = customizedCursor,
-                Height = 10,
-                Width = 10,
-                Opacity = 1,
+                Height = 20,
+                Width = 20,
+                Opacity = 0.4,
+                BorderBrush = Brushes.Transparent,
+                BorderThickness = new Thickness(0),
                 Background = new SolidColorBrush(Colors.DodgerBlue),
             };
 

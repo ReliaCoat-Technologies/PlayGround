@@ -25,11 +25,18 @@
 
         <Border Grid.Row="0" Grid.Column="0" Margin="5"
                 Background="Black" BorderBrush="Red" BorderThickness="2"
-                MouseEnter="activateAdorners" />
+                MouseEnter="activateAdorners"/>
+
+        <Border Grid.Row="2" Grid.Column="1" Margin="5"
+                Background="Black" BorderBrush="Red" BorderThickness="2"
+                MouseEnter="activateAdorners"/>
 
         <Border Grid.Row="3" Grid.Column="3" Margin="5"
                 Background="Black" BorderBrush="Red" BorderThickness="2"
-                MouseEnter="activateAdorners" />
+                MouseEnter="activateAdorners"/>
+
+        <Border x:Name="traceBorder" Grid.Row="0" Grid.Column="0" Margin="5"
+                BorderBrush="DodgerBlue" BorderThickness="5" Visibility="Hidden"/>
 
     </Grid>
 

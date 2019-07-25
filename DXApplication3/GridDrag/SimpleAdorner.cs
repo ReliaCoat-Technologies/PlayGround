@@ -9,11 +9,21 @@ namespace GridDrag
 {
     public class SimpleAdorner : Adorner
     {
-        public VisualCollection children;
-        Thumb bottom, right;
+        #region Fields
+        private VisualCollection children;
+        private Thumb bottom, right;
+        #endregion
 
+        #region Delegates
+        public EventHandler<DragDeltaEventArgs> dragging;
+        public EventHandler<DragCompletedEventArgs> dragCompleted;
+        #endregion
+
+        #region Properties
         protected override int VisualChildrenCount => children.Count;
+        #endregion
 
+        #region Constructor
         public SimpleAdorner(UIElement adornedElement) : base(adornedElement)
         {
             children = new VisualCollection(this);
@@ -23,8 +33,13 @@ namespace GridDrag
 
             bottom.DragDelta += bottomDrag;
             right.DragDelta += rightDrag;
-        }
 
+            bottom.DragCompleted += (s, e) => dragCompleted?.Invoke(this, e);
+            right.DragCompleted += (s, e) => dragCompleted?.Invoke(this, e);
+        }
+        #endregion
+
+        #region Methods
         protected override Size ArrangeOverride(Size finalSize)
         {
             base.ArrangeOverride(finalSize);
@@ -67,28 +82,18 @@ namespace GridDrag
 
         private void bottomDrag(object sender, DragDeltaEventArgs e)
         {
-            var element = AdornedElement as FrameworkElement;
-            var thumb = sender as Thumb;
-
-            if (element != null && thumb != null)
-            {
-                var newHeight = Math.Max(element.ActualHeight + e.VerticalChange, bottom.DesiredSize.Height);
-                element.Height = newHeight;
-            }
+            dragging?.Invoke(this, e);
         }
 
         private void rightDrag(object sender, DragDeltaEventArgs e)
         {
-            var element = AdornedElement as FrameworkElement;
-            var thumb = sender as Thumb;
-
-            if (element != null && thumb != null)
-            {
-                var newWidth = Math.Max(element.ActualWidth + e.HorizontalChange, right.DesiredSize.Width);
-                element.Width = newWidth;
-            }
+            dragging?.Invoke(this, e);
         }
 
-        protected override Visual GetVisualChild(int index) { return children[index]; }
+        protected override Visual GetVisualChild(int index)
+        {
+            return children[index];
+        }
+        #endregion
     }
 }

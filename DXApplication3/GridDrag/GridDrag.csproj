@@ -61,7 +61,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="GridStack.xaml.cs">
+      <DependentUpon>GridStack.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SimpleAdorner.cs" />
+    <Page Include="GridStack.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

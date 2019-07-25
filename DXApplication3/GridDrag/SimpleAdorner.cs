@@ -58,7 +58,7 @@ namespace GridDrag
 
         protected override void OnRender(DrawingContext dc)
         {
-            var pen = new Pen(new SolidColorBrush(Colors.Orange), 1);
+            var pen = new Pen(new SolidColorBrush(Colors.LimeGreen), 1);
 
             dc.DrawRectangle(new SolidColorBrush(Colors.Transparent), pen, new Rect(new Point(0,0),
                 new Point(AdornedElement.RenderSize.Width, AdornedElement.RenderSize.Height)) );

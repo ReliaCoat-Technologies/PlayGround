@@ -16,7 +16,6 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
             <Border x:Name="traceBorder" Grid.Row="0" Grid.Column="0"

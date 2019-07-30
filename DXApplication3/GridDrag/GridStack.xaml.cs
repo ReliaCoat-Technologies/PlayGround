@@ -13,6 +13,10 @@ namespace GridDrag
 {
     public partial class GridStack : UserControl
     {
+        #region Constants
+        private const int _minRows = 8;
+        #endregion
+
         #region Fields
         private bool _isDragging;
         #endregion
@@ -318,9 +322,11 @@ namespace GridDrag
             Grid.SetColumn(border, traceBorderColumn);
             Grid.SetRow(border, traceBorderRow);
             Grid.SetColumnSpan(border, traceBorderColumnSpan);
-            Grid.SetRowSpan(border, traceBorderRowSpan); ;
+            Grid.SetRowSpan(border, traceBorderRowSpan);
 
             clearAdorners();
+
+            clearEmptyRows();
         }
 
         public void moveTraceBorderOverlaidElements(UIElement originalElement)
@@ -338,7 +344,7 @@ namespace GridDrag
         public void moveOverlaidElementsDown(UIElement overlayElementInput, int newRow, params UIElement[] dontMoveElements)
         {
             Grid.SetRow(overlayElementInput, newRow);
-            
+
             var inputOverlayBottomRow = new ElementGridSpace(overlayElementInput).bottomRow;
 
             // Recursive!
@@ -347,6 +353,11 @@ namespace GridDrag
                 var overlayElementNewRow = inputOverlayBottomRow + 1;    
                 moveOverlaidElementsDown(overlayingElement.element, overlayElementNewRow);
             }
+
+            var rowsToAdd = inputOverlayBottomRow - parentGrid.RowDefinitions.Count + 1;
+
+            if (rowsToAdd > 0)
+                addRowDefinition(rowsToAdd);
         }
 
         private IList<ElementGridSpace> findOverlayingElements(UIElement element, params UIElement[] excludeElements)
@@ -358,6 +369,19 @@ namespace GridDrag
                 .Where(x => !excludeElements.Contains(x.element))
                 .Where(x => elementGridSpace.intersects(x))
                 .ToList();
+        }
+
+        private void clearEmptyRows()
+        {
+            var maxRow = getPanelGridSpaces().Max(x => x.bottomRow);
+            var totalRowDefinitions = parentGrid.RowDefinitions.Count;
+            var rowsToRemove = totalRowDefinitions - maxRow - 1;
+
+            for (var i = 0; i < rowsToRemove; i++)
+            {
+                if (parentGrid.RowDefinitions.Count < _minRows) break;
+                parentGrid.RowDefinitions.Remove(parentGrid.RowDefinitions.LastOrDefault());
+            }
         }
         #endregion
     }

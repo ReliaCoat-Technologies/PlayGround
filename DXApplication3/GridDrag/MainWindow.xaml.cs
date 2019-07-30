@@ -1,6 +1,5 @@
 ﻿using System;
 using DevExpress.Xpf.Core;
-using System.Windows;
 
 namespace GridDrag
 {
@@ -13,11 +12,6 @@ namespace GridDrag
             gridStack.addGridItem(0, 0, 2, 2);
             gridStack.addGridItem(1, 2, 2, 2);
             gridStack.addGridItem(2, 4, 2, 2);
-        }
-
-        private void onAddRowClicked(object sender, RoutedEventArgs e)
-        {
-            gridStack.addRowDefinition();
         }
     }
 }

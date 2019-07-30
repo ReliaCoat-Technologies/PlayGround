@@ -7,7 +7,6 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Threading;
 using DevExpress.Xpf.Core.Native;
 
 namespace GridDrag
@@ -330,27 +329,24 @@ namespace GridDrag
 
             if (!traceBorderOverlayElements.Any()) return;
 
-            var minimumOverlayRow = traceBorderOverlayElements
-                .Min(x => x.topRow);
-
-            var numRowsToMoveDown = new ElementGridSpace(traceBorder).bottomRow - minimumOverlayRow + 1;
+            var newRow = new ElementGridSpace(traceBorder).bottomRow + 1;
 
             foreach (var overlayingElement in traceBorderOverlayElements)
-                moveOverlaidElementsDown(overlayingElement.element, numRowsToMoveDown, originalElement);
+                moveOverlaidElementsDown(overlayingElement.element, newRow, originalElement);
         }
 
-        public void moveOverlaidElementsDown(UIElement overlayElementInput, int rowsToMoveDown, params UIElement[] dontMoveElements)
+        public void moveOverlaidElementsDown(UIElement overlayElementInput, int newRow, params UIElement[] dontMoveElements)
         {
-            var row = Grid.GetRow(overlayElementInput);
-            var newRow = row + rowsToMoveDown;
             Grid.SetRow(overlayElementInput, newRow);
+            
+            var inputOverlayBottomRow = new ElementGridSpace(overlayElementInput).bottomRow;
 
-#if DEBUG
-            Dispatcher?.Invoke(() => { }, DispatcherPriority.ApplicationIdle);
-#endif
             // Recursive!
             foreach (var overlayingElement in findOverlayingElements(overlayElementInput, dontMoveElements))
-                moveOverlaidElementsDown(overlayingElement.element, rowsToMoveDown);
+            {
+                var overlayElementNewRow = inputOverlayBottomRow + 1;    
+                moveOverlaidElementsDown(overlayingElement.element, overlayElementNewRow);
+            }
         }
 
         private IList<ElementGridSpace> findOverlayingElements(UIElement element, params UIElement[] excludeElements)

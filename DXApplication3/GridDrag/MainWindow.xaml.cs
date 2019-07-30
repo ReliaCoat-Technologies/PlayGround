@@ -11,6 +11,7 @@ namespace GridDrag
             InitializeComponent();
 
             gridStack.addGridItem(0, 0, 2, 2);
+            gridStack.addGridItem(1, 2, 2, 2);
             gridStack.addGridItem(2, 4, 2, 2);
         }
 

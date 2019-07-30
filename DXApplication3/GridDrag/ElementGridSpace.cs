@@ -38,8 +38,8 @@ namespace GridDrag
         public bool intersects(ElementGridSpace elementGridSpace)
         {
             // For efficiency:
-            // Test the corners of the element with more coordinates
-            // Against all points of the element with fewer points
+            // This is an O(N^2) complexity operation
+            // Reduce complexity by iterating over smaller grid space
             return occupiedGridSpaces.Count >= elementGridSpace.occupiedGridSpaces.Count 
                 ? isOverlaid(elementGridSpace, this) 
                 : isOverlaid(this, elementGridSpace);
@@ -54,15 +54,13 @@ namespace GridDrag
         #endregion
 
         #region Static Methods
-        private static bool isOverlaid(ElementGridSpace allTestElement, ElementGridSpace cornerTestElement)
+        private static bool isOverlaid(ElementGridSpace smallerTestElement, ElementGridSpace largerTestElement)
         {
-            return new[]
-            {
-                allTestElement.hasCoordinates(cornerTestElement.leftColumn, cornerTestElement.topRow),
-                allTestElement.hasCoordinates(cornerTestElement.leftColumn, cornerTestElement.rightColumn),
-                allTestElement.hasCoordinates(cornerTestElement.rightColumn, cornerTestElement.topRow),
-                allTestElement.hasCoordinates(cornerTestElement.rightColumn, cornerTestElement.rightColumn),
-            }.Any(x => x);
+            for(var i = smallerTestElement.leftColumn; i <= smallerTestElement.rightColumn; i++)
+                for (var j = smallerTestElement.topRow; j <= smallerTestElement.bottomRow; j++)
+                    if (largerTestElement.hasCoordinates(i, j)) return true;
+
+            return false;
         }
         #endregion
     }

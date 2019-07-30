@@ -7,6 +7,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Threading;
 using DevExpress.Xpf.Core.Native;
 
 namespace GridDrag
@@ -64,17 +65,6 @@ namespace GridDrag
                 .OfType<Border>()
                 .Where(x => x != traceBorder)
                 .Select(x => new ElementGridSpace(x));
-        }
-
-        private void findGridSpaceOccupiers(UIElement element, params UIElement[] excludeElements)
-        {
-            var elementGridSpace = new ElementGridSpace(element);
-
-            var gridSpaceOccupiers = getPanelGridSpaces()
-                .Where(x => x.element != element)
-                .Where(x => !excludeElements.Contains(x.element))
-                .Where(x => elementGridSpace.intersects(x))
-                .ToList();
         }
 
         private void activateAdorners(object sender, MouseEventArgs e)
@@ -324,7 +314,7 @@ namespace GridDrag
             var traceBorderColumnSpan = Grid.GetColumnSpan(traceBorder);
             var traceBorderRowSpan = Grid.GetRowSpan(traceBorder);
 
-            findGridSpaceOccupiers(traceBorder, border);
+            moveTraceBorderOverlaidElements(border);
 
             Grid.SetColumn(border, traceBorderColumn);
             Grid.SetRow(border, traceBorderRow);
@@ -332,6 +322,46 @@ namespace GridDrag
             Grid.SetRowSpan(border, traceBorderRowSpan); ;
 
             clearAdorners();
+        }
+
+        public void moveTraceBorderOverlaidElements(UIElement originalElement)
+        {
+            var traceBorderOverlayElements = findOverlayingElements(traceBorder, originalElement);
+
+            if (!traceBorderOverlayElements.Any()) return;
+
+            var minimumOverlayRow = traceBorderOverlayElements
+                .Min(x => x.topRow);
+
+            var numRowsToMoveDown = new ElementGridSpace(traceBorder).bottomRow - minimumOverlayRow + 1;
+
+            foreach (var overlayingElement in traceBorderOverlayElements)
+                moveOverlaidElementsDown(overlayingElement.element, numRowsToMoveDown, originalElement);
+        }
+
+        public void moveOverlaidElementsDown(UIElement overlayElementInput, int rowsToMoveDown, params UIElement[] dontMoveElements)
+        {
+            var row = Grid.GetRow(overlayElementInput);
+            var newRow = row + rowsToMoveDown;
+            Grid.SetRow(overlayElementInput, newRow);
+
+#if DEBUG
+            Dispatcher?.Invoke(() => { }, DispatcherPriority.ApplicationIdle);
+#endif
+            // Recursive!
+            foreach (var overlayingElement in findOverlayingElements(overlayElementInput, dontMoveElements))
+                moveOverlaidElementsDown(overlayingElement.element, rowsToMoveDown);
+        }
+
+        private IList<ElementGridSpace> findOverlayingElements(UIElement element, params UIElement[] excludeElements)
+        {
+            var elementGridSpace = new ElementGridSpace(element);
+
+            return getPanelGridSpaces()
+                .Where(x => x.element != element)
+                .Where(x => !excludeElements.Contains(x.element))
+                .Where(x => elementGridSpace.intersects(x))
+                .ToList();
         }
         #endregion
     }

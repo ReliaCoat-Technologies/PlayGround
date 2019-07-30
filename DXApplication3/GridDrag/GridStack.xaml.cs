@@ -1,23 +1,80 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Media;
 using DevExpress.Xpf.Core.Native;
 
 namespace GridDrag
 {
     public partial class GridStack : UserControl
     {
+        #region Fields
         private bool _isDragging;
-        private Point lastPoint;
-        private SimpleAdorner adorner;
+        #endregion
 
+        #region Constructor
         public GridStack()
         {
             InitializeComponent();
+
+            addRowDefinition(8);
+        }
+        #endregion
+
+        #region Methods
+        public void addRowDefinition(int numRows = 1)
+        {
+            if (numRows < 1) return;
+
+            for (var i = 0; i < numRows; i++)
+            {
+                var rowDefinition = new RowDefinition { MinHeight = 80 };
+                parentGrid.RowDefinitions.Add(rowDefinition);
+            }
+        }
+
+        public void addGridItem(int column, int row, int colSpan, int rowSpan)
+        {
+            var borderToAdd = new Border
+            {
+                Margin = new Thickness(5),
+                BorderBrush = Brushes.Red,
+                BorderThickness = new Thickness(2),
+                Background = Brushes.Black
+            };
+
+            borderToAdd.MouseEnter += activateAdorners;
+
+            Grid.SetColumn(borderToAdd, column);
+            Grid.SetRow(borderToAdd, row);
+            Grid.SetColumnSpan(borderToAdd, colSpan);
+            Grid.SetRowSpan(borderToAdd, rowSpan);
+
+            parentGrid.Children.Add(borderToAdd);
+        }
+
+        private IEnumerable<ElementGridSpace> getPanelGridSpaces()
+        {
+            return parentGrid.Children
+                .OfType<Border>()
+                .Where(x => x != traceBorder)
+                .Select(x => new ElementGridSpace(x));
+        }
+
+        private void findGridSpaceOccupiers(UIElement element, params UIElement[] excludeElements)
+        {
+            var elementGridSpace = new ElementGridSpace(element);
+
+            var gridSpaceOccupiers = getPanelGridSpaces()
+                .Where(x => x.element != element)
+                .Where(x => !excludeElements.Contains(x.element))
+                .Where(x => elementGridSpace.intersects(x))
+                .ToList();
         }
 
         private void activateAdorners(object sender, MouseEventArgs e)
@@ -151,9 +208,6 @@ namespace GridDrag
             {
                 var currentCellDimensionValue = getCellDimensionValue?.Invoke(actualCellDimensionValue);
 
-                if (!currentCellDimensionValue.HasValue)
-                    throw new Exception("Could not get cell dimension width/height");
-
                 remainingValue -= currentCellDimensionValue.Value;
                 newCellDimensionValue++;
             }
@@ -265,12 +319,20 @@ namespace GridDrag
 
             if (border == null) return;
 
-            Grid.SetColumn(border, Grid.GetColumn(traceBorder));
-            Grid.SetRow(border, Grid.GetRow(traceBorder));
-            Grid.SetColumnSpan(border, Grid.GetColumnSpan(traceBorder));
-            Grid.SetRowSpan(border, Grid.GetRowSpan(traceBorder)); ;
+            var traceBorderColumn = Grid.GetColumn(traceBorder);
+            var traceBorderRow = Grid.GetRow(traceBorder);
+            var traceBorderColumnSpan = Grid.GetColumnSpan(traceBorder);
+            var traceBorderRowSpan = Grid.GetRowSpan(traceBorder);
+
+            findGridSpaceOccupiers(traceBorder, border);
+
+            Grid.SetColumn(border, traceBorderColumn);
+            Grid.SetRow(border, traceBorderRow);
+            Grid.SetColumnSpan(border, traceBorderColumnSpan);
+            Grid.SetRowSpan(border, traceBorderRowSpan); ;
 
             clearAdorners();
         }
+        #endregion
     }
 }

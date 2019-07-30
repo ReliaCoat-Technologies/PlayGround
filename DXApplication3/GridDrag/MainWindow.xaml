@@ -6,6 +6,9 @@
         x:Class="GridDrag.MainWindow"
         Title="MainWindow" Height="800" Width="1000">
 
-    <local:GridStack/>
+    <DockPanel>
+        <Button Margin="5" Content="Add Row" Click="onAddRowClicked"/>
+        <local:GridStack Margin="5" x:Name="gridStack"/>
+    </DockPanel>
 
 </dx:DXWindow>

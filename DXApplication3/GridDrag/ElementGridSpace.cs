@@ -18,13 +18,20 @@ namespace GridDrag
         #endregion
 
         #region Constructors
-        public ElementGridSpace(UIElement element)
+        public ElementGridSpace(UIElement element) : this(Grid.GetColumn(element),
+            Grid.GetRow(element),
+            Grid.GetColumnSpan(element),
+            Grid.GetRowSpan(element))
         {
             this.element = element;
-            leftColumn = Grid.GetColumn(element);
-            topRow = Grid.GetRow(element);
-            rightColumn = leftColumn + Grid.GetColumnSpan(element) - 1;
-            bottomRow = topRow + Grid.GetRowSpan(element) - 1;
+        }
+
+        public ElementGridSpace(int column, int row, int columnSpan, int rowSpan)
+        {
+            leftColumn = column;
+            topRow = row;
+            rightColumn = leftColumn + columnSpan - 1;
+            bottomRow = topRow + rowSpan - 1;
 
             occupiedGridSpaces = new List<int[]>();
 

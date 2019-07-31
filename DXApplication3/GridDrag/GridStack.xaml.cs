@@ -14,7 +14,7 @@ namespace GridDrag
     public partial class GridStack : UserControl
     {
         #region Constants
-        private const int _minRows = 8;
+        private const int _minRows = 7;
         #endregion
 
         #region Fields
@@ -26,11 +26,80 @@ namespace GridDrag
         {
             InitializeComponent();
 
-            addRowDefinition(8);
+            addRowDefinition(_minRows);
         }
         #endregion
 
-        #region Methods
+        #region Static Methods
+        public static int getAdjustedCellValue(int actualCellDimensionValue,
+            int cellDimensionSpan,
+            int dimensionDefinitionCount,
+            double deltaCellDimensionValue,
+            Func<int, double> getCellDimensionValue)
+        {
+            var currentCellDimensionPosition = 0d;
+
+            for (var i = 0; i < actualCellDimensionValue; i++)
+            {
+                var currentCellDimensionValue = getCellDimensionValue?.Invoke(actualCellDimensionValue);
+
+                if (!currentCellDimensionValue.HasValue)
+                    throw new Exception("Could not get cell dimension width/height");
+
+                currentCellDimensionPosition += currentCellDimensionValue.Value;
+            }
+
+            var adjustedCellPosition = currentCellDimensionPosition + deltaCellDimensionValue;
+
+            var remainingValue = adjustedCellPosition;
+            var newCellDimensionValue = 0;
+
+            while (remainingValue > getCellDimensionValue?.Invoke(actualCellDimensionValue) / 2)
+            {
+                var currentCellDimensionValue = getCellDimensionValue?.Invoke(actualCellDimensionValue);
+
+                remainingValue -= currentCellDimensionValue.Value;
+                newCellDimensionValue++;
+            }
+
+            return newCellDimensionValue > dimensionDefinitionCount - cellDimensionSpan ?
+                dimensionDefinitionCount - cellDimensionSpan
+                : newCellDimensionValue;
+        }
+
+        private static int getAdjustedSpan(double actualCellDimensionValue,
+            int cellDimensionNumber,
+            int dimensionDefinitionCount,
+            double deltaCellDimensionValue,
+            Func<int, double> getCellDimensionValue)
+        {
+            var adjustedElementValue = actualCellDimensionValue + deltaCellDimensionValue;
+
+            var remainingValue = adjustedElementValue;
+            var currentCell = cellDimensionNumber;
+            var newSpanValue = 0;
+
+            while (remainingValue > getCellDimensionValue?.Invoke(cellDimensionNumber) / 2)
+            {
+                if (currentCell >= dimensionDefinitionCount) break;
+
+                var currentCellDimensionValue = getCellDimensionValue?.Invoke(cellDimensionNumber);
+
+                remainingValue -= currentCellDimensionValue.Value;
+
+                newSpanValue++;
+            }
+
+            if (newSpanValue > dimensionDefinitionCount - cellDimensionNumber)
+                newSpanValue = dimensionDefinitionCount - cellDimensionNumber;
+            else if (newSpanValue == 0)
+                newSpanValue = 1;
+
+            return newSpanValue;
+        }
+        #endregion
+
+        #region Row Management
         public void addRowDefinition(int numRows = 1)
         {
             if (numRows < 1) return;
@@ -42,6 +111,38 @@ namespace GridDrag
             }
         }
 
+        private void removeRowDefinitions(int rowsToRemove)
+        {
+            if (rowsToRemove < 1) return;
+
+            for (var i = 0; i < rowsToRemove; i++)
+            {
+                if (parentGrid.RowDefinitions.Count <= _minRows) break;
+                parentGrid.RowDefinitions.Remove(parentGrid.RowDefinitions.LastOrDefault());
+            }
+        }
+
+        private void autoAddRowDefinitions()
+        {
+            var maxRow = getPanelGridSpaces().Max(x => x.bottomRow);
+
+            var rowsToAdd = maxRow - parentGrid.RowDefinitions.Count + 1;
+
+            if (rowsToAdd > 0)
+                addRowDefinition(rowsToAdd);
+        }
+
+        private void clearEmptyRowDefinitions()
+        {
+            var maxRow = getPanelGridSpaces().Max(x => x.bottomRow);
+            var totalRowDefinitions = parentGrid.RowDefinitions.Count;
+            var rowsToRemove = totalRowDefinitions - maxRow - 1;
+
+            removeRowDefinitions(rowsToRemove);
+        }
+        #endregion
+
+        #region Grid Item Management
         public void addGridItem(int column, int row, int colSpan, int rowSpan)
         {
             var borderToAdd = new Border
@@ -60,6 +161,33 @@ namespace GridDrag
             Grid.SetRowSpan(borderToAdd, rowSpan);
 
             parentGrid.Children.Add(borderToAdd);
+
+            autoAddRowDefinitions();
+        }
+
+        public void autoAddGridItem(int colSpan, int rowSpan)
+        {
+            var j = 0;
+
+            while (true)
+            {
+                for (var i = 0; i < parentGrid.ColumnDefinitions.Count; i++)
+                {
+                    var element = new ElementGridSpace(i, j, colSpan, rowSpan);
+
+                    if (findOverlayingElements(element).Any())
+                        continue;
+
+                    if (element.rightColumn >= parentGrid.ColumnDefinitions.Count)
+                        continue;
+
+                    addGridItem(i, j, colSpan, rowSpan);
+
+                    return;
+                }
+
+                j++;
+            }
         }
 
         private IEnumerable<ElementGridSpace> getPanelGridSpaces()
@@ -69,7 +197,9 @@ namespace GridDrag
                 .Where(x => x != traceBorder)
                 .Select(x => new ElementGridSpace(x));
         }
+        #endregion
 
+        #region Adorner Management
         private void activateAdorners(object sender, MouseEventArgs e)
         {
             if (_isDragging) return;
@@ -116,6 +246,26 @@ namespace GridDrag
             }
         }
 
+        private Border getAdornerParentBorder(object sender)
+        {
+            var adorner = sender as SimpleAdorner;
+
+            if (adorner == null) return null;
+
+            var border = parentGrid.VisualChildren()
+                .OfType<Border>()
+                .FirstOrDefault(x =>
+                {
+                    var adornerLayer = AdornerLayer.GetAdornerLayer(x);
+                    var adornerArray = adornerLayer?.GetAdorners(x);
+                    return adornerArray != null && adornerArray.Contains(adorner);
+                });
+
+            return border;
+        }
+        #endregion
+
+        #region Drag Event Handlers
         private void onDragStarted(object sender, DragStartedEventArgs e)
         {
             var adorner = sender as Adorner;
@@ -167,47 +317,11 @@ namespace GridDrag
 
             var newRow = getAdjustedCellValue(row,
                 rowSpan,
-                parentGrid.RowDefinitions.Count,
+                parentGrid.RowDefinitions.Count + rowSpan,
                 e.VerticalChange,
                 i => parentGrid.RowDefinitions[i].ActualHeight);
 
             Grid.SetRow(traceBorder, newRow);
-        }
-
-        public static int getAdjustedCellValue(int actualCellDimensionValue,
-            int cellDimensionSpan,
-            int dimensionDefinitionCount,
-            double deltaCellDimensionValue,
-            Func<int, double> getCellDimensionValue)
-        {
-            var currentCellDimensionPosition = 0d;
-
-            for (var i = 0; i < actualCellDimensionValue; i++)
-            {
-                var currentCellDimensionValue = getCellDimensionValue?.Invoke(actualCellDimensionValue);
-
-                if (!currentCellDimensionValue.HasValue)
-                    throw new Exception("Could not get cell dimension width/height");
-
-                currentCellDimensionPosition += currentCellDimensionValue.Value;
-            }
-
-            var adjustedCellPosition = currentCellDimensionPosition + deltaCellDimensionValue;
-
-            var remainingValue = adjustedCellPosition;
-            var newCellDimensionValue = 0;
-
-            while (remainingValue > getCellDimensionValue?.Invoke(actualCellDimensionValue) / 2)
-            {
-                var currentCellDimensionValue = getCellDimensionValue?.Invoke(actualCellDimensionValue);
-
-                remainingValue -= currentCellDimensionValue.Value;
-                newCellDimensionValue++;
-            }
-
-            return newCellDimensionValue > dimensionDefinitionCount - cellDimensionSpan ?
-                dimensionDefinitionCount - cellDimensionSpan
-                : newCellDimensionValue;
         }
 
         private void onEdgeAdornerDragging(object sender, DragDeltaEventArgs e)
@@ -252,55 +366,6 @@ namespace GridDrag
             Grid.SetRowSpan(traceBorder, newRowSpan);
         }
 
-        private static int getAdjustedSpan(double actualCellDimensionValue,
-            int cellDimensionNumber,
-            int dimensionDefinitionCount,
-            double deltaCellDimensionValue,
-            Func<int, double> getCellDimensionValue)
-        {
-            var adjustedElementValue = actualCellDimensionValue + deltaCellDimensionValue;
-
-            var remainingValue = adjustedElementValue;
-            var currentCell = cellDimensionNumber;
-            var newSpanValue = 0;
-
-            while (remainingValue > getCellDimensionValue?.Invoke(cellDimensionNumber) / 2)
-            {
-                if (currentCell >= dimensionDefinitionCount) break;
-
-                var currentCellDimensionValue = getCellDimensionValue?.Invoke(cellDimensionNumber);
-
-                remainingValue -= currentCellDimensionValue.Value;
-
-                newSpanValue++;
-            }
-
-            if (newSpanValue > dimensionDefinitionCount - cellDimensionNumber)
-                newSpanValue = dimensionDefinitionCount - cellDimensionNumber;
-            else if (newSpanValue == 0)
-                newSpanValue = 1;
-
-            return newSpanValue;
-        }
-
-        private Border getAdornerParentBorder(object sender)
-        {
-            var adorner = sender as SimpleAdorner;
-
-            if (adorner == null) return null;
-
-            var border = parentGrid.VisualChildren()
-                .OfType<Border>()
-                .FirstOrDefault(x =>
-                {
-                    var adornerLayer = AdornerLayer.GetAdornerLayer(x);
-                    var adornerArray = adornerLayer?.GetAdorners(x);
-                    return adornerArray != null && adornerArray.Contains(adorner);
-                });
-
-            return border;
-        }
-
         private void onDragCompleted(object sender, DragCompletedEventArgs e)
         {
             _isDragging = false;
@@ -325,10 +390,12 @@ namespace GridDrag
             Grid.SetRowSpan(border, traceBorderRowSpan);
 
             clearAdorners();
-
-            clearEmptyRows();
+            autoAddRowDefinitions();
+            clearEmptyRowDefinitions();
         }
+        #endregion
 
+        #region Overlaying Elements Management
         public void moveTraceBorderOverlaidElements(UIElement originalElement)
         {
             var traceBorderOverlayElements = findOverlayingElements(traceBorder, originalElement);
@@ -350,14 +417,9 @@ namespace GridDrag
             // Recursive!
             foreach (var overlayingElement in findOverlayingElements(overlayElementInput, dontMoveElements))
             {
-                var overlayElementNewRow = inputOverlayBottomRow + 1;    
+                var overlayElementNewRow = inputOverlayBottomRow + 1;
                 moveOverlaidElementsDown(overlayingElement.element, overlayElementNewRow);
             }
-
-            var rowsToAdd = inputOverlayBottomRow - parentGrid.RowDefinitions.Count + 1;
-
-            if (rowsToAdd > 0)
-                addRowDefinition(rowsToAdd);
         }
 
         private IList<ElementGridSpace> findOverlayingElements(UIElement element, params UIElement[] excludeElements)
@@ -371,17 +433,11 @@ namespace GridDrag
                 .ToList();
         }
 
-        private void clearEmptyRows()
+        private IList<ElementGridSpace> findOverlayingElements(ElementGridSpace inputGridSpace)
         {
-            var maxRow = getPanelGridSpaces().Max(x => x.bottomRow);
-            var totalRowDefinitions = parentGrid.RowDefinitions.Count;
-            var rowsToRemove = totalRowDefinitions - maxRow - 1;
-
-            for (var i = 0; i < rowsToRemove; i++)
-            {
-                if (parentGrid.RowDefinitions.Count < _minRows) break;
-                parentGrid.RowDefinitions.Remove(parentGrid.RowDefinitions.LastOrDefault());
-            }
+            return getPanelGridSpaces()
+                .Where(inputGridSpace.intersects)
+                .ToList();
         }
         #endregion
     }

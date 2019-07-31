@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 using DevExpress.Xpf.Core;
 
 namespace GridDrag
@@ -8,10 +9,11 @@ namespace GridDrag
         public MainWindow()
         {
             InitializeComponent();
+        }
 
-            gridStack.addGridItem(0, 0, 2, 2);
-            gridStack.addGridItem(1, 2, 2, 2);
-            gridStack.addGridItem(2, 4, 2, 2);
+        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        {
+            gridStack.autoAddGridItem(2, 2);
         }
     }
 }

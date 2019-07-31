@@ -65,6 +65,7 @@
     <Compile Include="GridStack.xaml.cs">
       <DependentUpon>GridStack.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MainWindowViewModel.cs" />
     <Compile Include="SimpleAdorner.cs" />
     <Page Include="GridStack.xaml">
       <SubType>Designer</SubType>

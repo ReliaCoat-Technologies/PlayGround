@@ -6,8 +6,7 @@
 
         <Grid x:Name="parentGrid">
 
-            <Border x:Name="traceBorder" Grid.Row="0" Grid.Column="0"
-                BorderBrush="DodgerBlue" BorderThickness="5" Visibility="Hidden"/>
+            <Border x:Name="traceBorder" Grid.Row="0" Grid.Column="0" BorderBrush="DodgerBlue"/>
 
         </Grid>
 

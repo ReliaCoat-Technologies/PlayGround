@@ -39,6 +39,12 @@ namespace GridDrag
             typeof(UserControl),
             new FrameworkPropertyMetadata(new Thickness(5),
                 FrameworkPropertyMetadataOptions.AffectsRender));
+
+        public static readonly DependencyProperty ChildrenProperty = DependencyProperty.Register("Children",
+            typeof(ObservableCollection<UIElement>),
+            typeof(UserControl),
+            new FrameworkPropertyMetadata(new ObservableCollection<UIElement>(),
+                FrameworkPropertyMetadataOptions.AffectsRender));
         #endregion
 
         #region Constants
@@ -50,7 +56,11 @@ namespace GridDrag
         #endregion
 
         #region Properties
-        public ObservableCollection<UIElement> children { get; }
+        public ObservableCollection<UIElement> Children
+        {
+            get { return (ObservableCollection<UIElement>)GetValue(ChildrenProperty); }
+            set { SetValue(ChildrenProperty, value); }
+        }
         public int NumColumns
         {
             get { return (int)GetValue(NumColumnsProperty); }
@@ -78,9 +88,6 @@ namespace GridDrag
         {
             InitializeComponent();
 
-            children = new ObservableCollection<UIElement>();
-            children.CollectionChanged += onChildrenChanged;
-
             Loaded += OnLoaded;
         }
         #endregion
@@ -88,8 +95,21 @@ namespace GridDrag
         #region Misc Methods
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
+            // children = new ObservableCollection<UIElement>();
+            Children.CollectionChanged += onChildrenChanged;
+
             addColumnDefinitions(NumColumns);
             addRowDefinition(MinRows);
+
+            traceBorder.Visibility = Visibility.Hidden;
+
+            // Ensures trace border is visible even if margin is set to 0
+            var borderThickness = new Thickness(ItemMargin.Left < 3 ? 3 : ItemMargin.Left,
+                ItemMargin.Top < 3 ? 3 : ItemMargin.Top,
+                ItemMargin.Right < 3 ? 3 : ItemMargin.Right,
+                ItemMargin.Bottom < 3 ? 3 : ItemMargin.Bottom);
+
+            traceBorder.BorderThickness = borderThickness;
         }
 
         private static void onNumColumnsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)

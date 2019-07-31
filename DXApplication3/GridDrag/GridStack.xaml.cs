@@ -26,72 +26,101 @@ namespace GridDrag
         {
             InitializeComponent();
 
+            // By default, add the minimum number of rows.
             addRowDefinition(_minRows);
         }
         #endregion
 
         #region Static Methods
-        public static int getAdjustedCellValue(int actualCellDimensionValue,
-            int cellDimensionSpan,
-            int dimensionDefinitionCount,
-            double deltaCellDimensionValue,
-            Func<int, double> getCellDimensionValue)
+        /// <summary>
+        /// Used to calculate the new Column/row of a cell item when dragging the cell.
+        /// </summary>
+        /// <param name="cellValueBeforeDrag">Column/row before dragging.</param>
+        /// <param name="cellSpan">Column/row span of cell element</param>
+        /// <param name="numberOfDefinitions">Number of column/row definitions</param>
+        /// <param name="dragDistance">Distance of dragged element from its original position (horizontal or vertical)</param>
+        /// <param name="getCellSize">Delegate that provides the cell's width/height</param>
+        /// <returns></returns>
+        public static int getAdjustedCellValue(int cellValueBeforeDrag,
+            int cellSpan,
+            int numberOfDefinitions,
+            double dragDistance,
+            Func<int, double> getCellSize)
         {
-            var currentCellDimensionPosition = 0d;
+            // Based on the cell's width/height an column/row before drag, calculate the position before dragging.
+            var cellPositionBeforeDrag = 0d;
 
-            for (var i = 0; i < actualCellDimensionValue; i++)
+            for (var i = 0; i < cellValueBeforeDrag; i++)
             {
-                var currentCellDimensionValue = getCellDimensionValue?.Invoke(actualCellDimensionValue);
+                var currentCellDimensionValue = getCellSize?.Invoke(cellValueBeforeDrag);
 
                 if (!currentCellDimensionValue.HasValue)
                     throw new Exception("Could not get cell dimension width/height");
 
-                currentCellDimensionPosition += currentCellDimensionValue.Value;
+                cellPositionBeforeDrag += currentCellDimensionValue.Value;
             }
 
-            var adjustedCellPosition = currentCellDimensionPosition + deltaCellDimensionValue;
+            // Calculate modified cell column/row after dragging.
+            var adjustedCellPosition = cellPositionBeforeDrag + dragDistance;
 
             var remainingValue = adjustedCellPosition;
             var newCellDimensionValue = 0;
 
-            while (remainingValue > getCellDimensionValue?.Invoke(actualCellDimensionValue) / 2)
+            // Determine new cell column/row based on new position
+            // "Snaps" cells to column/row edge it's closest to (midpoint of column/row used as divider)
+            while (remainingValue > getCellSize?.Invoke(cellValueBeforeDrag) / 2)
             {
-                var currentCellDimensionValue = getCellDimensionValue?.Invoke(actualCellDimensionValue);
+                var currentCellDimensionValue = getCellSize?.Invoke(cellValueBeforeDrag);
 
                 remainingValue -= currentCellDimensionValue.Value;
                 newCellDimensionValue++;
             }
 
-            return newCellDimensionValue > dimensionDefinitionCount - cellDimensionSpan ?
-                dimensionDefinitionCount - cellDimensionSpan
+            // Limits the cell movement to the available column/row definition in the grids.
+            // Prevents cells from moving out of bounds of the grid.
+            return newCellDimensionValue > numberOfDefinitions - cellSpan ?
+                numberOfDefinitions - cellSpan
                 : newCellDimensionValue;
         }
 
-        private static int getAdjustedSpan(double actualCellDimensionValue,
-            int cellDimensionNumber,
-            int dimensionDefinitionCount,
-            double deltaCellDimensionValue,
-            Func<int, double> getCellDimensionValue)
+        /// <summary>
+        /// Used to calculate the new column/row spans of a cell item when re-sizing the cell.
+        /// </summary>
+        /// <param name="originalCellSize">Width/height of cell before resizing</param>
+        /// <param name="cellSpan">Column/row span of </param>
+        /// <param name="numberOfDefinitions">Number of column/row definitions</param>
+        /// <param name="dragDistance">Distance of dragged element from its original position (horizontal or vertical)</param>
+        /// <param name="getCellSize">Delegate that provides the cell's width/height</param>
+        /// <returns></returns>
+        private static int getAdjustedSpan(double originalCellSize,
+            int cellSpan,
+            int numberOfDefinitions,
+            double dragDistance,
+            Func<int, double> getCellSize)
         {
-            var adjustedElementValue = actualCellDimensionValue + deltaCellDimensionValue;
+            // Gets the new cell size
+            var adjustedCellSize = originalCellSize + dragDistance;
 
-            var remainingValue = adjustedElementValue;
-            var currentCell = cellDimensionNumber;
+            var remainingValue = adjustedCellSize;
+            var currentCell = cellSpan;
             var newSpanValue = 0;
 
-            while (remainingValue > getCellDimensionValue?.Invoke(cellDimensionNumber) / 2)
+            // Determine the new column/row span of the cell based on its adjusted size
+            // "Snaps cells to cloumn/row edge it's closest to (midpoint of column/row used as divider)
+            while (remainingValue > getCellSize?.Invoke(cellSpan) / 2)
             {
-                if (currentCell >= dimensionDefinitionCount) break;
+                if (currentCell >= numberOfDefinitions) break;
 
-                var currentCellDimensionValue = getCellDimensionValue?.Invoke(cellDimensionNumber);
+                var currentCellDimensionValue = getCellSize?.Invoke(cellSpan);
 
                 remainingValue -= currentCellDimensionValue.Value;
 
                 newSpanValue++;
             }
 
-            if (newSpanValue > dimensionDefinitionCount - cellDimensionNumber)
-                newSpanValue = dimensionDefinitionCount - cellDimensionNumber;
+            // Prevents column/row span from exceeding limits of provided column/row definitions
+            if (newSpanValue > numberOfDefinitions - cellSpan)
+                newSpanValue = numberOfDefinitions - cellSpan;
             else if (newSpanValue == 0)
                 newSpanValue = 1;
 
@@ -132,6 +161,9 @@ namespace GridDrag
                 addRowDefinition(rowsToAdd);
         }
 
+        /// <summary>
+        /// Clears empty rows on bottom of grid (up to _minrows)
+        /// </summary>
         private void clearEmptyRowDefinitions()
         {
             var maxRow = getPanelGridSpaces().Max(x => x.bottomRow);
@@ -165,6 +197,11 @@ namespace GridDrag
             autoAddRowDefinitions();
         }
 
+        /// <summary>
+        /// Finds an empty spot on the grid to place new grid item.
+        /// </summary>
+        /// <param name="colSpan">Column span of new item</param>
+        /// <param name="rowSpan">Row span of new item</param>
         public void autoAddGridItem(int colSpan, int rowSpan)
         {
             var j = 0;
@@ -190,6 +227,10 @@ namespace GridDrag
             }
         }
 
+        /// <summary>
+        /// Creates an object with the cell dimensions and occupied grid spaces of each cell item.
+        /// </summary>
+        /// <returns>Descriptive dimensional information of each item in the grid.</returns>
         private IEnumerable<ElementGridSpace> getPanelGridSpaces()
         {
             return parentGrid.Children
@@ -200,6 +241,9 @@ namespace GridDrag
         #endregion
 
         #region Adorner Management
+        /// <summary>
+        /// Shows adorners over the selected element
+        /// </summary>
         private void activateAdorners(object sender, MouseEventArgs e)
         {
             if (_isDragging) return;
@@ -221,6 +265,9 @@ namespace GridDrag
             adornerLayers?.Add(adorner);
         }
 
+        /// <summary>
+        /// Clears all adorners
+        /// </summary>
         private void clearAdorners()
         {
             var borders = parentGrid.VisualChildren()
@@ -246,6 +293,11 @@ namespace GridDrag
             }
         }
 
+        /// <summary>
+        /// Gets the adorner of the parent UI object
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <returns>Parent element of adorner</returns>
         private Border getAdornerParentBorder(object sender)
         {
             var adorner = sender as SimpleAdorner;
@@ -266,6 +318,9 @@ namespace GridDrag
         #endregion
 
         #region Drag Event Handlers
+        /// <summary>
+        /// Occurs when adorner dragging starts
+        /// </summary>
         private void onDragStarted(object sender, DragStartedEventArgs e)
         {
             var adorner = sender as Adorner;
@@ -278,6 +333,7 @@ namespace GridDrag
 
             _isDragging = true;
 
+            // Makes the "trace border" item visible and sets its grid parameters to the item to drag.
             if (traceBorder.Visibility == Visibility.Hidden)
                 traceBorder.Visibility = Visibility.Visible;
 
@@ -292,6 +348,9 @@ namespace GridDrag
             Grid.SetRowSpan(traceBorder, rowSpan);
         }
 
+        /// <summary>
+        /// Occurs while the mouse is moving when dragging an adorner
+        /// </summary>
         private void onCenterAdornerDragging(object sender, DragDeltaEventArgs e)
         {
             var adorner = sender as Adorner;
@@ -302,6 +361,7 @@ namespace GridDrag
 
             if (border == null) return;
 
+            // Calculates the new trace border location based on the current mouse location when dragging
             var column = Grid.GetColumn(border);
             var row = Grid.GetRow(border);
             var columnSpan = Grid.GetColumnSpan(border);
@@ -315,6 +375,8 @@ namespace GridDrag
 
             Grid.SetColumn(traceBorder, newColumn);
 
+            // Original row definition is increased in case the item is dragged below the last row in the grid.
+            // Upon dropping, the new rows will automatically be added
             var newRow = getAdjustedCellValue(row,
                 rowSpan,
                 parentGrid.RowDefinitions.Count + rowSpan,
@@ -336,9 +398,7 @@ namespace GridDrag
 
             _isDragging = true;
 
-            if (traceBorder.Visibility == Visibility.Hidden)
-                traceBorder.Visibility = Visibility.Visible;
-
+            // Calculates the new trace border size based on the current mouse location when dragging
             var column = Grid.GetColumn(border);
             var row = Grid.GetRow(border);
             var columnSpan = Grid.GetColumnSpan(border);
@@ -357,6 +417,8 @@ namespace GridDrag
 
             Grid.SetColumnSpan(traceBorder, newColumnSpan);
 
+            // Original row definition is increased in case the item is dragged below the last row in the grid.
+            // Upon dropping, the new rows will automatically be added
             var newRowSpan = getAdjustedSpan(border.ActualHeight,
                 row,
                 parentGrid.RowDefinitions.Count,
@@ -377,6 +439,7 @@ namespace GridDrag
 
             if (border == null) return;
 
+            // Gets the grid parameters of the trace border
             var traceBorderColumn = Grid.GetColumn(traceBorder);
             var traceBorderRow = Grid.GetRow(traceBorder);
             var traceBorderColumnSpan = Grid.GetColumnSpan(traceBorder);
@@ -384,12 +447,14 @@ namespace GridDrag
 
             moveTraceBorderOverlaidElements(border);
 
+            // Sets the grid parameters of the parent item to that of the trace border
             Grid.SetColumn(border, traceBorderColumn);
             Grid.SetRow(border, traceBorderRow);
             Grid.SetColumnSpan(border, traceBorderColumnSpan);
             Grid.SetRowSpan(border, traceBorderRowSpan);
 
             clearAdorners();
+
             autoAddRowDefinitions();
             clearEmptyRowDefinitions();
         }
@@ -402,6 +467,7 @@ namespace GridDrag
 
             if (!traceBorderOverlayElements.Any()) return;
 
+            // Calculates new row of overlaid element
             var newRow = new ElementGridSpace(traceBorder).bottomRow + 1;
 
             foreach (var overlayingElement in traceBorderOverlayElements)
@@ -410,18 +476,26 @@ namespace GridDrag
 
         public void moveOverlaidElementsDown(UIElement overlayElementInput, int newRow, params UIElement[] dontMoveElements)
         {
+            // Sets the new row of the overlayElementInput
             Grid.SetRow(overlayElementInput, newRow);
 
             var inputOverlayBottomRow = new ElementGridSpace(overlayElementInput).bottomRow;
 
-            // Recursive!
+            // Recursively moves down any elements that overlayElementInput overlays.
             foreach (var overlayingElement in findOverlayingElements(overlayElementInput, dontMoveElements))
             {
+                // Calculates new row of overlaid element
                 var overlayElementNewRow = inputOverlayBottomRow + 1;
                 moveOverlaidElementsDown(overlayingElement.element, overlayElementNewRow);
             }
         }
 
+        /// <summary>
+        /// Finds any elements that overlay this UI element
+        /// </summary>
+        /// <param name="element">Element that has (or doesn't have) overlaid elements</param>
+        /// <param name="excludeElements">Elements to ignore even if they're overlaid with this element</param>
+        /// <returns>List of element grid spaces that overlay the input "element" parameter</returns>
         private IList<ElementGridSpace> findOverlayingElements(UIElement element, params UIElement[] excludeElements)
         {
             var elementGridSpace = new ElementGridSpace(element);
@@ -433,6 +507,11 @@ namespace GridDrag
                 .ToList();
         }
 
+        /// <summary>
+        /// Finds overlaying element of an element grid space.
+        /// </summary>
+        /// <param name="inputGridSpace">Element grid space to compare.</param>
+        /// <returns></returns>
         private IList<ElementGridSpace> findOverlayingElements(ElementGridSpace inputGridSpace)
         {
             return getPanelGridSpaces()

@@ -8,7 +8,8 @@
 
     <DockPanel>
         <Button DockPanel.Dock="Top" Content="Add Item" Click="ButtonBase_OnClick"/>
-        <local:GridStack Margin="5" x:Name="gridStack"/>
+        <local:GridStack Margin="5" x:Name="gridStack" NumColumns="12" MinRows="8" MinRowHeight="50"
+                         ItemMargin="2,10"/>
     </DockPanel>
 
 </dx:DXWindow>

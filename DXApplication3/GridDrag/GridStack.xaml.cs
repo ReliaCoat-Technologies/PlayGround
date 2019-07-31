@@ -15,8 +15,34 @@ namespace GridDrag
 {
     public partial class GridStack : UserControl
     {
+        #region Dependency Properties
+        public static readonly DependencyProperty NumColumnsProperty = DependencyProperty.Register("NumColumns",
+            typeof(int),
+            typeof(UserControl),
+            new FrameworkPropertyMetadata(5,
+                FrameworkPropertyMetadataOptions.AffectsRender));
+
+        public static readonly DependencyProperty MinRowsProperty = DependencyProperty.Register("MinRows",
+            typeof(int),
+            typeof(UserControl),
+            new FrameworkPropertyMetadata(5,
+                FrameworkPropertyMetadataOptions.AffectsRender));
+
+        public static readonly DependencyProperty MinRowHeightProperty = DependencyProperty.Register("MinRowHeight",
+            typeof(double),
+            typeof(UserControl),
+            new FrameworkPropertyMetadata(80d,
+                FrameworkPropertyMetadataOptions.AffectsRender));
+
+        public static readonly DependencyProperty ItemMarginProperty = DependencyProperty.Register("ItemMargin",
+            typeof(Thickness),
+            typeof(UserControl),
+            new FrameworkPropertyMetadata(new Thickness(5),
+                FrameworkPropertyMetadataOptions.AffectsRender));
+        #endregion
+
         #region Constants
-        private const int _minRows = 7;
+
         #endregion
 
         #region Fields
@@ -25,6 +51,26 @@ namespace GridDrag
 
         #region Properties
         public ObservableCollection<UIElement> children { get; }
+        public int NumColumns
+        {
+            get { return (int)GetValue(NumColumnsProperty); }
+            set { SetValue(NumColumnsProperty, value); }
+        }
+        public int MinRows
+        {
+            get { return (int)GetValue(MinRowsProperty); }
+            set { SetValue(MinRowsProperty, value); }
+        }
+        public double MinRowHeight
+        {
+            get { return (double)GetValue(MinRowHeightProperty); }
+            set { SetValue(MinRowHeightProperty, value); }
+        }
+        public Thickness ItemMargin
+        {
+            get { return (Thickness)GetValue(ItemMarginProperty); }
+            set { SetValue(ItemMarginProperty, value); }
+        }
         #endregion
 
         #region Constructor
@@ -32,12 +78,23 @@ namespace GridDrag
         {
             InitializeComponent();
 
-            // By default, add the minimum number of rows.
-            addRowDefinition(_minRows);
-
             children = new ObservableCollection<UIElement>();
-
             children.CollectionChanged += onChildrenChanged;
+
+            Loaded += OnLoaded;
+        }
+        #endregion
+
+        #region Misc Methods
+        private void OnLoaded(object sender, RoutedEventArgs e)
+        {
+            addColumnDefinitions(NumColumns);
+            addRowDefinition(MinRows);
+        }
+
+        private static void onNumColumnsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var a = 1;
         }
         #endregion
 
@@ -138,14 +195,29 @@ namespace GridDrag
         }
         #endregion
 
-        #region Row Management
+        #region Column, Row Management
+        private void addColumnDefinitions(int numColumns)
+        {
+            for (var i = 0; i < numColumns; i++)
+            {
+                parentGrid.ColumnDefinitions.Add(new ColumnDefinition
+                {
+                    Width = new GridLength(1, GridUnitType.Star)
+                });
+            }
+        }
+
         public void addRowDefinition(int numRows = 1)
         {
             if (numRows < 1) return;
 
             for (var i = 0; i < numRows; i++)
             {
-                var rowDefinition = new RowDefinition { MinHeight = 80 };
+                var rowDefinition = new RowDefinition
+                {
+                    MinHeight = MinRowHeight,
+                    Height = new GridLength(1, GridUnitType.Star)
+                };
                 parentGrid.RowDefinitions.Add(rowDefinition);
             }
         }
@@ -156,7 +228,7 @@ namespace GridDrag
 
             for (var i = 0; i < rowsToRemove; i++)
             {
-                if (parentGrid.RowDefinitions.Count <= _minRows) break;
+                if (parentGrid.RowDefinitions.Count <= MinRows) break;
                 parentGrid.RowDefinitions.Remove(parentGrid.RowDefinitions.LastOrDefault());
             }
         }
@@ -200,7 +272,7 @@ namespace GridDrag
                         .OfType<Border>()
                         .Where(x => x.Child == elementToRemove);
 
-                    foreach(var border in borders)
+                    foreach (var border in borders)
                         parentGrid.Children.Remove(border);
                     break;
                 case NotifyCollectionChangedAction.Replace:
@@ -216,7 +288,7 @@ namespace GridDrag
         {
             var borderToAdd = new Border
             {
-                Margin = new Thickness(5),
+                Margin = ItemMargin,
                 BorderBrush = Brushes.Black,
                 BorderThickness = new Thickness(2),
                 Background = Brushes.Transparent,

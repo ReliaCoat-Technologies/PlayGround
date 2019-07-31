@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -21,6 +23,10 @@ namespace GridDrag
         private bool _isDragging;
         #endregion
 
+        #region Properties
+        public ObservableCollection<UIElement> children { get; }
+        #endregion
+
         #region Constructor
         public GridStack()
         {
@@ -28,6 +34,10 @@ namespace GridDrag
 
             // By default, add the minimum number of rows.
             addRowDefinition(_minRows);
+
+            children = new ObservableCollection<UIElement>();
+
+            children.CollectionChanged += onChildrenChanged;
         }
         #endregion
 
@@ -175,14 +185,42 @@ namespace GridDrag
         #endregion
 
         #region Grid Item Management
-        public void addGridItem(int column, int row, int colSpan, int rowSpan)
+        private void onChildrenChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            switch (e.Action)
+            {
+                case NotifyCollectionChangedAction.Add:
+                    var elementToAdd = e.NewItems[0] as UIElement;
+                    autoAddGridItem(2, 2, elementToAdd);
+                    break;
+                case NotifyCollectionChangedAction.Remove:
+                    var elementToRemove = e.NewItems[0] as UIElement;
+
+                    var borders = parentGrid.Children
+                        .OfType<Border>()
+                        .Where(x => x.Child == elementToRemove);
+
+                    foreach(var border in borders)
+                        parentGrid.Children.Remove(border);
+                    break;
+                case NotifyCollectionChangedAction.Replace:
+                case NotifyCollectionChangedAction.Move:
+                case NotifyCollectionChangedAction.Reset:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        public void addGridItem(int column, int row, int colSpan, int rowSpan, UIElement content)
         {
             var borderToAdd = new Border
             {
                 Margin = new Thickness(5),
-                BorderBrush = Brushes.Red,
+                BorderBrush = Brushes.Black,
                 BorderThickness = new Thickness(2),
-                Background = Brushes.Black
+                Background = Brushes.Transparent,
+                Child = content
             };
 
             borderToAdd.MouseEnter += activateAdorners;
@@ -202,7 +240,7 @@ namespace GridDrag
         /// </summary>
         /// <param name="colSpan">Column span of new item</param>
         /// <param name="rowSpan">Row span of new item</param>
-        public void autoAddGridItem(int colSpan, int rowSpan)
+        private void autoAddGridItem(int colSpan, int rowSpan, UIElement content)
         {
             var j = 0;
 
@@ -218,7 +256,7 @@ namespace GridDrag
                     if (element.rightColumn >= parentGrid.ColumnDefinitions.Count)
                         continue;
 
-                    addGridItem(i, j, colSpan, rowSpan);
+                    addGridItem(i, j, colSpan, rowSpan, content);
 
                     return;
                 }

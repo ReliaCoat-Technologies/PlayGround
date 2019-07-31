@@ -9,13 +9,12 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using DevExpress.Xpf.Core.Native;
 
 namespace GridDrag
 {
     public partial class GridStack : UserControl
     {
-        #region Dependency Properties
+        #region Dependency Propertie
         public static readonly DependencyProperty NumColumnsProperty = DependencyProperty.Register("NumColumns",
             typeof(int),
             typeof(UserControl),
@@ -47,35 +46,50 @@ namespace GridDrag
                 FrameworkPropertyMetadataOptions.AffectsRender));
         #endregion
 
-        #region Constants
-
-        #endregion
-
         #region Fields
         private bool _isDragging;
         #endregion
 
         #region Properties
+        /// <summary>
+        /// Children items in the grid stack.
+        /// </summary>
         public ObservableCollection<UIElement> Children
         {
             get { return (ObservableCollection<UIElement>)GetValue(ChildrenProperty); }
             set { SetValue(ChildrenProperty, value); }
         }
+
+        /// <summary>
+        /// Number of columns in the grid stack.
+        /// </summary>
         public int NumColumns
         {
             get { return (int)GetValue(NumColumnsProperty); }
             set { SetValue(NumColumnsProperty, value); }
         }
+
+        /// <summary>
+        /// Minimum number of rows in the grid stack.
+        /// </summary>
         public int MinRows
         {
             get { return (int)GetValue(MinRowsProperty); }
             set { SetValue(MinRowsProperty, value); }
         }
+
+        /// <summary>
+        /// Minimum row height of each element in the grid stack.
+        /// </summary>
         public double MinRowHeight
         {
             get { return (double)GetValue(MinRowHeightProperty); }
             set { SetValue(MinRowHeightProperty, value); }
         }
+
+        /// <summary>
+        /// Margin of each child item the in the grid stack.
+        /// </summary>
         public Thickness ItemMargin
         {
             get { return (Thickness)GetValue(ItemMarginProperty); }
@@ -110,11 +124,6 @@ namespace GridDrag
                 ItemMargin.Bottom < 3 ? 3 : ItemMargin.Bottom);
 
             traceBorder.BorderThickness = borderThickness;
-        }
-
-        private static void onNumColumnsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var a = 1;
         }
         #endregion
 
@@ -400,7 +409,7 @@ namespace GridDrag
         /// </summary>
         private void clearAdorners()
         {
-            var borders = parentGrid.VisualChildren()
+            var borders = parentGrid.Children
                 .OfType<Border>()
                 .Where(x =>
                 {
@@ -434,7 +443,7 @@ namespace GridDrag
 
             if (adorner == null) return null;
 
-            var border = parentGrid.VisualChildren()
+            var border = parentGrid.Children
                 .OfType<Border>()
                 .FirstOrDefault(x =>
                 {

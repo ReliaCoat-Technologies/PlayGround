@@ -1,9 +1,9 @@
 ﻿using System;
-using DevExpress.Xpf.Core;
+using System.Windows;
 
 namespace GridDrag
 {
-    public partial class MainWindow : DXWindow
+    public partial class MainWindow : Window
     {
         #region ViewModels
         private MainWindowViewModel _viewModel;

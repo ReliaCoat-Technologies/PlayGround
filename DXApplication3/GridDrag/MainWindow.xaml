@@ -5,9 +5,18 @@
         Title="MainWindow" Height="800" Width="1000">
 
     <DockPanel>
+
         <Button DockPanel.Dock="Top" Content="Add Item" Command="{Binding addItemCommand}"/>
-        <local:GridStack Margin="5" x:Name="gridStack" NumColumns="12" MinRows="8" MinRowHeight="50"
-                         ItemMargin="3" Children="{Binding gridElements}"/>
+
+        <local:GridStack Margin="5" x:Name="gridStack"
+                         NumColumns="12"
+                         MinRows="8"
+                         MinRowHeight="50"
+                         ItemMargin="3"
+                         DefaultColumnSpan="3"
+                         DefaultRowSpan="1"
+                         Children="{Binding gridElements}"/>
+
     </DockPanel>
 
 </Window>

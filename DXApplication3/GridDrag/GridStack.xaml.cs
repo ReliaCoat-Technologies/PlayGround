@@ -18,32 +18,37 @@ namespace GridDrag
         public static readonly DependencyProperty NumColumnsProperty = DependencyProperty.Register("NumColumns",
             typeof(int),
             typeof(UserControl),
-            new FrameworkPropertyMetadata(5,
-                FrameworkPropertyMetadataOptions.AffectsRender));
+            new FrameworkPropertyMetadata(5));
 
         public static readonly DependencyProperty MinRowsProperty = DependencyProperty.Register("MinRows",
             typeof(int),
             typeof(UserControl),
-            new FrameworkPropertyMetadata(5,
-                FrameworkPropertyMetadataOptions.AffectsRender));
+            new FrameworkPropertyMetadata(5));
 
         public static readonly DependencyProperty MinRowHeightProperty = DependencyProperty.Register("MinRowHeight",
             typeof(double),
             typeof(UserControl),
-            new FrameworkPropertyMetadata(80d,
-                FrameworkPropertyMetadataOptions.AffectsRender));
+            new FrameworkPropertyMetadata(80d));
 
         public static readonly DependencyProperty ItemMarginProperty = DependencyProperty.Register("ItemMargin",
             typeof(Thickness),
             typeof(UserControl),
-            new FrameworkPropertyMetadata(new Thickness(5),
-                FrameworkPropertyMetadataOptions.AffectsRender));
+            new FrameworkPropertyMetadata(new Thickness(5)));
+
+        public static readonly DependencyProperty DefaultColumnSpanProperty = DependencyProperty.Register("DefaultColumnSpan",
+            typeof(int),
+            typeof(UserControl),
+            new FrameworkPropertyMetadata(2));
+
+        public static readonly DependencyProperty DefaultRowSpanProperty = DependencyProperty.Register("DefaultRowSpan",
+            typeof(int),
+            typeof(UserControl),
+            new FrameworkPropertyMetadata(2));
 
         public static readonly DependencyProperty ChildrenProperty = DependencyProperty.Register("Children",
             typeof(ObservableCollection<UIElement>),
             typeof(UserControl),
-            new FrameworkPropertyMetadata(new ObservableCollection<UIElement>(),
-                FrameworkPropertyMetadataOptions.AffectsRender));
+            new FrameworkPropertyMetadata(new ObservableCollection<UIElement>()));
         #endregion
 
         #region Fields
@@ -85,6 +90,24 @@ namespace GridDrag
         {
             get { return (double)GetValue(MinRowHeightProperty); }
             set { SetValue(MinRowHeightProperty, value); }
+        }
+
+        /// <summary>
+        /// Column span of a new item to be added
+        /// </summary>
+        public int DefaultColumnSpan
+        {
+            get { return (int)GetValue(DefaultColumnSpanProperty); }
+            set { SetValue(DefaultColumnSpanProperty, value); }
+        }
+
+        /// <summary>
+        /// Row span of a new item to be added
+        /// </summary>
+        public int DefaultRowSpan
+        {
+            get { return (int)GetValue(DefaultRowSpanProperty); }
+            set { SetValue(DefaultRowSpanProperty, value); }
         }
 
         /// <summary>
@@ -292,7 +315,7 @@ namespace GridDrag
             {
                 case NotifyCollectionChangedAction.Add:
                     var elementToAdd = e.NewItems[0] as UIElement;
-                    autoAddGridItem(2, 2, elementToAdd);
+                    autoAddGridItem(DefaultColumnSpan, DefaultRowSpan, elementToAdd);
                     break;
                 case NotifyCollectionChangedAction.Remove:
                     var elementToRemove = e.NewItems[0] as UIElement;

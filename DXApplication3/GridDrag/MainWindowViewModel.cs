@@ -10,6 +10,7 @@ namespace GridDrag
     public class MainWindowViewModel : INotifyPropertyChanged
     {
         #region Fields
+        private int _number;
         private ObservableCollection<UIElement> _gridElements;
         #endregion
 
@@ -43,7 +44,7 @@ namespace GridDrag
         {
             var textblock = new TextBlock
             {
-                Text = "Hello World!",
+                Text = $"This is box {++_number}",
                 FontSize = 16,
                 TextAlignment = TextAlignment.Center,
                 VerticalAlignment = VerticalAlignment.Center

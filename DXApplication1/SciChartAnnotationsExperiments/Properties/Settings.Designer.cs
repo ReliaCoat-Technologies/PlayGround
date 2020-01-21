@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace GridDrag.Properties
+namespace SciChartAnnotationsExperiments.Properties
 {
 
 

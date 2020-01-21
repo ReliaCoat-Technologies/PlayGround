@@ -13,8 +13,8 @@
         <dxb:ToolBarControl DockPanel.Dock="Top">
             <dxb:BarCheckItem x:Name="boxCheckItem"
                               IsChecked="False"
-                              Content="Draw Box"
-                              CheckedChanged="onBoxDrawClicked" />
+                              Content="Draw Ellipse"
+                              CheckedChanged="onEllipseDrawClicked" />
         </dxb:ToolBarControl>
 
         <s:SciChartSurface x:Name="sciChartSurface"

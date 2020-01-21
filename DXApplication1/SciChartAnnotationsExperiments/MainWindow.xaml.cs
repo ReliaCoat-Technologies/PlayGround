@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Windows.Media;
 using DevExpress.Xpf.Bars;
 using DevExpress.Xpf.Core;
 using SciChartAnnotationsExperiments.ViewModels;
@@ -24,7 +23,7 @@ namespace SciChartAnnotationsExperiments
         #endregion
 
         #region Methods
-        private void onBoxDrawClicked(object sender, ItemClickEventArgs e)
+        private void onEllipseDrawClicked(object sender, ItemClickEventArgs e)
         {
             if (boxCheckItem.IsChecked == true)
             {

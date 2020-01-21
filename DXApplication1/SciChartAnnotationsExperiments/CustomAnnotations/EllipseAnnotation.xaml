@@ -10,7 +10,7 @@
     <s:BoxAnnotation.Template>
         <ControlTemplate>
             <Border x:Name="PART_BoxAnnotationRoot">
-                <ca:ModifiableEllipse/>
+                <ca:ModifiableEllipse Loaded="onEllipseLoaded"/>
             </Border>
         </ControlTemplate>
     </s:BoxAnnotation.Template>

@@ -3,11 +3,20 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <Border x:Name="border">
-        <Ellipse x:Name="ellipse"
+       
+        <Grid x:Name="grid">
+
+            <Ellipse x:Name="ellipse"
                  Fill="#66FF0000"
                  Stroke="White"
-                 StrokeThickness="2"
-                 MouseRightButtonUp="onRightClickEllipse"/>
+                 StrokeThickness="2"/>
+
+            <Line x:Name="modifiedAngleLine"
+                  Stroke="White"
+                  StrokeThickness="2"/>
+
+        </Grid>
+
     </Border>
 
 </UserControl>

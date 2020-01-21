@@ -54,7 +54,7 @@ namespace SciChartAnnotationsExperiments
         {
             var annotation = (AnnotationBase)_viewModel.annotationCreationModifier.Annotation;
 
-            // annotation.IsEditable = true;
+            annotation.IsEditable = true;
 
             disableBoxDraw();
             boxCheckItem.IsChecked = false;

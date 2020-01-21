@@ -8,6 +8,7 @@ using SciChart.Charting.Model.ChartSeries;
 using SciChart.Charting.Model.DataSeries;
 using SciChart.Charting.Visuals.Annotations;
 using SciChart.Charting.Visuals.Axes;
+using SciChart.Charting.Visuals.PointMarkers;
 using SciChart.Data.Model;
 using SciChartAnnotationsExperiments.CustomAnnotations;
 
@@ -59,7 +60,7 @@ namespace SciChartAnnotationsExperiments.ViewModels
         public AnnotationCreationModifier annotationCreationModifier
         {
             get { return _annotationCreationModifier; }
-            set { _annotationCreationModifier = value; RaisePropertyChanged(() => annotationCreationModifier);}
+            set { _annotationCreationModifier = value; RaisePropertyChanged(() => annotationCreationModifier); }
         }
         #endregion
 
@@ -82,13 +83,14 @@ namespace SciChartAnnotationsExperiments.ViewModels
             {
                 AxisTitle = "X",
                 DrawMajorBands = false,
+                GrowBy = new DoubleRange(1, 1),
                 AutoRange = AutoRange.Once
             };
 
             yAxis = new NumericAxis
             {
                 AxisTitle = "Y",
-                GrowBy = new DoubleRange(0.1, 0.1),
+                GrowBy = new DoubleRange(1, 1),
                 DrawMajorBands = false,
                 AutoRange = AutoRange.Once
             };
@@ -114,21 +116,31 @@ namespace SciChartAnnotationsExperiments.ViewModels
 
         public void plotData()
         {
-            var xValues = Enumerable.Range(-50000, 100001)
-                .Select(x => x / 5000d)
+            var randomGenerator = new Random();
+
+            var xValues = Enumerable.Range(0, 20)
+                .Select(x => randomGenerator.NextDouble() * 3 + 0.5)
                 .ToList();
 
             var yValues = xValues
-                .Select(Math.Cos)
+                .Select(x => x * (randomGenerator.NextDouble() * 2 + 0.75) + (randomGenerator.NextDouble() * 4 + 0.25))
                 .ToList();
 
-            var dataSeries = new XyDataSeries<double, double>();
+            var dataSeries = new XyDataSeries<double, double> { AcceptsUnsortedData = true };
             dataSeries.Append(xValues, yValues);
 
-            var renderableSeries = new LineRenderableSeriesViewModel
+            var renderableSeries = new XyScatterRenderableSeriesViewModel()
             {
                 Stroke = Colors.DodgerBlue,
-                DataSeries = dataSeries
+                DataSeries = dataSeries,
+                PointMarker = new EllipsePointMarker
+                {
+                    Fill = Colors.DodgerBlue,
+                    Stroke = Colors.White,
+                    StrokeThickness = 2,
+                    Width = 20,
+                    Height = 20
+                }
             };
 
             renderableSeriesList.Add(renderableSeries);

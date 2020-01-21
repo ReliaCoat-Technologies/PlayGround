@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -10,13 +12,14 @@ namespace SciChartAnnotationsExperiments.CustomAnnotations
         public ModifiableEllipse()
         {
             InitializeComponent();
+            ellipse.RenderTransformOrigin = new Point(0.5, 0.5);
         }
 
-        private void UIElement_OnMouseLeftButtonUp(object sender, MouseEventArgs mouseEventArgs)
+        private void onRightClickEllipse(object sender, MouseEventArgs mouseEventArgs)
         {
-            ellipse.Fill = ellipse.Fill == Brushes.Blue 
-                ? Brushes.Red
-                : Brushes.Blue;
+            ellipse.RenderTransform = new RotateTransform(-45);
+            var borderRect = LayoutInformation.GetLayoutSlot(border);
+            ellipse.TransformToVisual(border).TransformBounds(borderRect);
         }
     }
 }

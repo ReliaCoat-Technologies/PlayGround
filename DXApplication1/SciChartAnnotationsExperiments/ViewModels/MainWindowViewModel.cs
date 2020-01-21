@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Windows.Annotations;
 using System.Windows.Media;
 using DevExpress.Mvvm;
 using SciChart.Charting.ChartModifiers;
@@ -10,6 +9,7 @@ using SciChart.Charting.Model.DataSeries;
 using SciChart.Charting.Visuals.Annotations;
 using SciChart.Charting.Visuals.Axes;
 using SciChart.Data.Model;
+using SciChartAnnotationsExperiments.CustomAnnotations;
 
 namespace SciChartAnnotationsExperiments.ViewModels
 {
@@ -96,7 +96,7 @@ namespace SciChartAnnotationsExperiments.ViewModels
             annotationCreationModifier = new AnnotationCreationModifier
             {
                 ExecuteOn = ExecuteOn.MouseLeftButton,
-                AnnotationType = typeof(BoxAnnotation),
+                AnnotationType = typeof(EllipseAnnotation),
                 IsEnabled = false
             };
 

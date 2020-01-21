@@ -1,0 +1,11 @@
+﻿<UserControl x:Class="SciChartAnnotationsExperiments.CustomAnnotations.ModifiableEllipse"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+        <Ellipse x:Name="ellipse"
+                 Fill="Red"
+                 Stroke="White"
+                 StrokeThickness="2"
+                 MouseRightButtonUp="UIElement_OnMouseLeftButtonUp"/>
+
+</UserControl>

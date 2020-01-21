@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Windows;
 using System.Windows.Media;
 using DevExpress.Xpf.Bars;
 using DevExpress.Xpf.Core;
@@ -53,10 +52,9 @@ namespace SciChartAnnotationsExperiments
 
         private void onAnnotationCreated(object sender, SciChart.Charting.ChartModifiers.AnnotationCreationArgs e)
         {
-            var annotation = (BoxAnnotation)_viewModel.annotationCreationModifier.Annotation;
+            var annotation = (AnnotationBase)_viewModel.annotationCreationModifier.Annotation;
 
-            annotation.IsEditable = true;
-            annotation.LayoutTransform= new RotateTransform(-45, 0.5, 0.5);
+            // annotation.IsEditable = true;
 
             disableBoxDraw();
             boxCheckItem.IsChecked = false;

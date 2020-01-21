@@ -3,20 +3,19 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <Border x:Name="border">
-       
-        <Grid x:Name="grid">
+
+        <Grid>
 
             <Ellipse x:Name="ellipse"
-                 Fill="#66FF0000"
-                 Stroke="White"
-                 StrokeThickness="2"/>
+                     Fill="#66FF0000"/>
 
-            <Line x:Name="modifiedAngleLine"
-                  Stroke="White"
-                  StrokeThickness="2"/>
+            <Path x:Name="renderedPath"
+                  Stretch="Fill"
+                  Fill="#6600FF00"/>
 
         </Grid>
 
     </Border>
+
 
 </UserControl>

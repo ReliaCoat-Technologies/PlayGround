@@ -1,8 +1,12 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Windows;
 using DevExpress.Xpf.Bars;
 using DevExpress.Xpf.Core;
-using SciChartAnnotationsExperiments.ViewModels;
 using SciChart.Charting.Visuals.Annotations;
+using SciChartAnnotationsExperiments.CustomAnnotations;
+using SciChartAnnotationsExperiments.ViewModels;
 
 namespace SciChartAnnotationsExperiments
 {
@@ -10,6 +14,7 @@ namespace SciChartAnnotationsExperiments
     {
         #region Fields
         private readonly MainWindowViewModel _viewModel;
+        private readonly IDictionary<BarCheckItem, Type> _labelTypeDictionary;
         #endregion
 
         #region Constructor
@@ -19,30 +24,43 @@ namespace SciChartAnnotationsExperiments
 
             _viewModel = new MainWindowViewModel();
             DataContext = _viewModel;
+
+            _labelTypeDictionary = new Dictionary<BarCheckItem, Type>
+            {
+                { ellipseCheckItem, typeof(EllipseAnnotation) },
+                { boxCheckItem, typeof(BoxAnnotation) },
+            };
         }
         #endregion
 
         #region Methods
-        private void onEllipseDrawClicked(object sender, ItemClickEventArgs e)
+        private void onDrawClicked(object sender, ItemClickEventArgs e)
         {
-            if (boxCheckItem.IsChecked == true)
+            var barItem = sender as BarCheckItem;
+
+            if (barItem == null) return;
+
+            _viewModel.annotationCreationModifier.AnnotationType = _labelTypeDictionary[barItem];
+
+            if (barItem.IsChecked == true)
             {
-                enableBoxDraw();
+                enableAnnotationDraw();
             }
             else
             {
-                disableBoxDraw();
+                uncheckAll();
+                disableAnnotationDraw();
             }
         }
 
-        private void enableBoxDraw()
+        private void enableAnnotationDraw()
         {
             _viewModel.rubberBandModifier.IsEnabled = false;
             _viewModel.annotationCreationModifier.IsEnabled = true;
             _viewModel.annotationCreationModifier.AnnotationCreated += onAnnotationCreated;
         }
 
-        private void disableBoxDraw()
+        private void disableAnnotationDraw()
         {
             _viewModel.annotationCreationModifier.IsEnabled = false;
             _viewModel.annotationCreationModifier.AnnotationCreated -= onAnnotationCreated;
@@ -51,12 +69,18 @@ namespace SciChartAnnotationsExperiments
 
         private void onAnnotationCreated(object sender, SciChart.Charting.ChartModifiers.AnnotationCreationArgs e)
         {
-            var annotation = (AnnotationBase)_viewModel.annotationCreationModifier.Annotation;
+            var abase = _viewModel.annotationCreationModifier.Annotation as AnnotationBase;
 
-            annotation.IsEditable = true;
+            abase.IsEditable = true;
 
-            disableBoxDraw();
-            boxCheckItem.IsChecked = false;
+            disableAnnotationDraw();
+            uncheckAll();
+        }
+
+        private void uncheckAll()
+        {
+            foreach (var barCheckItem in _labelTypeDictionary.Keys)
+                barCheckItem.IsChecked = false;
         }
         #endregion
     }

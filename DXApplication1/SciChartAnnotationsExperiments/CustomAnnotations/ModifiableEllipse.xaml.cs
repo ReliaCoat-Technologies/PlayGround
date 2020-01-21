@@ -17,6 +17,10 @@ namespace SciChartAnnotationsExperiments.CustomAnnotations
         private RotateTransform _rotateTransform;
         #endregion
 
+        #region Delegates
+        public event Action<double, double> ellipseRendered;
+        #endregion
+
         #region Constructor
         public ModifiableEllipse()
         {
@@ -29,10 +33,12 @@ namespace SciChartAnnotationsExperiments.CustomAnnotations
             _rotateTransform = new RotateTransform(0);
 
             ellipse.RenderTransformOrigin = new Point(0.5, 0.5);
-            ellipse.RenderTransform= _rotateTransform;
+            ellipse.RenderTransform = _rotateTransform;
 
-            modifiedAngleLine.Visibility = Visibility.Hidden;
+            ellipse.Visibility = Visibility.Visible;
+            renderedPath.Visibility = Visibility.Collapsed;
         }
+
         #endregion
 
         #region Methods
@@ -44,19 +50,7 @@ namespace SciChartAnnotationsExperiments.CustomAnnotations
             _ellipseOrigin.X += border.ActualWidth / 2;
             _ellipseOrigin.Y += border.ActualHeight / 2;
 
-            var mousePosition = mouseEventArgs.GetPosition(border);
-
-            var delX = mousePosition.X - _ellipseOrigin.X;
-            var delY = mousePosition.Y - _ellipseOrigin.Y;
-
-            modifiedAngleLine.X1 = _ellipseOrigin.X - delX;
-            modifiedAngleLine.X2 = _ellipseOrigin.X + delX;
-            modifiedAngleLine.Y1 = _ellipseOrigin.Y - delY;
-            modifiedAngleLine.Y2 = _ellipseOrigin.Y + delY;
-
             _allowMove = true;
-
-            modifiedAngleLine.Visibility = Visibility.Visible;
         }
 
         private void updateEllipseAngle(object sender, MouseEventArgs e)
@@ -65,16 +59,8 @@ namespace SciChartAnnotationsExperiments.CustomAnnotations
 
             var mousePosition = e.GetPosition(border);
 
-            var delX = mousePosition.X - _ellipseOrigin.X;
-            var delY = mousePosition.Y - _ellipseOrigin.Y;
-
-            modifiedAngleLine.X1 = _ellipseOrigin.X - delX;
-            modifiedAngleLine.X2 = _ellipseOrigin.X + delX;
-            modifiedAngleLine.Y1 = _ellipseOrigin.Y - delY;
-            modifiedAngleLine.Y2 = _ellipseOrigin.Y + delY;
-
-            var deltaX = modifiedAngleLine.X2 - modifiedAngleLine.X1;
-            var deltaY = modifiedAngleLine.Y2 - modifiedAngleLine.Y1;
+            var deltaX = mousePosition.X - _ellipseOrigin.X;
+            var deltaY = mousePosition.Y - _ellipseOrigin.Y;
 
             var angle = Math.Atan(deltaY / deltaX) * 180 / Math.PI;
 
@@ -86,13 +72,27 @@ namespace SciChartAnnotationsExperiments.CustomAnnotations
         private void onRightButtonUp(object sender, MouseButtonEventArgs e)
         {
             _allowMove = false;
-            modifiedAngleLine.Visibility = Visibility.Hidden;
-        }
 
-        private void Ellipse_OnMouseLeave(object sender, MouseEventArgs e)
-        {
-            _allowMove = false;
-            modifiedAngleLine.Visibility = Visibility.Hidden;
+            var matrix = _rotateTransform.Value;
+
+            // Does a true transform of the shape.
+            var ellipseGeometry = ellipse.RenderedGeometry;
+
+            var originalBounds = ellipseGeometry.Bounds;
+
+            ellipseGeometry.Transform = new MatrixTransform(matrix);
+            var transformedEllipsePath = ellipseGeometry.GetOutlinedPathGeometry();
+
+            ellipse.Visibility = Visibility.Collapsed;
+            renderedPath.Data = transformedEllipsePath;
+            renderedPath.Visibility = Visibility.Visible;
+
+            var renderedBounds = renderedPath.Data.Bounds;
+
+            var widthRatio = renderedBounds.Width / originalBounds.Width;
+            var heightRatio = renderedBounds.Height / originalBounds.Height;
+
+            ellipseRendered?.Invoke(widthRatio, heightRatio);
         }
         #endregion
     }

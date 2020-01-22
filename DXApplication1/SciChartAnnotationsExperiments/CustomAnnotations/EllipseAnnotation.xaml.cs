@@ -1,7 +1,13 @@
 ﻿using System;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 using DevExpress.XtraExport.Xls;
+using DevExpress.XtraPrinting.Native;
 using SciChart.Charting.Visuals.Annotations;
+using SciChart.Charting.Visuals.Events;
 
 namespace SciChartAnnotationsExperiments.CustomAnnotations
 {
@@ -13,6 +19,8 @@ namespace SciChartAnnotationsExperiments.CustomAnnotations
         private double _x2;
         private double _y1;
         private double _y2;
+        private double[] _beforeDrag;
+        private double[] _afterDrag;
         #endregion
 
         #region Constructor
@@ -21,6 +29,8 @@ namespace SciChartAnnotationsExperiments.CustomAnnotations
             InitializeComponent();
             Tag = "Drawn Annotation";
             IsEditable = true;
+
+            var a = MouseLeftButtonUpEvent;
         }
         #endregion
 
@@ -31,14 +41,36 @@ namespace SciChartAnnotationsExperiments.CustomAnnotations
 
             if (_modifiableEllipse == null) return;
 
-            SizeChanged += onSizeChanged;
+            SizeChanged += (s, e) => _modifiableEllipse.onParentSizeChanged(e.NewSize);
+            DragStarted += onDragStart;
+            DragEnded += OnDragEnded;
             _modifiableEllipse.revertEllipseSize += revertBoxSize;
             _modifiableEllipse.ellipseRendered += renderModifiedEllipse;
         }
 
-        private void onSizeChanged(object s, SizeChangedEventArgs e)
+        private void onDragStart(object sender, EventArgs e)
         {
-            _modifiableEllipse?.onParentSizeChanged(e.NewSize);
+            Console.WriteLine($"Drag Start: [{X1} {X2} {Y1} {Y2}]");
+            _beforeDrag = new[] { X1, X2, Y1, Y2 }.Select(Convert.ToDouble).ToArray();
+            
+        }
+
+        private void OnDragEnded(object sender, EventArgs e)
+        {
+            Console.WriteLine($"Drag End: [{X1} {X2} {Y1} {Y2}]");
+            _afterDrag = new[] { X1, X2, Y1, Y2 }.Select(Convert.ToDouble).ToArray();
+
+            Console.WriteLine(_beforeDrag.Zip(_afterDrag, (y, z) => y == z).Any(x => x) ? "Resize" : "Move");
+
+            var horizontalShift = _afterDrag[0] - _beforeDrag[0];
+            var verticalShift = _afterDrag[2] - _beforeDrag[2];
+
+            Console.WriteLine($"Shift: Horizontal:{horizontalShift}, Vertical:{verticalShift}");
+
+            _x1 += horizontalShift;
+            _x2 += horizontalShift;
+            _y1 += verticalShift;
+            _y2 += verticalShift;
         }
 
         private void revertBoxSize()

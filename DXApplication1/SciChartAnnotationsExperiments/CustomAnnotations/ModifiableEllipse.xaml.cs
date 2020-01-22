@@ -10,7 +10,7 @@ namespace SciChartAnnotationsExperiments.CustomAnnotations
     public partial class ModifiableEllipse : UserControl
     {
         #region Fields
-        private bool _allowMove;
+        private bool _dragAction;
         private Point _ellipseOrigin;
         private Vector _originalVector;
         private double _originalAngle;
@@ -19,6 +19,7 @@ namespace SciChartAnnotationsExperiments.CustomAnnotations
         #endregion
 
         #region Delegates
+        public event Action revertEllipseSize;
         public event Action<double, double> ellipseRendered;
         #endregion
 
@@ -28,8 +29,7 @@ namespace SciChartAnnotationsExperiments.CustomAnnotations
             InitializeComponent();
 
             ellipse.MouseRightButtonDown += onRightClickEllipse;
-            ellipse.MouseMove += updateEllipseAngle;
-            border.MouseRightButtonUp += onRightButtonUp;
+            renderedPath.MouseRightButtonDown += onRightClickEllipse;
 
             _rotateTransform = new RotateTransform(0);
 
@@ -37,42 +37,58 @@ namespace SciChartAnnotationsExperiments.CustomAnnotations
             ellipse.RenderTransform = _rotateTransform;
 
             ellipse.Visibility = Visibility.Visible;
-            renderedPath.Visibility = Visibility.Collapsed;
+            renderedPath.Visibility = Visibility.Hidden;
+            angleLine.Visibility = Visibility.Hidden;
         }
-
         #endregion
 
         #region Methods
-        private void onRightClickEllipse(object sender, MouseEventArgs mouseEventArgs)
+        public void onParentSizeChanged(Size e)
         {
-            _ellipseOrigin = border.GetPosition();
+            _ellipseOrigin = new Point(e.Width / 2, e.Height / 2);
+        }
 
-            // Sets to center of ellipse position.
-            _ellipseOrigin.X += border.ActualWidth / 2;
-            _ellipseOrigin.Y += border.ActualHeight / 2;
+        private void onRightClickEllipse(object sender, MouseButtonEventArgs mouseButtonEventArgs)
+        {
+            MouseMove += updateEllipseAngle;
+            MouseRightButtonUp += onRightButtonUp;
 
-            _allowMove = true;
+            revertEllipseSize?.Invoke();
+
+            ellipse.Visibility = Visibility.Visible;
+            renderedPath.Visibility = Visibility.Hidden;
+            angleLine.Visibility = Visibility.Visible;
+
+            _dragAction = true;
         }
 
         private void updateEllipseAngle(object sender, MouseEventArgs e)
         {
-            if (!_allowMove) return;
+            if (!_dragAction) return;
+
+            if (Mouse.RightButton != MouseButtonState.Pressed) return;
 
             var mousePosition = e.GetPosition(border);
+
+            angleLine.X1 = _ellipseOrigin.X;
+            angleLine.Y1 = _ellipseOrigin.Y;
+            angleLine.X2 = mousePosition.X;
+            angleLine.Y2 = mousePosition.Y;
 
             var deltaX = mousePosition.X - _ellipseOrigin.X;
             var deltaY = mousePosition.Y - _ellipseOrigin.Y;
 
             var angle = Math.Atan(deltaY / deltaX) * 180 / Math.PI;
 
-            Console.WriteLine(angle);
-
             _rotateTransform.Angle = angle;
         }
 
         private void onRightButtonUp(object sender, MouseButtonEventArgs e)
         {
-            _allowMove = false;
+            _dragAction = false;
+
+            MouseMove -= updateEllipseAngle;
+            MouseRightButtonUp -= onRightButtonUp;
 
             if (_isTransformed) return;
 
@@ -86,9 +102,10 @@ namespace SciChartAnnotationsExperiments.CustomAnnotations
             ellipseGeometry.Transform = new MatrixTransform(matrix);
             var transformedEllipsePath = ellipseGeometry.GetOutlinedPathGeometry();
 
-            ellipse.Visibility = Visibility.Collapsed;
+            ellipse.Visibility = Visibility.Hidden;
             renderedPath.Data = transformedEllipsePath;
             renderedPath.Visibility = Visibility.Visible;
+            angleLine.Visibility = Visibility.Hidden;
 
             var renderedBounds = renderedPath.Data.Bounds;
 
@@ -98,5 +115,7 @@ namespace SciChartAnnotationsExperiments.CustomAnnotations
             ellipseRendered?.Invoke(widthRatio, heightRatio);
         }
         #endregion
+
+
     }
 }

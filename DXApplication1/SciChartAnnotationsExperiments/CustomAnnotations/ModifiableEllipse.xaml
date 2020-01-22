@@ -9,6 +9,9 @@
             <Ellipse x:Name="ellipse"
                      Fill="#66FF0000"/>
 
+            <Line x:Name="angleLine"
+                  Stroke="DodgerBlue"/>
+
             <Path x:Name="renderedPath"
                   Stretch="Fill"
                   Fill="#6600FF00"/>

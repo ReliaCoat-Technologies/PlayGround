@@ -15,6 +15,7 @@ namespace SciChartAnnotationsExperiments.CustomAnnotations
         private Vector _originalVector;
         private double _originalAngle;
         private RotateTransform _rotateTransform;
+        private bool _isTransformed => ellipse.Visibility != Visibility.Visible;
         #endregion
 
         #region Delegates
@@ -72,6 +73,8 @@ namespace SciChartAnnotationsExperiments.CustomAnnotations
         private void onRightButtonUp(object sender, MouseButtonEventArgs e)
         {
             _allowMove = false;
+
+            if (_isTransformed) return;
 
             var matrix = _rotateTransform.Value;
 

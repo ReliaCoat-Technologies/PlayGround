@@ -34,6 +34,7 @@ namespace SciChartAnnotationsExperiments.CustomAnnotations
             if (_modifiableEllipse == null) return;
 
             SizeChanged += (s, e) => _modifiableEllipse.onParentSizeChanged(e.NewSize);
+
             DragStarted += onDragStart;
             DragEnded += OnDragEnded;
             _modifiableEllipse.revertEllipseSize += revertBoxSize;
@@ -53,13 +54,25 @@ namespace SciChartAnnotationsExperiments.CustomAnnotations
             _transformContext.calculateTransformValues();
 
             Console.WriteLine($"Shift: Horizontal:{_transformContext.deltaXMidpoint}, Vertical:{_transformContext.deltaYMidpoint}");
-
-            _x1 += _transformContext.deltaXMidpoint;
-            _x2 += _transformContext.deltaXMidpoint;
-            _y1 += _transformContext.deltaYMidpoint;
-            _y2 += _transformContext.deltaYMidpoint;
-
             Console.WriteLine($"Scale: Horizontal:{_transformContext.XScale}, Vertical:{_transformContext.YScale}");
+
+            var adjustedOriginDimensions = _transformContext.getAdjustedWidthHeight(_x2 - _x1, _y2 - _y1);
+
+            var adjustedWidth = adjustedOriginDimensions[0];
+            var adjustedHeight = adjustedOriginDimensions[1];
+
+            // _x1 += _transformContext.deltaXMidpoint;
+            // _x2 += _transformContext.deltaXMidpoint;
+            // _y1 += _transformContext.deltaYMidpoint;
+            // _y2 += _transformContext.deltaYMidpoint;
+
+            var _xMidpoint = (_x1 + _x2 + 2 * _transformContext.deltaXMidpoint) / 2;
+            var _yMidpoint = (_y1 + _y2 + 2 * _transformContext.deltaYMidpoint) / 2;
+
+            _x1 = _xMidpoint - adjustedWidth / 2;
+            _x2 = _xMidpoint + adjustedWidth / 2;
+            _y1 = _yMidpoint + adjustedHeight / 2;
+            _y2 = _yMidpoint - adjustedHeight / 2;
         }
 
         private void revertBoxSize()

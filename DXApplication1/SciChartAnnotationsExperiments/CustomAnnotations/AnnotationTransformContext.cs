@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace SciChartAnnotationsExperiments.CustomAnnotations
 {
@@ -67,6 +68,14 @@ namespace SciChartAnnotationsExperiments.CustomAnnotations
 
             XScale = (afterX2 - afterX1) / (beforeX2 - beforeX1);
             YScale = (afterY2 - afterY1) / (beforeY2 - beforeY1);
+        }
+
+        public IList<double> getAdjustedWidthHeight(double width, double height)
+        {
+            var adjustedWidth = Math.Abs(width) * XScale;
+            var adjustedHeight = Math.Abs(height) * YScale;
+
+            return new List<double> { adjustedWidth, adjustedHeight };
         }
     }
 }

@@ -17,7 +17,8 @@ namespace SciChartAnnotationsExperiments.CustomAnnotations
         public double deltaX2 { get; private set; }
         public double deltaY1 { get; private set; }
         public double deltaY2 { get; private set; }
-        public double horizontalShift { get; private set; }
+        public double XScale { get; private set; }
+        public double YScale { get; private set; }
         #endregion
 
         public void setBeforeTransform(IComparable X1, IComparable X2, IComparable Y1, IComparable Y2)
@@ -42,6 +43,9 @@ namespace SciChartAnnotationsExperiments.CustomAnnotations
             deltaX2 = afterX2 - beforeX2;
             deltaY1 = afterY1 - beforeY1;
             deltaY2 = afterY2 - beforeY2;
+
+            XScale = deltaX1 / deltaX2;
+            YScale = deltaY1 / deltaY2;
         }
     }
 }

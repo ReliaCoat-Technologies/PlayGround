@@ -52,15 +52,14 @@ namespace SciChartAnnotationsExperiments.CustomAnnotations
             _transformContext.setAfterTransform(X1, X2, Y1, Y2);
             _transformContext.calculateTransformValues();
 
-            var horizontalShift = _transformContext.deltaX1;
-            var verticalShift = _transformContext.deltaY1;
+            Console.WriteLine($"Shift: Horizontal:{_transformContext.deltaX1}, Vertical:{_transformContext.deltaY1}");
 
-            Console.WriteLine($"Shift: Horizontal:{horizontalShift}, Vertical:{verticalShift}");
+            _x1 += _transformContext.deltaX1;
+            _x2 += _transformContext.deltaX1;
+            _y1 += _transformContext.deltaY1;
+            _y2 += _transformContext.deltaY1;
 
-            _x1 += horizontalShift;
-            _x2 += horizontalShift;
-            _y1 += verticalShift;
-            _y2 += verticalShift;
+            Console.WriteLine($"Scale: Horizontal:{_transformContext.XScale}, Vertical:{_transformContext.YScale}");
         }
 
         private void revertBoxSize()

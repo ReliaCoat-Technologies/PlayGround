@@ -45,7 +45,7 @@ namespace SciChartAnnotationsExperiments.CustomAnnotations
             deltaY2 = afterY2 - beforeY2;
 
             XScale = (afterX2 - afterX1) / (beforeX2 - beforeX1);
-            YScale = (afterY2 - afterY1) / (afterX2 - afterX1);
+            YScale = (afterY2 - afterY1) / (beforeY2 - beforeY1);
         }
     }
 }

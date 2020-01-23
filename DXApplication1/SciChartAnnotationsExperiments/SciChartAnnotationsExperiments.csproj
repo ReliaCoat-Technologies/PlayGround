@@ -76,6 +76,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="CustomAnnotations\AnnotationTransformContext.cs" />
     <Compile Include="CustomAnnotations\EllipseAnnotation.xaml.cs">
       <DependentUpon>EllipseAnnotation.xaml</DependentUpon>
     </Compile>

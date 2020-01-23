@@ -1,13 +1,6 @@
 ﻿using System;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Input;
-using DevExpress.XtraExport.Xls;
-using DevExpress.XtraPrinting.Native;
 using SciChart.Charting.Visuals.Annotations;
-using SciChart.Charting.Visuals.Events;
 
 namespace SciChartAnnotationsExperiments.CustomAnnotations
 {
@@ -19,8 +12,7 @@ namespace SciChartAnnotationsExperiments.CustomAnnotations
         private double _x2;
         private double _y1;
         private double _y2;
-        private double[] _beforeDrag;
-        private double[] _afterDrag;
+        private readonly AnnotationTransformContext _transformContext;
         #endregion
 
         #region Constructor
@@ -30,7 +22,7 @@ namespace SciChartAnnotationsExperiments.CustomAnnotations
             Tag = "Drawn Annotation";
             IsEditable = true;
 
-            var a = MouseLeftButtonUpEvent;
+            _transformContext = new AnnotationTransformContext();
         }
         #endregion
 
@@ -51,19 +43,17 @@ namespace SciChartAnnotationsExperiments.CustomAnnotations
         private void onDragStart(object sender, EventArgs e)
         {
             Console.WriteLine($"Drag Start: [{X1} {X2} {Y1} {Y2}]");
-            _beforeDrag = new[] { X1, X2, Y1, Y2 }.Select(Convert.ToDouble).ToArray();
-            
+            _transformContext.setBeforeTransform(X1, X2, Y1, Y2);
         }
 
         private void OnDragEnded(object sender, EventArgs e)
         {
             Console.WriteLine($"Drag End: [{X1} {X2} {Y1} {Y2}]");
-            _afterDrag = new[] { X1, X2, Y1, Y2 }.Select(Convert.ToDouble).ToArray();
+            _transformContext.setAfterTransform(X1, X2, Y1, Y2);
+            _transformContext.calculateTransformValues();
 
-            Console.WriteLine(_beforeDrag.Zip(_afterDrag, (y, z) => y == z).Any(x => x) ? "Resize" : "Move");
-
-            var horizontalShift = _afterDrag[0] - _beforeDrag[0];
-            var verticalShift = _afterDrag[2] - _beforeDrag[2];
+            var horizontalShift = _transformContext.deltaX1;
+            var verticalShift = _transformContext.deltaY1;
 
             Console.WriteLine($"Shift: Horizontal:{horizontalShift}, Vertical:{verticalShift}");
 

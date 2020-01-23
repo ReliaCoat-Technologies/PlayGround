@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows.Media;
-using DevExpress.Mvvm;
 using SciChart.Charting.ChartModifiers;
 using SciChart.Charting.Model.ChartSeries;
 using SciChart.Charting.Model.DataSeries;
@@ -14,7 +14,7 @@ using SciChartAnnotationsExperiments.CustomAnnotations;
 
 namespace SciChartAnnotationsExperiments.ViewModels
 {
-    public class MainWindowViewModel : ViewModelBase
+    public class MainWindowViewModel : INotifyPropertyChanged
     {
         #region Fields
         private ObservableCollection<IRenderableSeriesViewModel> _renderableSeriesList;
@@ -26,41 +26,45 @@ namespace SciChartAnnotationsExperiments.ViewModels
         private AnnotationCreationModifier _annotationCreationModifier;
         #endregion
 
+        #region Delegates
+        public event PropertyChangedEventHandler PropertyChanged;
+        #endregion
+
         #region Properties
         public ObservableCollection<IRenderableSeriesViewModel> renderableSeriesList
         {
             get { return _renderableSeriesList; }
-            set { _renderableSeriesList = value; RaisePropertyChanged(() => renderableSeriesList); }
+            set { _renderableSeriesList = value; raisePropertyChanged(nameof(renderableSeriesList)); }
         }
         public IAxis xAxis
         {
             get { return _xAxis; }
-            set { _xAxis = value; RaisePropertyChanged(() => xAxis); }
+            set { _xAxis = value; raisePropertyChanged(nameof(xAxis)); }
         }
         public IAxis yAxis
         {
             get { return _yAxis; }
-            set { _yAxis = value; RaisePropertyChanged(() => yAxis); }
+            set { _yAxis = value; raisePropertyChanged(nameof(yAxis)); }
         }
         public AnnotationCollection annotations
         {
             get { return _annotations; }
-            set { _annotations = value; RaisePropertyChanged(() => annotations); }
+            set { _annotations = value; raisePropertyChanged(nameof(annotations)); }
         }
         public ModifierGroup modifiers
         {
             get { return _modifiers; }
-            set { _modifiers = value; RaisePropertyChanged(() => modifiers); }
+            set { _modifiers = value; raisePropertyChanged(nameof(modifiers)); }
         }
         public RubberBandXyZoomModifier rubberBandModifier
         {
             get { return _rubberBandModifier; }
-            set { _rubberBandModifier = value; RaisePropertyChanged(() => rubberBandModifier); }
+            set { _rubberBandModifier = value; raisePropertyChanged(nameof(rubberBandModifier)); }
         }
         public AnnotationCreationModifier annotationCreationModifier
         {
             get { return _annotationCreationModifier; }
-            set { _annotationCreationModifier = value; RaisePropertyChanged(() => annotationCreationModifier); }
+            set { _annotationCreationModifier = value; raisePropertyChanged(nameof(annotationCreationModifier)); }
         }
         #endregion
 
@@ -144,6 +148,11 @@ namespace SciChartAnnotationsExperiments.ViewModels
             };
 
             renderableSeriesList.Add(renderableSeries);
+        }
+
+        private void raisePropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
 

@@ -1,20 +1,18 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Windows;
-using DevExpress.Xpf.Bars;
-using DevExpress.Xpf.Core;
+using System.Windows.Controls;
 using SciChart.Charting.Visuals.Annotations;
 using SciChartAnnotationsExperiments.CustomAnnotations;
 using SciChartAnnotationsExperiments.ViewModels;
 
 namespace SciChartAnnotationsExperiments
 {
-    public partial class MainWindow : ThemedWindow
+    public partial class MainWindow : Window
     {
         #region Fields
         private readonly MainWindowViewModel _viewModel;
-        private readonly IDictionary<BarCheckItem, Type> _labelTypeDictionary;
+        private readonly IDictionary<Button, Type> _labelTypeDictionary;
         #endregion
 
         #region Constructor
@@ -25,32 +23,23 @@ namespace SciChartAnnotationsExperiments
             _viewModel = new MainWindowViewModel();
             DataContext = _viewModel;
 
-            _labelTypeDictionary = new Dictionary<BarCheckItem, Type>
+            _labelTypeDictionary = new Dictionary<Button, Type>
             {
-                { ellipseCheckItem, typeof(EllipseAnnotation) },
-                { boxCheckItem, typeof(BoxAnnotation) },
+                { ellipseButton, typeof(EllipseAnnotation) }
             };
         }
         #endregion
 
         #region Methods
-        private void onDrawClicked(object sender, ItemClickEventArgs e)
+        private void onDrawClicked(object sender, RoutedEventArgs routedEventArgs)
         {
-            var barItem = sender as BarCheckItem;
+            var barItem = sender as Button;
 
             if (barItem == null) return;
 
             _viewModel.annotationCreationModifier.AnnotationType = _labelTypeDictionary[barItem];
 
-            if (barItem.IsChecked == true)
-            {
-                enableAnnotationDraw();
-            }
-            else
-            {
-                uncheckAll();
-                disableAnnotationDraw();
-            }
+            enableAnnotationDraw();
         }
 
         private void enableAnnotationDraw()
@@ -74,13 +63,6 @@ namespace SciChartAnnotationsExperiments
             abase.IsEditable = true;
 
             disableAnnotationDraw();
-            uncheckAll();
-        }
-
-        private void uncheckAll()
-        {
-            foreach (var barCheckItem in _labelTypeDictionary.Keys)
-                barCheckItem.IsChecked = false;
         }
         #endregion
     }

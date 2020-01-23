@@ -52,12 +52,12 @@ namespace SciChartAnnotationsExperiments.CustomAnnotations
             _transformContext.setAfterTransform(X1, X2, Y1, Y2);
             _transformContext.calculateTransformValues();
 
-            Console.WriteLine($"Shift: Horizontal:{_transformContext.deltaX1}, Vertical:{_transformContext.deltaY1}");
+            Console.WriteLine($"Shift: Horizontal:{_transformContext.deltaXMidpoint}, Vertical:{_transformContext.deltaYMidpoint}");
 
-            _x1 += _transformContext.deltaX1;
-            _x2 += _transformContext.deltaX1;
-            _y1 += _transformContext.deltaY1;
-            _y2 += _transformContext.deltaY1;
+            _x1 += _transformContext.deltaXMidpoint;
+            _x2 += _transformContext.deltaXMidpoint;
+            _y1 += _transformContext.deltaYMidpoint;
+            _y2 += _transformContext.deltaYMidpoint;
 
             Console.WriteLine($"Scale: Horizontal:{_transformContext.XScale}, Vertical:{_transformContext.YScale}");
         }

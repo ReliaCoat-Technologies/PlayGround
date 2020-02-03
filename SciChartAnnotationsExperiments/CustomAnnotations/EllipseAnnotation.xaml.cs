@@ -44,15 +44,15 @@ namespace SciChartAnnotationsExperiments.CustomAnnotations
 
 			SizeChanged += (s, e) => _modifiableEllipse.onParentSizeChanged(e.NewSize);
 
-			DragStarted += onDragStart;
-			DragEnded += onDragEnded;
+			DragStarted += onMoveResizeStart;
+			DragEnded += onMoveResizeEnded;
 
-			_modifiableEllipse.modifiableEllipseShown += setModifiableEllipseSize;
-			_modifiableEllipse.renderedPathShown += resetOriginalBoundingBoxes;
-			_modifiableEllipse.rotationCompleted += updateNewAngleBoundingBox;
+			_modifiableEllipse.modifiableEllipseShown += setModifiableEllipseBounds;
+			_modifiableEllipse.renderedPathShown += setRenderedPathBounds;
+			_modifiableEllipse.rotationCompleted += updateModifiableEllipseBoundingBox;
 		}
 
-		private void onDragStart(object sender, EventArgs e)
+		private void onMoveResizeStart(object sender, EventArgs e)
 		{
 			// Occurs original dimensions have not yet been set.
 			if (new[] { _beforeTransformX1, _beforeTransformY1, _beforeTransformX2, _beforeTransformY2 }.All(x => x == 0))
@@ -67,7 +67,7 @@ namespace SciChartAnnotationsExperiments.CustomAnnotations
 			_transformContext.setBeforeTransform(X1, X2, Y1, Y2);
 		}
 
-		private void onDragEnded(object sender, EventArgs e)
+		private void onMoveResizeEnded(object sender, EventArgs e)
 		{
 			// Takes down bounds after transforming.
 			_transformContext.setAfterTransform(X1, X2, Y1, Y2);
@@ -94,7 +94,13 @@ namespace SciChartAnnotationsExperiments.CustomAnnotations
 			Console.WriteLine($"Original Transform: [X1:{_beforeTransformX1} X2:{_beforeTransformX2} Y1:{_beforeTransformY1} Y2:{_beforeTransformY2}]");
 		}
 
-		private void setModifiableEllipseSize()
+		private void updateModifiableEllipseBoundingBox(double widthRatio, double heightRatio)
+		{
+			_widthRatio = widthRatio;
+			_heightRatio = heightRatio;
+		}
+
+		private void setModifiableEllipseBounds()
 		{
 			if (new[] { _beforeTransformX1, _beforeTransformY1, _beforeTransformX2, _beforeTransformY2 }.All(x => x == 0)) return;
 
@@ -105,13 +111,7 @@ namespace SciChartAnnotationsExperiments.CustomAnnotations
 			Y2 = _beforeTransformY2;
 		}
 
-		private void updateNewAngleBoundingBox(double widthRatio, double heightRatio)
-		{
-			_widthRatio = widthRatio;
-			_heightRatio = heightRatio;
-		}
-
-		private void resetOriginalBoundingBoxes()
+		private void setRenderedPathBounds()
 		{
 			// Stores the un-transformed ellipses bounds
 			_beforeTransformX1 = Convert.ToDouble(X1);

@@ -16,19 +16,24 @@ namespace SciChartAnnotationsExperiments.CustomAnnotations
         #endregion
 
         #region Delegates
-        public event Action rotationStarted;
+        
         public event Action<double, double> rotationCompleted;
-        #endregion
+        public event Action modifiableEllipseShown;
+        public event Action renderedPathShown;
+		#endregion
 
-        #region Constructor
-        public ModifiableEllipse()
+		#region Constructor
+		public ModifiableEllipse()
         {
             InitializeComponent();
 
-            ellipse.MouseRightButtonDown += onRightClickEllipse;
-            renderedPath.MouseRightButtonDown += onRightClickEllipse;
+            ellipseControl.MouseDoubleClick += showRenderedPath;
+            angelLineControl.MouseDoubleClick += showRenderedPath;
+            renderedPathControl.MouseDoubleClick += showModifiableEllipse;
 
-            _rotateTransform = new RotateTransform(0);
+            ellipse.MouseRightButtonDown += onRightClickEllipse;
+
+			_rotateTransform = new RotateTransform(0);
 
             ellipse.RenderTransformOrigin = new Point(0.5, 0.5);
             ellipse.RenderTransform = _rotateTransform;
@@ -38,10 +43,33 @@ namespace SciChartAnnotationsExperiments.CustomAnnotations
             renderedPath.Visibility = Visibility.Hidden;
             angleLine.Visibility = Visibility.Hidden;
         }
+
         #endregion
 
-        #region Methods
-        public void onParentSizeChanged(Size e)
+		#region Methods
+		private void showRenderedPath(object sender, MouseButtonEventArgs e)
+		{
+			getRenderedPathFromEllipse();
+
+			ellipse.Visibility = Visibility.Hidden;
+			renderedPath.Visibility = Visibility.Visible;
+			angleLine.Visibility = Visibility.Hidden;
+
+			renderedPathShown?.Invoke();
+		}
+
+		private void showModifiableEllipse(object sender, MouseButtonEventArgs e)
+		{
+			ellipse.Visibility = Visibility.Visible;
+			renderedPath.Visibility = Visibility.Hidden;
+			angleLine.Visibility = Visibility.Visible;
+
+			modifiableEllipseShown?.Invoke();
+
+			ellipse.MouseRightButtonDown += onRightClickEllipse;
+		}
+
+		public void onParentSizeChanged(Size e)
         {
             // Resets the ellipse origin when the size has changed.
             _ellipseOrigin = new Point(e.Width / 2, e.Height / 2);
@@ -49,12 +77,12 @@ namespace SciChartAnnotationsExperiments.CustomAnnotations
 
         private void onRightClickEllipse(object sender, MouseButtonEventArgs mouseButtonEventArgs)
         {
-            MouseMove += updateEllipseAngle;
-            MouseRightButtonUp += onRightButtonUp;
+            ellipse.MouseMove += updateEllipseAngle;
+            ellipse.MouseRightButtonUp += onRightButtonUp;
+            angleLine.MouseMove += updateEllipseAngle;
+            angleLine.MouseRightButtonDown += onRightButtonUp;
 
-            rotationStarted?.Invoke();
-
-            ellipse.Visibility = Visibility.Visible;
+			ellipse.Visibility = Visibility.Visible;
             renderedPath.Visibility = Visibility.Hidden;
             angleLine.Visibility = Visibility.Visible;
 
@@ -85,38 +113,40 @@ namespace SciChartAnnotationsExperiments.CustomAnnotations
             _rotateTransform.Angle = angle;
         }
 
+        private void getRenderedPathFromEllipse()
+        {
+	        // Converts WPF Ellipse to WPF Path
+	        var matrix = _rotateTransform.Value;
+
+	        // Gets the Geometry of the un-transformed and its bounds.
+	        var ellipseGeometry = ellipse.RenderedGeometry;
+	        var originalBounds = ellipseGeometry.Bounds;
+
+	        // Performs transformation on the ellipse's geometry and creates a path based on it.
+	        ellipseGeometry.Transform = new MatrixTransform(matrix);
+	        var transformedEllipsePath = ellipseGeometry.GetOutlinedPathGeometry();
+	        renderedPath.Data = transformedEllipsePath;
+
+	        // Obtains the bounds of the transformed ellipse's path
+	        var transformedBounds = renderedPath.Data.Bounds;
+
+			// Obtains change in width and height of ellipse after rotation.
+			var widthRatio = transformedBounds.Width / originalBounds.Width;
+	        var heightRatio = transformedBounds.Height / originalBounds.Height;
+
+	        rotationCompleted?.Invoke(widthRatio, heightRatio);
+		}
+
         private void onRightButtonUp(object sender, MouseButtonEventArgs e)
         {
             _isDragging = false;
 
-            MouseMove -= updateEllipseAngle;
-            MouseRightButtonUp -= onRightButtonUp;
+            ellipse.MouseMove -= updateEllipseAngle;
+            ellipse.MouseRightButtonUp -= onRightButtonUp;
+            angleLine.MouseMove -= updateEllipseAngle;
+            angleLine.MouseRightButtonDown -= onRightButtonUp;
 
-            // Converts WPF Ellipse to WPF Path
-            var matrix = _rotateTransform.Value;
-
-            // Gets the Geometry of the un-transformed and its bounds.
-            var ellipseGeometry = ellipse.RenderedGeometry;
-            var originalBounds = ellipseGeometry.Bounds;
-
-            // Performs transformation on the ellipse's geometry and creates a path based on it.
-            ellipseGeometry.Transform = new MatrixTransform(matrix);
-            var transformedEllipsePath = ellipseGeometry.GetOutlinedPathGeometry();
-            renderedPath.Data = transformedEllipsePath;
-
-            // Obtains the bounds of the transformed ellipse's path
-            var transformedBounds = renderedPath.Data.Bounds;
-
-            // Hides the original ellipse, shows the transformed path instead.
-            ellipse.Visibility = Visibility.Hidden;
-            renderedPath.Visibility = Visibility.Visible;
-            angleLine.Visibility = Visibility.Hidden;
-
-            // Obtains change in width and height of ellipse after rotation.
-            var widthRatio = transformedBounds.Width / originalBounds.Width;
-            var heightRatio = transformedBounds.Height / originalBounds.Height;
-
-            rotationCompleted?.Invoke(widthRatio, heightRatio);
+			getRenderedPathFromEllipse();
         }
         #endregion
     }

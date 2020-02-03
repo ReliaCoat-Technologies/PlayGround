@@ -2,23 +2,28 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <Border x:Name="border" ClipToBounds="False">
+	<Border x:Name="border" ClipToBounds="False">
 
-        <Grid>
+		<Grid>
 
-            <Ellipse x:Name="ellipse"
-                     Fill="#66FF0000"/>
+			<ContentControl x:Name="ellipseControl">
+				<Ellipse x:Name="ellipse" Fill="#66FF0000"/>
+			</ContentControl>
 
-            <Line x:Name="angleLine"
-                  Stroke="DodgerBlue"/>
+			<ContentControl x:Name="angelLineControl">
+				<Line x:Name="angleLine"
+				      Stroke="DodgerBlue"/>
+			</ContentControl>
 
-            <Path x:Name="renderedPath"
-                  Stretch="Fill"
-                  Fill="#6600FF00"/>
+			<ContentControl x:Name="renderedPathControl">
+				<Path x:Name="renderedPath"
+				      Stretch="Fill"
+				      Fill="#6600FF00"/>
+			</ContentControl>
 
-        </Grid>
+		</Grid>
 
-    </Border>
+	</Border>
 
 
 </UserControl>

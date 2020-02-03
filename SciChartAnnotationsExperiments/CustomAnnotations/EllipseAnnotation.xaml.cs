@@ -26,9 +26,13 @@ namespace SciChartAnnotationsExperiments.CustomAnnotations
 		{
 			InitializeComponent();
 			Tag = "Drawn Annotation";
+
+			UseLayoutRounding = false;
+
 			ClipToBounds = false;
 			IsEditable = true;
 			IsResizable = true;
+			
 
 			_transformContext = new AnnotationTransformContext();
 		}

@@ -27,27 +27,28 @@ namespace SciChartAnnotationsExperiments.CustomAnnotations
         {
             InitializeComponent();
 
+            border.MouseRightButtonDown += onRightClickEllipse;
+
+			/*
             ellipseControl.MouseDoubleClick += showRenderedPath;
             angelLineControl.MouseDoubleClick += showRenderedPath;
             renderedPathControl.MouseDoubleClick += showModifiableEllipse;
-
-            ellipse.MouseRightButtonDown += onRightClickEllipse;
+			*/
 
 			_rotateTransform = new RotateTransform(0);
 
-            ellipse.RenderTransformOrigin = new Point(0.5, 0.5);
-            ellipse.RenderTransform = _rotateTransform;
+            ellipseControl.RenderTransformOrigin = new Point(0.5, 0.5);
+            ellipseControl.RenderTransform = _rotateTransform;
 
             // Showing the original ellipse when it's being created.
             ellipse.Visibility = Visibility.Visible;
             renderedPath.Visibility = Visibility.Hidden;
             angleLine.Visibility = Visibility.Hidden;
         }
-
-        #endregion
+		#endregion
 
 		#region Methods
-		private void showRenderedPath(object sender, MouseButtonEventArgs e)
+		private void showRenderedPath(object sender = null, MouseButtonEventArgs e = null)
 		{
 			getRenderedPathFromEllipse();
 
@@ -58,15 +59,13 @@ namespace SciChartAnnotationsExperiments.CustomAnnotations
 			renderedPathShown?.Invoke();
 		}
 
-		private void showModifiableEllipse(object sender, MouseButtonEventArgs e)
+		private void showModifiableEllipse(object sender = null, MouseButtonEventArgs e = null)
 		{
 			ellipse.Visibility = Visibility.Visible;
 			renderedPath.Visibility = Visibility.Hidden;
 			angleLine.Visibility = Visibility.Visible;
 
 			modifiableEllipseShown?.Invoke();
-
-			ellipse.MouseRightButtonDown += onRightClickEllipse;
 		}
 
 		public void onParentSizeChanged(Size e)
@@ -77,10 +76,10 @@ namespace SciChartAnnotationsExperiments.CustomAnnotations
 
         private void onRightClickEllipse(object sender, MouseButtonEventArgs mouseButtonEventArgs)
         {
-            ellipse.MouseMove += updateEllipseAngle;
-            ellipse.MouseRightButtonUp += onRightButtonUp;
-            angleLine.MouseMove += updateEllipseAngle;
-            angleLine.MouseRightButtonDown += onRightButtonUp;
+	        showModifiableEllipse();
+
+			border.MouseMove += updateEllipseAngle;
+            border.MouseRightButtonUp += onRightButtonUp;
 
 			ellipse.Visibility = Visibility.Visible;
             renderedPath.Visibility = Visibility.Hidden;
@@ -113,7 +112,19 @@ namespace SciChartAnnotationsExperiments.CustomAnnotations
             _rotateTransform.Angle = angle;
         }
 
-        private void getRenderedPathFromEllipse()
+        private void onRightButtonUp(object sender, MouseButtonEventArgs e)
+        {
+	        _isDragging = false;
+
+	        border.MouseMove -= updateEllipseAngle;
+	        border.MouseRightButtonUp -= onRightButtonUp;
+
+			getRenderedPathFromEllipse();
+
+			showRenderedPath();
+        }
+
+		private void getRenderedPathFromEllipse()
         {
 	        // Converts WPF Ellipse to WPF Path
 	        var matrix = _rotateTransform.Value;
@@ -136,18 +147,6 @@ namespace SciChartAnnotationsExperiments.CustomAnnotations
 
 	        rotationCompleted?.Invoke(widthRatio, heightRatio);
 		}
-
-        private void onRightButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            _isDragging = false;
-
-            ellipse.MouseMove -= updateEllipseAngle;
-            ellipse.MouseRightButtonUp -= onRightButtonUp;
-            angleLine.MouseMove -= updateEllipseAngle;
-            angleLine.MouseRightButtonDown -= onRightButtonUp;
-
-			getRenderedPathFromEllipse();
-        }
         #endregion
     }
 }

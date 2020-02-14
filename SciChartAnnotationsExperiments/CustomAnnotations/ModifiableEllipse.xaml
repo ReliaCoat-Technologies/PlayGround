@@ -7,7 +7,8 @@
 		<Grid>
 
 			<ContentControl x:Name="ellipseControl">
-				<Ellipse x:Name="ellipse" Fill="#66FF0000"/>
+				<Ellipse x:Name="ellipse" Fill="#66FF0000"
+				         Stroke="White" StrokeThickness="2"/>
 			</ContentControl>
 
 			<ContentControl x:Name="angelLineControl">
@@ -16,14 +17,12 @@
 			</ContentControl>
 
 			<ContentControl x:Name="renderedPathControl">
-				<Path x:Name="renderedPath"
-				      Stretch="Fill"
-				      Fill="#6600FF00"/>
+				<Path x:Name="renderedPath" Stretch="Fill" Fill="#66FF0000"
+				      Stroke="White" StrokeThickness="2"/>
 			</ContentControl>
 
 		</Grid>
 
 	</Border>
-
 
 </UserControl>

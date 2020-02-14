@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SciChartAnnotationsExperime
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolutionCleaner", "SolutionCleaner\SolutionCleaner.csproj", "{DD328747-9A8F-414E-99E1-90DCEB332690}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoftwareThemeDesigner", "DXApplication1\SoftwareThemeDesigner\SoftwareThemeDesigner.csproj", "{C8B8E91B-037B-4594-9837-9580D4F30591}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{DD328747-9A8F-414E-99E1-90DCEB332690}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DD328747-9A8F-414E-99E1-90DCEB332690}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DD328747-9A8F-414E-99E1-90DCEB332690}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C8B8E91B-037B-4594-9837-9580D4F30591}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8B8E91B-037B-4594-9837-9580D4F30591}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8B8E91B-037B-4594-9837-9580D4F30591}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8B8E91B-037B-4594-9837-9580D4F30591}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

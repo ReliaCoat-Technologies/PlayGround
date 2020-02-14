@@ -5,15 +5,17 @@
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{AB4D41C5-6D12-4E4F-A499-2D5A6685557D}</ProjectGuid>
+    <ProjectGuid>{C8B8E91B-037B-4594-9837-9580D4F30591}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SciChartAnnotationsExperiments</RootNamespace>
-    <AssemblyName>SciChartAnnotationsExperiments</AssemblyName>
+    <RootNamespace>SoftwareThemeDesigner</RootNamespace>
+    <AssemblyName>SoftwareThemeDesigner</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -35,22 +37,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="SciChart.Charting, Version=5.4.0.12119, Culture=neutral, PublicKeyToken=b55dd9efe817e823, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\SciChart.5.4.0.12119\lib\net45\SciChart.Charting.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="SciChart.Core, Version=5.4.0.12119, Culture=neutral, PublicKeyToken=b55dd9efe817e823, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\SciChart.5.4.0.12119\lib\net45\SciChart.Core.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="SciChart.Data, Version=5.4.0.12119, Culture=neutral, PublicKeyToken=b55dd9efe817e823, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\SciChart.5.4.0.12119\lib\net45\SciChart.Data.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="SciChart.Drawing, Version=5.4.0.12119, Culture=neutral, PublicKeyToken=b55dd9efe817e823, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\SciChart.5.4.0.12119\lib\net45\SciChart.Drawing.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
+    <Reference Include="DevExpress.Xpf.Core.v19.1" />
+    <Reference Include="DevExpress.Data.v19.1" />
+    <Reference Include="DevExpress.Printing.v19.1.Core" />
+    <Reference Include="DevExpress.Mvvm.v19.1" />
+    <Reference Include="DevExpress.Xpf.Themes.Office2016White.v19.1" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -70,19 +61,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="CustomAnnotations\AnnotationTransformContext.cs" />
-    <Compile Include="CustomAnnotations\EllipseAnnotation.xaml.cs">
-      <DependentUpon>EllipseAnnotation.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="CustomAnnotations\ModifiableEllipse.xaml.cs">
-      <DependentUpon>ModifiableEllipse.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ViewModels\MainWindowViewModel.cs" />
-    <Page Include="CustomAnnotations\EllipseAnnotation.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="CustomAnnotations\ModifiableEllipse.xaml">
+    <Page Include="CustomControls\RctTextBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -93,6 +72,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CustomControls\RctTextBox.xaml.cs">
+      <DependentUpon>RctTextBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -118,16 +100,13 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="App.config" />
-    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Views\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.

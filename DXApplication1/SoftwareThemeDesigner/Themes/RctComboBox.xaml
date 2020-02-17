@@ -4,37 +4,38 @@
                     xmlns:dxi="http://schemas.devexpress.com/winfx/2008/xaml/core/internal"
                     xmlns:dxt="http://schemas.devexpress.com/winfx/2008/xaml/core/themekeys">
 
+    <Style x:Key="RctComboBoxItemStyle"
+           TargetType="{x:Type ComboBoxItem}"
+           BasedOn="{StaticResource {x:Type ComboBoxItem}}">
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="FontSize" Value="24"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ListBoxItem}" >
+                    <Border Background="{TemplateBinding Background}">
+                        <ContentPresenter x:Name="Content"
+                                          Margin="5"
+                                          HorizontalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{dxi:ThemeResource {dxt:PaletteBrushThemeKey ResourceKey=SelectionBackground}}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
     <Style TargetType="{x:Type local:RctComboBox}"
            BasedOn="{StaticResource {x:Type ComboBox}}">
         <Setter Property="Foreground" Value="{dxi:ThemeResource {dxt:PaletteBrushThemeKey ResourceKey=Foreground}}"/>
         <Setter Property="Background" Value="Gray"/>
         <Setter Property="HorizontalContentAlignment" Value="Center"/>
         <Setter Property="IsReadOnly" Value="False"/>
-        <Setter Property="ItemContainerStyle">
-            <Setter.Value>
-                <Style TargetType="{x:Type ComboBoxItem}">
-                    <Setter Property="SnapsToDevicePixels" Value="True"/>
-                    <Setter Property="HorizontalAlignment" Value="Stretch"/>
-                    <Setter Property="Background" Value="Transparent"/>
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="{x:Type ListBoxItem}" >
-                                <Border Background="{TemplateBinding Background}">
-                                    <ContentPresenter x:Name="Content"
-                                                      Margin="5"
-                                                      HorizontalAlignment="Center"/>
-                                </Border>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                    <Style.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="{dxi:ThemeResource {dxt:PaletteBrushThemeKey ResourceKey=SelectionBackground}}"/>
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </Setter.Value>
-        </Setter>
+        <Setter Property="ItemContainerStyle" Value="{StaticResource RctComboBoxItemStyle}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:RctComboBox}">
@@ -84,12 +85,12 @@
                                    HorizontalOffset="{Binding ActualWidth, ElementName=PART_Border}"
                                    IsOpen="{TemplateBinding IsDropDownOpen}"
                                    AllowsTransparency="True"
-                                   Focusable="False" Margin="25"
-                                   MinWidth="200">
+                                   Focusable="False" Margin="25">
                                 <Grid Margin="12" Background="Transparent" HorizontalAlignment="Right">
                                     <Border Background="{dxi:ThemeResource {dxt:DragDropThemeKey ResourceKey=DropMarkerBackground}}"
                                             CornerRadius="5"
-                                            Margin="5,0">
+                                            Margin="5,0"
+                                            MinWidth="200">
                                         <Border.Effect>
                                             <DropShadowEffect Color="Black"
                                                               ShadowDepth="3"
@@ -152,7 +153,5 @@
             </Setter.Value>
         </Setter>
     </Style>
-
-
 
 </ResourceDictionary>

@@ -14,8 +14,9 @@ namespace SoftwareThemeDesigner
             };
 
             Theme.RegisterTheme(theme);
-
+            
             var window = new MainWindow();
+            ThemeManager.SetTheme(window, theme);
             window.Show();
         }
     }

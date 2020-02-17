@@ -34,7 +34,7 @@
         <Setter Property="Foreground" Value="{dxi:ThemeResource {dxt:PaletteBrushThemeKey ResourceKey=Foreground}}"/>
         <Setter Property="Background" Value="Gray"/>
         <Setter Property="HorizontalContentAlignment" Value="Center"/>
-        <Setter Property="IsReadOnly" Value="False"/>
+        <Setter Property="IsReadOnly" Value="True"/>
         <Setter Property="ItemContainerStyle" Value="{StaticResource RctComboBoxItemStyle}"/>
         <Setter Property="Template">
             <Setter.Value>

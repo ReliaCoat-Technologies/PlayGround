@@ -8,30 +8,10 @@
     <StackPanel>
 
         <cc:RctComboBox Margin="10"
-                        labelText="ComboBox Label">
-            <cc:RctComboBox.Items>
-                <ComboBoxItem Content="Alpha"/>
-                <ComboBoxItem Content="Beta"/>
-                <ComboBoxItem Content="Gamma"/>
-                <ComboBoxItem Content="Alpha"/>
-                <ComboBoxItem Content="Beta"/>
-                <ComboBoxItem Content="Gamma"/>
-                <ComboBoxItem Content="Alpha"/>
-                <ComboBoxItem Content="Beta"/>
-                <ComboBoxItem Content="Gamma"/>
-                <ComboBoxItem Content="Alpha"/>
-                <ComboBoxItem Content="Beta"/>
-                <ComboBoxItem Content="Gamma"/>
-                <ComboBoxItem Content="Alpha"/>
-                <ComboBoxItem Content="Beta"/>
-                <ComboBoxItem Content="Gamma"/>
-                <ComboBoxItem Content="Alpha"/>
-                <ComboBoxItem Content="Beta"/>
-                <ComboBoxItem Content="Gamma"/>
-            </cc:RctComboBox.Items>
-        </cc:RctComboBox>
+                        labelText="ComboBox Label"/>
 
         <cc:RctTextBox Margin="10"
+                       Text="{Binding textBoxString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                        labelText="Test Label"/>
 
     </StackPanel>

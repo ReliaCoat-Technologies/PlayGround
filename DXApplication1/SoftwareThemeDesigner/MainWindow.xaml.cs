@@ -1,5 +1,6 @@
 ﻿using System;
 using DevExpress.Xpf.Core;
+using SoftwareThemeDesigner.ViewModels;
 
 namespace SoftwareThemeDesigner
 {
@@ -7,6 +8,9 @@ namespace SoftwareThemeDesigner
     {
         public MainWindow()
         {
+            var viewModel = new MainWindowViewModel();
+            DataContext = viewModel;
+
             InitializeComponent();
         }
     }

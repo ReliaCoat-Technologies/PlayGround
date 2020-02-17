@@ -15,14 +15,13 @@
                 <Style TargetType="{x:Type ComboBoxItem}">
                     <Setter Property="SnapsToDevicePixels" Value="True"/>
                     <Setter Property="HorizontalAlignment" Value="Stretch"/>
-                    <Setter Property="FontSize" Value="24"/>
                     <Setter Property="Background" Value="Transparent"/>
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="{x:Type ListBoxItem}" >
                                 <Border Background="{TemplateBinding Background}">
                                     <ContentPresenter x:Name="Content"
-                                                      Margin="10"
+                                                      Margin="5"
                                                       HorizontalAlignment="Center"/>
                                 </Border>
                             </ControlTemplate>
@@ -80,13 +79,14 @@
                             </ToggleButton>
 
                             <Popup x:Name="PART_Popup"
-                                   DockPanel.Dock="Bottom"
-                                   Placement="Bottom"
+                                   Placement="Left"
+                                   VerticalOffset="{Binding ActualHeight, ElementName=PART_Border}"
+                                   HorizontalOffset="{Binding ActualWidth, ElementName=PART_Border}"
                                    IsOpen="{TemplateBinding IsDropDownOpen}"
                                    AllowsTransparency="True"
                                    Focusable="False" Margin="25"
                                    MinWidth="200">
-                                <Grid Margin="12" Background="Transparent">
+                                <Grid Margin="12" Background="Transparent" HorizontalAlignment="Right">
                                     <Border Background="{dxi:ThemeResource {dxt:DragDropThemeKey ResourceKey=DropMarkerBackground}}"
                                             CornerRadius="5"
                                             Margin="5,0">

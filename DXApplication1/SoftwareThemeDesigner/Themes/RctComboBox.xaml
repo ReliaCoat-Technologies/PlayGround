@@ -28,21 +28,71 @@
                                 Opacity="0.25"
                                 CornerRadius="5, 5, 0, 0"/>
 
-                        <TextBox x:Name="PART_EditableTextBox"
-                                 Background="Transparent"
-                                 BorderBrush="Transparent"
-                                 HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                 FontSize="{TemplateBinding FontSize}"
-                                 Grid.Row="0"
-                                 Margin="0,5">
-                            <TextBox.Template>
-                                <ControlTemplate TargetType="{x:Type TextBox}">
-                                    <Border x:Name="PART_ContentHost"
-                                            Focusable="False"
-                                            Background="{TemplateBinding Background}" />
-                                </ControlTemplate>
-                            </TextBox.Template>
-                        </TextBox>
+                        <DockPanel Grid.Row="0">
+
+                            <ToggleButton x:Name="ToggleButton"
+                                          DockPanel.Dock="Right"
+                                          ClickMode="Press"
+                                          Width="30"
+                                          IsChecked="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}">
+                                <ToggleButton.Template>
+                                    <ControlTemplate>
+                                        <Border Background="Transparent">
+                                            <Path x:Name="Arrow"
+                                              HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"
+                                              Fill="{TemplateBinding Foreground}"
+                                              Margin="10"
+                                              Opacity="0.9"
+                                              Stretch="UniformToFill"
+                                              Data="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z" >
+                                            </Path>
+                                        </Border>
+                                    </ControlTemplate>
+                                </ToggleButton.Template>
+                            </ToggleButton>
+
+                            <Popup x:Name="PART_Popup"
+                                   DockPanel.Dock="Bottom"
+                                   Placement="Bottom"
+                                   IsOpen="{TemplateBinding IsDropDownOpen}"
+                                   AllowsTransparency="True"
+                                   Focusable="False" Margin="25">
+                                <Grid Margin="12" Background="Transparent">
+                                    <Border Background="{native:ThemeResource {themes:DragDropThemeKey ResourceKey=DropMarkerBackground}}"
+                                            CornerRadius="5"
+                                            Margin="5,0">
+                                        <Border.Effect>
+                                            <DropShadowEffect Color="Black"
+                                                              ShadowDepth="3"
+                                                              BlurRadius="12"
+                                                              Opacity="0.5"
+                                                              Direction="270"/>
+                                        </Border.Effect>
+                                        <TextBlock Text="This is the popup!" FontSize="{TemplateBinding FontSize}" Margin="5"/>
+                                    </Border>
+                                </Grid>
+                            </Popup>
+
+                            <!-- IsEnabled="{TemplateBinding IsEditable}" -->
+
+                            <TextBox x:Name="PART_EditableTextBox"
+                                     Background="Transparent"
+                                     BorderBrush="Transparent"
+                                     HorizontalAlignment="Stretch"
+                                     HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                     FontSize="{TemplateBinding FontSize}"
+                                     Margin="0,5">
+                                <TextBox.Template>
+                                    <ControlTemplate TargetType="{x:Type TextBox}">
+                                        <Border x:Name="PART_ContentHost"
+                                                Focusable="False"
+                                                Background="{TemplateBinding Background}" />
+                                    </ControlTemplate>
+                                </TextBox.Template>
+                            </TextBox>
+
+                        </DockPanel>
 
                         <Line x:Name="PART_Line"
                               Grid.Row="1"

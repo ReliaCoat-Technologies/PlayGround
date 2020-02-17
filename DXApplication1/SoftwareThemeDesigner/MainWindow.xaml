@@ -6,11 +6,12 @@
         Title="MainWindow" Height="350" Width="525">
 
     <StackPanel>
-        <cc:RctTextBox Margin="10"
-                       labelText="Test Label"/>
 
         <cc:RctComboBox Margin="10"
                         labelText="ComboBox Label"/>
+
+        <cc:RctTextBox Margin="10"
+                       labelText="Test Label"/>
 
     </StackPanel>
 

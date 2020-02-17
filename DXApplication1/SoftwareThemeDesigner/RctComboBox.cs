@@ -47,8 +47,6 @@ namespace SoftwareThemeDesigner
         {
             base.OnApplyTemplate();
 
-            SelectionChanged += OnSelectionChanged;
-
             var label = GetTemplateChild("PART_Label") as TextBlock;
             if (label != null)
             {

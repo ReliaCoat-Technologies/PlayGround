@@ -8,7 +8,26 @@
            BasedOn="{StaticResource {x:Type ComboBox}}">
         <Setter Property="Background" Value="Gray"/>
         <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="IsReadOnly" Value="False"/>
         <Setter Property="Foreground" Value="{native:ThemeResource {themes:ThemeColorsThemeKey ResourceKey=WhiteForegroundColor}}"/>
+        <Setter Property="ItemContainerStyle">
+            <Setter.Value>
+                <Style TargetType="{x:Type ComboBoxItem}">
+                    <Setter Property="SnapsToDevicePixels" Value="True"/>
+                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                    <Setter Property="FontSize" Value="24"></Setter>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type ListBoxItem}" >
+                                <Border x:Name="Root">
+                                    <ContentPresenter x:Name="Content" Margin="10"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Setter.Value>
+        </Setter>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:RctComboBox}">
@@ -57,7 +76,8 @@
                                    Placement="Bottom"
                                    IsOpen="{TemplateBinding IsDropDownOpen}"
                                    AllowsTransparency="True"
-                                   Focusable="False" Margin="25">
+                                   Focusable="False" Margin="25"
+                                   MinWidth="200">
                                 <Grid Margin="12" Background="Transparent">
                                     <Border Background="{native:ThemeResource {themes:DragDropThemeKey ResourceKey=DropMarkerBackground}}"
                                             CornerRadius="5"
@@ -69,28 +89,35 @@
                                                               Opacity="0.5"
                                                               Direction="270"/>
                                         </Border.Effect>
-                                        <TextBlock Text="This is the popup!" FontSize="{TemplateBinding FontSize}" Margin="5"/>
+                                        <ScrollViewer SnapsToDevicePixels="True" Margin="5">
+                                            <StackPanel IsItemsHost="True"
+                                                        KeyboardNavigation.DirectionalNavigation="Contained"/>
+                                        </ScrollViewer>
                                     </Border>
                                 </Grid>
                             </Popup>
 
-                            <!-- IsEnabled="{TemplateBinding IsEditable}" -->
+                            <Grid>
 
-                            <TextBox x:Name="PART_EditableTextBox"
-                                     Background="Transparent"
-                                     BorderBrush="Transparent"
-                                     HorizontalAlignment="Stretch"
-                                     HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                     FontSize="{TemplateBinding FontSize}"
-                                     Margin="0,5">
-                                <TextBox.Template>
-                                    <ControlTemplate TargetType="{x:Type TextBox}">
-                                        <Border x:Name="PART_ContentHost"
-                                                Focusable="False"
-                                                Background="{TemplateBinding Background}" />
-                                    </ControlTemplate>
-                                </TextBox.Template>
-                            </TextBox>
+                                <TextBox x:Name="PART_EditableTextBox"
+                                         Background="Transparent"
+                                         BorderBrush="Transparent"
+                                         HorizontalAlignment="Stretch"
+                                         HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                         FontSize="{TemplateBinding FontSize}"
+                                         IsReadOnly="{TemplateBinding IsReadOnly}"
+                                         Text="{TemplateBinding SelectionBoxItem}"
+                                         Margin="0,5">
+                                    <TextBox.Template>
+                                        <ControlTemplate TargetType="{x:Type TextBox}">
+                                            <Border x:Name="PART_ContentHost"
+                                                    Focusable="False"
+                                                    Background="{TemplateBinding Background}" />
+                                        </ControlTemplate>
+                                    </TextBox.Template>
+                                </TextBox>
+
+                            </Grid>
 
                         </DockPanel>
 
@@ -117,5 +144,7 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+
 
 </ResourceDictionary>

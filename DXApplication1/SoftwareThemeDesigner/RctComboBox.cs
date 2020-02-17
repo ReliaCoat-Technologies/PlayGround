@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -46,6 +47,8 @@ namespace SoftwareThemeDesigner
         {
             base.OnApplyTemplate();
 
+            SelectionChanged += OnSelectionChanged;
+
             var label = GetTemplateChild("PART_Label") as TextBlock;
             if (label != null)
             {
@@ -56,6 +59,11 @@ namespace SoftwareThemeDesigner
                 label.FontSize = labelFontSize;
                 label.Foreground = labelTextColor;
             }
+        }
+
+        private void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            SelectedItem = e.AddedItems.OfType<object>().FirstOrDefault();
         }
         #endregion
     }

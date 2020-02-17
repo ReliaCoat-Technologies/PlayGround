@@ -8,7 +8,28 @@
     <StackPanel>
 
         <cc:RctComboBox Margin="10"
-                        labelText="ComboBox Label"/>
+                        labelText="ComboBox Label">
+            <cc:RctComboBox.Items>
+                <ComboBoxItem Content="Alpha"/>
+                <ComboBoxItem Content="Beta"/>
+                <ComboBoxItem Content="Gamma"/>
+                <ComboBoxItem Content="Alpha"/>
+                <ComboBoxItem Content="Beta"/>
+                <ComboBoxItem Content="Gamma"/>
+                <ComboBoxItem Content="Alpha"/>
+                <ComboBoxItem Content="Beta"/>
+                <ComboBoxItem Content="Gamma"/>
+                <ComboBoxItem Content="Alpha"/>
+                <ComboBoxItem Content="Beta"/>
+                <ComboBoxItem Content="Gamma"/>
+                <ComboBoxItem Content="Alpha"/>
+                <ComboBoxItem Content="Beta"/>
+                <ComboBoxItem Content="Gamma"/>
+                <ComboBoxItem Content="Alpha"/>
+                <ComboBoxItem Content="Beta"/>
+                <ComboBoxItem Content="Gamma"/>
+            </cc:RctComboBox.Items>
+        </cc:RctComboBox>
 
         <cc:RctTextBox Margin="10"
                        labelText="Test Label"/>

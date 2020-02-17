@@ -1,30 +1,38 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:SoftwareThemeDesigner"
-                    xmlns:native="http://schemas.devexpress.com/winfx/2008/xaml/core/internal"
-                    xmlns:themes="http://schemas.devexpress.com/winfx/2008/xaml/core/themekeys">
+                    xmlns:dxi="http://schemas.devexpress.com/winfx/2008/xaml/core/internal"
+                    xmlns:dxt="http://schemas.devexpress.com/winfx/2008/xaml/core/themekeys">
 
     <Style TargetType="{x:Type local:RctComboBox}"
            BasedOn="{StaticResource {x:Type ComboBox}}">
+        <Setter Property="Foreground" Value="{dxi:ThemeResource {dxt:PaletteBrushThemeKey ResourceKey=Foreground}}"/>
         <Setter Property="Background" Value="Gray"/>
         <Setter Property="HorizontalContentAlignment" Value="Center"/>
         <Setter Property="IsReadOnly" Value="False"/>
-        <Setter Property="Foreground" Value="{native:ThemeResource {themes:ThemeColorsThemeKey ResourceKey=WhiteForegroundColor}}"/>
         <Setter Property="ItemContainerStyle">
             <Setter.Value>
                 <Style TargetType="{x:Type ComboBoxItem}">
                     <Setter Property="SnapsToDevicePixels" Value="True"/>
-                    <Setter Property="HorizontalAlignment" Value="Center"/>
-                    <Setter Property="FontSize" Value="24"></Setter>
+                    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                    <Setter Property="FontSize" Value="24"/>
+                    <Setter Property="Background" Value="Transparent"/>
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="{x:Type ListBoxItem}" >
-                                <Border x:Name="Root">
-                                    <ContentPresenter x:Name="Content" Margin="10"/>
+                                <Border Background="{TemplateBinding Background}">
+                                    <ContentPresenter x:Name="Content"
+                                                      Margin="10"
+                                                      HorizontalAlignment="Center"/>
                                 </Border>
                             </ControlTemplate>
                         </Setter.Value>
                     </Setter>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="{dxi:ThemeResource {dxt:PaletteBrushThemeKey ResourceKey=SelectionBackground}}"/>
+                        </Trigger>
+                    </Style.Triggers>
                 </Style>
             </Setter.Value>
         </Setter>
@@ -79,7 +87,7 @@
                                    Focusable="False" Margin="25"
                                    MinWidth="200">
                                 <Grid Margin="12" Background="Transparent">
-                                    <Border Background="{native:ThemeResource {themes:DragDropThemeKey ResourceKey=DropMarkerBackground}}"
+                                    <Border Background="{dxi:ThemeResource {dxt:DragDropThemeKey ResourceKey=DropMarkerBackground}}"
                                             CornerRadius="5"
                                             Margin="5,0">
                                         <Border.Effect>

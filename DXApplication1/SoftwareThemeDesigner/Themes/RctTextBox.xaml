@@ -1,15 +1,15 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:SoftwareThemeDesigner"
-                    xmlns:native="http://schemas.devexpress.com/winfx/2008/xaml/core/internal"
-                    xmlns:themes="http://schemas.devexpress.com/winfx/2008/xaml/core/themekeys">
+                    xmlns:dxi="http://schemas.devexpress.com/winfx/2008/xaml/core/internal"
+                    xmlns:dxt="http://schemas.devexpress.com/winfx/2008/xaml/core/themekeys">
 
     <Style TargetType="{x:Type local:RctTextBox}"
            BasedOn="{StaticResource {x:Type TextBox}}">
         <Setter Property="Background" Value="Gray"/>
         <Setter Property="TextAlignment" Value="Center"/>
-        <Setter Property="CaretBrush" Value="{native:ThemeResource {themes:ThemeColorsThemeKey ResourceKey=WhiteForegroundColor}}"/>
-        <Setter Property="Foreground" Value="{native:ThemeResource {themes:ThemeColorsThemeKey ResourceKey=WhiteForegroundColor}}"/>
+        <Setter Property="CaretBrush" Value="{dxi:ThemeResource {dxt:PaletteBrushThemeKey ResourceKey=Foreground}}"/>
+        <Setter Property="Foreground" Value="{dxi:ThemeResource {dxt:PaletteBrushThemeKey ResourceKey=Foreground}}"/>
         <Setter Property="TextWrapping" Value="WrapWithOverflow"/>
         <Setter Property="Template">
             <Setter.Value>

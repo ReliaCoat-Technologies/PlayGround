@@ -8,6 +8,8 @@
     <StackPanel>
 
         <cc:RctComboBox Margin="10"
+                        ItemsSource="{Binding comboBoxItems}"
+                        SelectedItem="{Binding comboBoxValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         labelText="ComboBox Label"/>
 
         <cc:RctTextBox Margin="10"

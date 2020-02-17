@@ -60,11 +60,6 @@ namespace SoftwareThemeDesigner
                 label.Foreground = labelTextColor;
             }
         }
-
-        private void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            SelectedItem = e.AddedItems.OfType<object>().FirstOrDefault();
-        }
         #endregion
     }
 }

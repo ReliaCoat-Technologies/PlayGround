@@ -28,9 +28,9 @@
 		</Setter>
 		<Style.Triggers>
 			<Trigger Property="IsHighlighted"
-			         Value="True">
+					 Value="True">
 				<Setter Property="Background"
-				        Value="{dxi:ThemeResource {dxt:PaletteBrushThemeKey ResourceKey=SelectionBackground}}" />
+						Value="{dxi:ThemeResource {dxt:PaletteBrushThemeKey ResourceKey=SelectionBackground}}" />
 			</Trigger>
 		</Style.Triggers>
 	</Style>
@@ -38,13 +38,13 @@
 	<ControlTemplate x:Key="toggleButtonTemplate">
 		<Border Background="Transparent">
 			<Path x:Name="Arrow"
-			      HorizontalAlignment="Center"
-			      VerticalAlignment="Center"
-			      Fill="{TemplateBinding Foreground}"
-			      Margin="10"
-			      Opacity="0.9"
-			      Stretch="UniformToFill"
-			      Data="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z">
+				  HorizontalAlignment="Center"
+				  VerticalAlignment="Center"
+				  Fill="{TemplateBinding Foreground}"
+				  Margin="10"
+				  Opacity="0.9"
+				  Stretch="UniformToFill"
+				  Data="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z">
 			</Path>
 		</Border>
 	</ControlTemplate>
@@ -57,6 +57,8 @@
 				Value="Gray" />
 		<Setter Property="HorizontalContentAlignment"
 				Value="Center" />
+		<Setter Property="IsTextSearchEnabled"
+				Value="False" />
 		<Setter Property="IsReadOnly"
 				Value="True" />
 		<Setter Property="ItemContainerStyle"
@@ -101,10 +103,17 @@
 								<Grid Margin="12"
 									  Background="Transparent"
 									  HorizontalAlignment="Right">
+
+									<Grid.RowDefinitions>
+										<RowDefinition />
+										<RowDefinition />
+									</Grid.RowDefinitions>
+
 									<Border Background="{dxi:ThemeResource {dxt:DragDropThemeKey ResourceKey=DropMarkerBackground}}"
-									        CornerRadius="5"
-									        Margin="5,0"
-									        MinWidth="200">
+											Grid.RowSpan="2"
+											CornerRadius="5"
+											Margin="5,0"
+											MinWidth="200">
 										<Border.Effect>
 											<DropShadowEffect Color="Black"
 															  ShadowDepth="3"
@@ -114,11 +123,22 @@
 															  RenderingBias="Performance" />
 										</Border.Effect>
 									</Border>
+
+									<TextBox x:Name="PART_SearchTextBox"
+											 Grid.Row="0"
+											 Margin="5"
+											 HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+											 FontSize="24"
+											 IsReadOnly="False" />
+
 									<ScrollViewer SnapsToDevicePixels="True"
-									              Margin="5">
+												  Grid.Row="1"
+												  Margin="5">
 										<StackPanel IsItemsHost="True"
-										            KeyboardNavigation.DirectionalNavigation="Contained" />
+													x:Name="PART_HostPanel"
+													KeyboardNavigation.DirectionalNavigation="Contained" />
 									</ScrollViewer>
+
 								</Grid>
 							</Popup>
 
@@ -133,6 +153,7 @@
 										 IsReadOnly="{TemplateBinding IsReadOnly}"
 										 Text="{TemplateBinding SelectionBoxItem}"
 										 Margin="0,5">
+
 									<TextBox.Template>
 										<ControlTemplate TargetType="{x:Type TextBox}">
 											<Border x:Name="PART_ContentHost"
@@ -140,6 +161,7 @@
 													Background="{TemplateBinding Background}" />
 										</ControlTemplate>
 									</TextBox.Template>
+
 								</TextBox>
 
 							</Grid>
@@ -156,6 +178,7 @@
 							  StrokeEndLineCap="Square" />
 
 						<TextBlock x:Name="PART_Label"
+								   Focusable="False"
 								   Text="Label"
 								   Foreground="{TemplateBinding Foreground}"
 								   Grid.Row="2"

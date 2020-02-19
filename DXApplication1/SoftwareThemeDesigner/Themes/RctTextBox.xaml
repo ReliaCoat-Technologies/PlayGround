@@ -45,6 +45,7 @@
 
                         <TextBlock x:Name="PART_Label"
                                    Text="Label"
+								   Focusable="False"
                                    Foreground="{TemplateBinding Foreground}"
                                    Grid.Row="2"
                                    Margin="10,0"

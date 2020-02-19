@@ -2,11 +2,21 @@
 {
 	public class TestBindingClass
 	{
-		public string state { get; set; }
+		public string country { get; set; }
 
-		public TestBindingClass(string state)
+		public TestBindingClass(string country)
 		{
-			this.state = state;
+			this.country = country;
+		}
+	}
+
+	public class NestedTestClass
+	{
+		public TestBindingClass nestedClass { get; set; }
+
+		public NestedTestClass(TestBindingClass nestedClass)
+		{
+			this.nestedClass = nestedClass;
 		}
 	}
 }

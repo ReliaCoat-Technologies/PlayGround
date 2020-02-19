@@ -127,8 +127,29 @@ namespace SoftwareThemeDesigner
 			// O(n) mechanism for determining if source string contains character of filter string in order.
 			var filterCharArray = searchTextBox.Text.ToLower().ToCharArray();
 
+			string stringValue;
+
 			// Uses reflection -- efficient?
-			var stringValue = obj?.GetType().GetProperty(DisplayMemberPath)?.GetValue(obj)?.ToString();
+			if (!string.IsNullOrWhiteSpace(DisplayMemberPath))
+			{
+
+				var paths = DisplayMemberPath.Split('.');
+
+				foreach (var path in paths)
+				{
+					obj = obj?.GetType().GetProperty(path)?.GetValue(obj);
+
+					if (obj == null)
+						return false;
+				}
+
+				stringValue = obj.ToString();
+			}
+			else
+			{
+				stringValue = obj.ToString();
+			}
+
 			var sourceCharArray = stringValue?.ToLower().ToCharArray() ?? new char[0];
 
 			var filterCharIndex = 0;
@@ -164,6 +185,7 @@ namespace SoftwareThemeDesigner
 		protected override void OnSelectionChanged(SelectionChangedEventArgs e)
 		{
 			base.OnSelectionChanged(e);
+			Console.WriteLine(SelectedItem);
 			editableTextBox.Text = SelectedValue?.ToString() ?? string.Empty;
 		}
 		#endregion

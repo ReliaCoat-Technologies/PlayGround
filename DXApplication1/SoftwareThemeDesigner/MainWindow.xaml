@@ -11,8 +11,8 @@
                         ItemsSource="{Binding comboBoxItems}"
                         SelectedItem="{Binding comboBoxValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         labelText="ComboBox Label"
-						DisplayMemberPath="state"
-                        SelectedValuePath="state"/>
+						DisplayMemberPath="nestedClass.country"
+						SelectedValuePath="nestedClass.country"/>
 
         <cc:RctTextBox Margin="10"
                        Text="{Binding textBoxString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

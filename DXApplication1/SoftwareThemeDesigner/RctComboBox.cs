@@ -57,7 +57,7 @@ namespace SoftwareThemeDesigner
 			base.OnApplyTemplate();
 
 			hostPanel = GetTemplateChild("PART_HostPanel") as StackPanel;
-
+			
 			editableTextBox = GetTemplateChild("PART_EditableTextBox") as TextBox;
 			if (editableTextBox != null)
 			{
@@ -117,14 +117,37 @@ namespace SoftwareThemeDesigner
 				return;
 			}
 
-			Items.Filter = x => x.ToString().ToLower().Contains(searchTextBox.Text.ToLower());
+			Items.Filter = filterPredicate;
+		}
+
+		private bool filterPredicate(object obj)
+		{
+			// O(n) mechanism for determining if source string contains character of filter string in order.
+			var filterCharArray = searchTextBox.Text.ToLower().ToCharArray();
+			var sourceCharArray = obj.ToString().ToLower().ToCharArray();
+
+			var filterCharIndex = 0;
+
+			foreach (var sourceChar in sourceCharArray)
+			{
+				if (sourceChar == filterCharArray[filterCharIndex])
+					filterCharIndex++;
+
+				if (filterCharIndex >= filterCharArray.Length)
+					return true;
+			}
+
+			return false;
 		}
 
 		private void acceptValue()
 		{
 			if (!string.IsNullOrWhiteSpace(searchTextBox.Text) && Items.Count > 0)
 				SelectedItem = Items[0];
+		}
 
+		protected override void OnDropDownClosed(EventArgs e)
+		{
 			searchTextBox.Text = string.Empty;
 		}
 		#endregion

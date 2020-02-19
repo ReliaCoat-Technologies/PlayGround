@@ -66,6 +66,7 @@
     </ApplicationDefinition>
     <Compile Include="RctComboBox.cs" />
     <Compile Include="RctTextBox.cs" />
+    <Compile Include="TestBindingClass.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

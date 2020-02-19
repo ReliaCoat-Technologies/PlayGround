@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
+using DevExpress.Mvvm.Native;
 
 namespace SoftwareThemeDesigner
 {
@@ -57,7 +59,7 @@ namespace SoftwareThemeDesigner
 			base.OnApplyTemplate();
 
 			hostPanel = GetTemplateChild("PART_HostPanel") as StackPanel;
-			
+
 			editableTextBox = GetTemplateChild("PART_EditableTextBox") as TextBox;
 			if (editableTextBox != null)
 			{
@@ -124,7 +126,10 @@ namespace SoftwareThemeDesigner
 		{
 			// O(n) mechanism for determining if source string contains character of filter string in order.
 			var filterCharArray = searchTextBox.Text.ToLower().ToCharArray();
-			var sourceCharArray = obj.ToString().ToLower().ToCharArray();
+
+			// Uses reflection -- efficient?
+			var stringValue = obj?.GetType().GetProperty(DisplayMemberPath)?.GetValue(obj)?.ToString();
+			var sourceCharArray = stringValue?.ToLower().ToCharArray() ?? new char[0];
 
 			var filterCharIndex = 0;
 
@@ -142,13 +147,24 @@ namespace SoftwareThemeDesigner
 
 		private void acceptValue()
 		{
+			var highlightedIndex = hostPanel
+				.Children
+				.OfType<ComboBoxItem>()
+				.IndexOf(x => x.IsHighlighted);
+
 			if (!string.IsNullOrWhiteSpace(searchTextBox.Text) && Items.Count > 0)
-				SelectedItem = Items[0];
+				SelectedIndex = highlightedIndex > 0 ? highlightedIndex : 0;
 		}
 
 		protected override void OnDropDownClosed(EventArgs e)
 		{
 			searchTextBox.Text = string.Empty;
+		}
+
+		protected override void OnSelectionChanged(SelectionChangedEventArgs e)
+		{
+			base.OnSelectionChanged(e);
+			editableTextBox.Text = SelectedValue?.ToString() ?? string.Empty;
 		}
 		#endregion
 	}

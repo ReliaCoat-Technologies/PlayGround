@@ -10,7 +10,7 @@ namespace SoftwareThemeDesigner.ViewModels
 	{
 		#region Fields
 		private string _textBoxString;
-		private ObservableCollection<string> _comboBoxItems;
+		private ObservableCollection<TestBindingClass> _comboBoxItems;
 		private string _comboBoxValue;
 		#endregion
 
@@ -20,7 +20,7 @@ namespace SoftwareThemeDesigner.ViewModels
 			get { return _textBoxString; }
 			set { _textBoxString = value; RaisePropertyChanged(() => textBoxString); }
 		}
-		public ObservableCollection<string> comboBoxItems
+		public ObservableCollection<TestBindingClass> comboBoxItems
 		{
 			get { return _comboBoxItems; }
 			set { _comboBoxItems = value; RaisePropertyChanged(() => comboBoxItems); }
@@ -48,7 +48,7 @@ namespace SoftwareThemeDesigner.ViewModels
 				"Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming"
 			};
 
-			comboBoxItems = new ObservableCollection<string>(itemsToAdd);
+			comboBoxItems = new ObservableCollection<TestBindingClass>(itemsToAdd.Select(x => new TestBindingClass(x)));
 		}
 		#endregion
 	}

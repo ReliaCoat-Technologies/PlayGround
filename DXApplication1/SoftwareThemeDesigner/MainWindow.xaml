@@ -10,7 +10,9 @@
         <cc:RctComboBox Margin="10"
                         ItemsSource="{Binding comboBoxItems}"
                         SelectedItem="{Binding comboBoxValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        labelText="ComboBox Label"/>
+                        labelText="ComboBox Label"
+						DisplayMemberPath="state"
+                        SelectedValuePath="state"/>
 
         <cc:RctTextBox Margin="10"
                        Text="{Binding textBoxString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

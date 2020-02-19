@@ -1,15 +1,19 @@
 ﻿using System;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 
 namespace SoftwareThemeDesigner
 {
     public class RctComboBox : ComboBox
     {
-        #region Dependency Properties
-        public static readonly DependencyProperty labelTextProperty = DependencyProperty.Register(nameof(labelText), typeof(string), typeof(RctComboBox));
+		#region Fields
+		private Popup popup;
+		#endregion
+
+		#region Dependency Properties
+		public static readonly DependencyProperty labelTextProperty = DependencyProperty.Register(nameof(labelText), typeof(string), typeof(RctComboBox));
         public static readonly DependencyProperty labelFontSizeProperty = DependencyProperty.Register(nameof(labelFontSize), typeof(double), typeof(RctComboBox),
             new FrameworkPropertyMetadata(12d));
         public static readonly DependencyProperty labelTextColorProperty = DependencyProperty.Register(nameof(labelTextColor), typeof(Brush), typeof(RctComboBox));
@@ -47,6 +51,8 @@ namespace SoftwareThemeDesigner
         {
             base.OnApplyTemplate();
 
+            popup = GetTemplateChild("PART_Popup") as Popup;
+            
             var label = GetTemplateChild("PART_Label") as TextBlock;
             if (label != null)
             {

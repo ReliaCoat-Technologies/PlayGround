@@ -45,8 +45,8 @@ namespace SoftwareThemeDesigner
 		}
 		public bool allowDelete
 		{
-			get { return (bool) GetValue(allowDeleteProperty);}
-			set { SetValue(allowDeleteProperty, value);}
+			get { return (bool)GetValue(allowDeleteProperty); }
+			set { SetValue(allowDeleteProperty, value); }
 		}
 		#endregion
 
@@ -75,7 +75,7 @@ namespace SoftwareThemeDesigner
 			searchTextBox = GetTemplateChild("PART_SearchTextBox") as TextBox;
 			if (searchTextBox != null)
 			{
-				searchTextBox.TextChanged += onSearchCriteriaChanged;
+				searchTextBox.TextChanged += onSearchBoxTextChanged;
 				Items.Filter = filterPredicate;
 			}
 
@@ -132,8 +132,9 @@ namespace SoftwareThemeDesigner
 			base.OnPreviewKeyDown(e);
 		}
 
-		private void onSearchCriteriaChanged(object sender, TextChangedEventArgs e)
+		private void onSearchBoxTextChanged(object sender, TextChangedEventArgs e)
 		{
+
 			foreach (var item in hostPanel.Children.OfType<ComboBoxItem>())
 			{
 				var isAvailable = filterPredicate(item.Content);
@@ -197,7 +198,7 @@ namespace SoftwareThemeDesigner
 				.Where(x => x.cbItem.IsVisible)
 				.ToList();
 
-			var firstHighlightedIndex = filteredChildren.IndexOf(x => x.cbItem.IsHighlighted);
+			var firstHighlightedIndex = filteredChildren.FirstOrDefault(x => x.cbItem.IsHighlighted)?.index ?? -1;
 
 			if (!string.IsNullOrWhiteSpace(searchTextBox.Text) && filteredChildren.Count > 0)
 				SelectedIndex = firstHighlightedIndex > 0 ? firstHighlightedIndex : filteredChildren.First().index;

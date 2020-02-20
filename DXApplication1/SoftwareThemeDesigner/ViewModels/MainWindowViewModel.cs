@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using DevExpress.Mvvm;
@@ -11,7 +10,7 @@ namespace SoftwareThemeDesigner.ViewModels
 		#region Fields
 		private string _textBoxString;
 		private ObservableCollection<NestedTestClass> _comboBoxItems;
-		private string _comboBoxValue;
+		private NestedTestClass _comboBoxValue;
 		#endregion
 
 		#region Properties
@@ -25,10 +24,15 @@ namespace SoftwareThemeDesigner.ViewModels
 			get { return _comboBoxItems; }
 			set { _comboBoxItems = value; RaisePropertyChanged(() => comboBoxItems); }
 		}
-		public string comboBoxValue
+		public NestedTestClass comboBoxValue
 		{
 			get { return _comboBoxValue; }
-			set { _comboBoxValue = value; RaisePropertyChanged(() => comboBoxValue); }
+			set
+			{
+				_comboBoxValue = value;
+				RaisePropertyChanged(() => comboBoxValue);
+				Console.WriteLine($"Change Value Raised: {value?.nestedClass?.country ?? "Null"}");
+			}
 		}
 		#endregion
 

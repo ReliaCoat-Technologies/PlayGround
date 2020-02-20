@@ -75,7 +75,7 @@ namespace SoftwareThemeDesigner
 			popup = GetTemplateChild("PART_Popup") as Popup;
 			if (popup != null)
 			{
-				popup.Focusable = true;
+				popup.Opened += onPopupOpened;
 			}
 
 			var label = GetTemplateChild("PART_Label") as TextBlock;
@@ -100,6 +100,10 @@ namespace SoftwareThemeDesigner
 			{
 				acceptValue();
 			}
+			if (e.Key == Key.Tab)
+			{
+				return;
+			}
 			if (e.Key == Key.Up || e.Key == Key.Down)
 			{
 				IsDropDownOpen = true;
@@ -110,10 +114,14 @@ namespace SoftwareThemeDesigner
 
 			base.OnPreviewKeyDown(e);
 		}
-
+		
 		private void onSearchCriteriaChanged(object sender, TextChangedEventArgs e)
 		{
-			Items.Filter = filterPredicate;
+			foreach (var item in hostPanel.Children.OfType<ComboBoxItem>())
+			{
+				var isAvailable = filterPredicate(item.Content);
+				item.Visibility = isAvailable ? Visibility.Visible : Visibility.Collapsed;
+			}
 		}
 
 		private bool filterPredicate(object obj)
@@ -165,16 +173,19 @@ namespace SoftwareThemeDesigner
 
 		private void acceptValue()
 		{
-			var highlightedIndex = hostPanel
+			var hostPanelChildren = hostPanel
 				.Children
 				.OfType<ComboBoxItem>()
-				.IndexOf(x => x.IsHighlighted);
+				.ToList();
+
+			var firstHighlightedIndex = hostPanelChildren.IndexOf(x => x.IsHighlighted && x.IsVisible);
+			var firstIndex = hostPanelChildren.IndexOf(x => x.IsVisible);
 
 			if (!string.IsNullOrWhiteSpace(searchTextBox.Text) && Items.Count > 0)
-				SelectedIndex = highlightedIndex > 0 ? highlightedIndex : 0;
+				SelectedIndex = firstHighlightedIndex > 0 ? firstHighlightedIndex : firstIndex;
 		}
 
-		protected override void OnDropDownClosed(EventArgs e)
+		private void onPopupOpened(object sender, EventArgs e)
 		{
 			searchTextBox.Text = string.Empty;
 		}

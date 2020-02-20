@@ -26,6 +26,9 @@
 					   Text="{Binding textBoxString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
 					   labelText="Test Label" />
 
+		<cc:RctSpinBox Margin="10"
+		               labelText="SpinBoxLabel" />
+
 	</StackPanel>
 
 </dx:ThemedWindow>

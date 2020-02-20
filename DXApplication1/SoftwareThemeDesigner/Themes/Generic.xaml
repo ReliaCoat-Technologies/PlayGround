@@ -5,6 +5,7 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/Themes/RctTextBox.xaml"/>
         <ResourceDictionary Source="/Themes/RctComboBox.xaml"/>
-    </ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/Themes/RctSpinBox.xaml" />
+	</ResourceDictionary.MergedDictionaries>
 
 </ResourceDictionary>

@@ -86,6 +86,7 @@
 
 							<ToggleButton x:Name="ToggleButton"
 										  DockPanel.Dock="Right"
+										  Focusable="False"
 										  ClickMode="Press"
 										  Width="30"
 										  Template="{StaticResource toggleButtonTemplate}"

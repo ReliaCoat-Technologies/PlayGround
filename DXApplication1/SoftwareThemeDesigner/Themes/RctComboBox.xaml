@@ -37,15 +37,16 @@
 
 	<ControlTemplate x:Key="toggleButtonTemplate">
 		<Border Background="Transparent">
-			<Path x:Name="Arrow"
-				  HorizontalAlignment="Center"
-				  VerticalAlignment="Center"
-				  Fill="{TemplateBinding Foreground}"
-				  Margin="10"
-				  Opacity="0.9"
-				  Stretch="UniformToFill"
-				  Data="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z">
-			</Path>
+			<Path x:Name="PATH_DownArrow"
+			      HorizontalAlignment="Center"
+			      VerticalAlignment="Center"
+			      Fill="{TemplateBinding Foreground}"
+			      Margin="5"
+			      Height="10"
+			      Width="10"
+			      Opacity="0.9"
+			      Stretch="Uniform"
+			      Data="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z" />
 		</Border>
 	</ControlTemplate>
 

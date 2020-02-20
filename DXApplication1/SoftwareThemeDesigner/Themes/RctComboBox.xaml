@@ -130,6 +130,7 @@
 									        Grid.Row="0"/>
 
 									<TextBox x:Name="PART_SearchTextBox"
+									         Grid.Row="0"
 											 Margin="10"
 											 BorderThickness="0"
 									         BorderBrush="Transparent"

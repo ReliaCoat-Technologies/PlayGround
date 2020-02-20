@@ -5,6 +5,7 @@ using System.Windows.Media;
 
 namespace SoftwareThemeDesigner
 {
+	[TemplatePart(Name = "PART_Label", Type = typeof(TextBlock))]
     public class RctTextBox : TextBox
     {
         #region Dependency Properties

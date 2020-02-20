@@ -5,10 +5,11 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
-using DevExpress.Mvvm.Native;
 
 namespace SoftwareThemeDesigner
 {
+	[TemplatePart(Name = "PART_Label", Type = typeof(TextBlock))]
+	[TemplatePart(Name = "PART_SearchTextBox", Type = typeof(TextBox))]
 	public class RctComboBox : ComboBox
 	{
 		#region Fields

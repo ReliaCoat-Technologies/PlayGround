@@ -23,6 +23,8 @@ namespace SoftwareThemeDesigner
 		public static readonly DependencyProperty labelFontSizeProperty = DependencyProperty.Register(nameof(labelFontSize), typeof(double), typeof(RctComboBox),
 			new FrameworkPropertyMetadata(12d));
 		public static readonly DependencyProperty labelTextColorProperty = DependencyProperty.Register(nameof(labelTextColor), typeof(Brush), typeof(RctComboBox));
+		public static readonly DependencyProperty allowDeleteProperty = DependencyProperty.Register(nameof(allowDelete), typeof(bool), typeof(RctComboBox),
+			new FrameworkPropertyMetadata(true));
 		#endregion
 
 		#region Properties
@@ -40,6 +42,11 @@ namespace SoftwareThemeDesigner
 		{
 			get { return (Brush)GetValue(labelTextColorProperty); }
 			set { SetValue(labelTextColorProperty, value); }
+		}
+		public bool allowDelete
+		{
+			get { return (bool) GetValue(allowDeleteProperty);}
+			set { SetValue(allowDeleteProperty, value);}
 		}
 		#endregion
 
@@ -99,7 +106,7 @@ namespace SoftwareThemeDesigner
 			}
 			if (e.Key == Key.Delete || e.Key == Key.Back)
 			{
-				if (!IsDropDownOpen)
+				if (allowDelete && !IsDropDownOpen)
 					SelectedItem = null;
 
 				return;
@@ -186,7 +193,7 @@ namespace SoftwareThemeDesigner
 			var filteredChildren = hostPanel
 				.Children
 				.OfType<ComboBoxItem>()
-				.Select((x, i) => new {index = i, cbItem = x})
+				.Select((x, i) => new { index = i, cbItem = x })
 				.Where(x => x.cbItem.IsVisible)
 				.ToList();
 

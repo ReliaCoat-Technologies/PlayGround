@@ -134,9 +134,11 @@
 									<ScrollViewer SnapsToDevicePixels="True"
 												  Grid.Row="1"
 												  Margin="5">
+
 										<StackPanel IsItemsHost="True"
-													x:Name="PART_HostPanel"
-													KeyboardNavigation.DirectionalNavigation="Contained" />
+										            x:Name="PART_HostPanel"
+										            KeyboardNavigation.DirectionalNavigation="Contained" />
+
 									</ScrollViewer>
 
 								</Grid>

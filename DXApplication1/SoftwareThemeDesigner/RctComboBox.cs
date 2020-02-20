@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -70,6 +69,7 @@ namespace SoftwareThemeDesigner
 			if (searchTextBox != null)
 			{
 				searchTextBox.TextChanged += onSearchCriteriaChanged;
+				Items.Filter = filterPredicate;
 			}
 
 			popup = GetTemplateChild("PART_Popup") as Popup;
@@ -113,12 +113,6 @@ namespace SoftwareThemeDesigner
 
 		private void onSearchCriteriaChanged(object sender, TextChangedEventArgs e)
 		{
-			if (string.IsNullOrWhiteSpace(searchTextBox.Text))
-			{
-				Items.Filter = null;
-				return;
-			}
-
 			Items.Filter = filterPredicate;
 		}
 
@@ -126,6 +120,9 @@ namespace SoftwareThemeDesigner
 		{
 			// O(n) mechanism for determining if source string contains character of filter string in order.
 			var filterCharArray = searchTextBox.Text.ToLower().ToCharArray();
+
+			if (!filterCharArray.Any())
+				return true;
 
 			string stringValue;
 
@@ -185,7 +182,7 @@ namespace SoftwareThemeDesigner
 		protected override void OnSelectionChanged(SelectionChangedEventArgs e)
 		{
 			base.OnSelectionChanged(e);
-			Console.WriteLine(SelectedItem);
+			Console.WriteLine($"Selected Item: {SelectedItem ?? "Null"}");
 			editableTextBox.Text = SelectedValue?.ToString() ?? string.Empty;
 		}
 		#endregion

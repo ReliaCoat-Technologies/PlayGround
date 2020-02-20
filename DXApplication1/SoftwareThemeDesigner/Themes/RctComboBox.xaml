@@ -94,9 +94,7 @@
 							</ToggleButton>
 
 							<Popup x:Name="PART_Popup"
-								   Placement="Left"
-								   VerticalOffset="{Binding ActualHeight, ElementName=PART_Border}"
-								   HorizontalOffset="{Binding ActualWidth, ElementName=PART_Border}"
+								   Placement="Bottom"
 								   IsOpen="{TemplateBinding IsDropDownOpen}"
 								   AllowsTransparency="True"
 								   Focusable="False"

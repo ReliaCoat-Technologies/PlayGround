@@ -98,7 +98,8 @@ namespace SoftwareThemeDesigner
 			}
 			if (e.Key == Key.Enter || e.Key == Key.Return)
 			{
-				acceptValue();
+				if (IsDropDownOpen)
+					acceptValue();
 			}
 			if (e.Key == Key.Tab)
 			{
@@ -114,7 +115,7 @@ namespace SoftwareThemeDesigner
 
 			base.OnPreviewKeyDown(e);
 		}
-		
+
 		private void onSearchCriteriaChanged(object sender, TextChangedEventArgs e)
 		{
 			foreach (var item in hostPanel.Children.OfType<ComboBoxItem>())
@@ -173,16 +174,17 @@ namespace SoftwareThemeDesigner
 
 		private void acceptValue()
 		{
-			var hostPanelChildren = hostPanel
+			var filteredChildren = hostPanel
 				.Children
 				.OfType<ComboBoxItem>()
+				.Select((x, i) => new {index = i, cbItem = x})
+				.Where(x => x.cbItem.IsVisible)
 				.ToList();
 
-			var firstHighlightedIndex = hostPanelChildren.IndexOf(x => x.IsHighlighted && x.IsVisible);
-			var firstIndex = hostPanelChildren.IndexOf(x => x.IsVisible);
+			var firstHighlightedIndex = filteredChildren.IndexOf(x => x.cbItem.IsHighlighted);
 
-			if (!string.IsNullOrWhiteSpace(searchTextBox.Text) && Items.Count > 0)
-				SelectedIndex = firstHighlightedIndex > 0 ? firstHighlightedIndex : firstIndex;
+			if (!string.IsNullOrWhiteSpace(searchTextBox.Text) && filteredChildren.Count > 0)
+				SelectedIndex = firstHighlightedIndex > 0 ? firstHighlightedIndex : filteredChildren.First().index;
 		}
 
 		private void onPopupOpened(object sender, EventArgs e)

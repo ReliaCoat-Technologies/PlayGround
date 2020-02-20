@@ -94,7 +94,15 @@ namespace SoftwareThemeDesigner
 		{
 			if (e.Key == Key.Escape)
 			{
-				searchTextBox.Text = string.Empty;
+				IsDropDownOpen = false;
+				return;
+			}
+			if (e.Key == Key.Delete || e.Key == Key.Back)
+			{
+				if (!IsDropDownOpen)
+					SelectedItem = null;
+
+				return;
 			}
 			if (e.Key == Key.Enter || e.Key == Key.Return)
 			{
@@ -108,6 +116,7 @@ namespace SoftwareThemeDesigner
 			if (e.Key == Key.Up || e.Key == Key.Down)
 			{
 				IsDropDownOpen = true;
+
 				return;
 			}
 

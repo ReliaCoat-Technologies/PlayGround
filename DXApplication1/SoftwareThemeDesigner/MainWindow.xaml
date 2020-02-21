@@ -28,6 +28,8 @@
 
 		<cc:RctSpinBox x:Name="spinBox"
 					   Margin="10"
+					   suffix=" SLPM"
+					   stringFormat="00"
 					   labelText="spinBoxLabel" />
 
 	</StackPanel>

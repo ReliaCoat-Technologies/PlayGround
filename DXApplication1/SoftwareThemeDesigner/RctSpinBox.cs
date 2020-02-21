@@ -9,23 +9,35 @@ namespace SoftwareThemeDesigner
 {
 	public class RctSpinBox : RctTextBox
 	{
+		#region Statics
+		private const double translucentOpacity = 0.6;
+		#endregion
+
 		#region Fields
 		private Button _spinUpButton;
 		private Button _spinDownButton;
+		private TextBlock _prefixTextBlock;
+		private TextBlock _suffixTextBlock;
 		#endregion
 
 		#region Dependency Properties
+		private static readonly DependencyPropertyKey _formattedTextPropertyKey = DependencyProperty.RegisterReadOnly(nameof(formattedText), typeof(string), typeof(RctSpinBox), new PropertyMetadata());
+
 		public static readonly DependencyProperty stringFormatProperty = DependencyProperty.Register(nameof(stringFormat), typeof(string), typeof(RctSpinBox), new PropertyMetadata(string.Empty));
 		public static readonly DependencyProperty incrementProperty = DependencyProperty.Register(nameof(increment), typeof(double), typeof(RctSpinBox), new PropertyMetadata(1d));
 		public static readonly DependencyProperty majorIncrementProperty = DependencyProperty.Register(nameof(majorIncrement), typeof(double), typeof(RctSpinBox), new PropertyMetadata(10d));
 		public static readonly DependencyProperty valueProperty = DependencyProperty.Register(nameof(value), typeof(double), typeof(RctSpinBox), new FrameworkPropertyMetadata(0d, valueChangedCallback));
+		public static readonly DependencyProperty formattedTextProperty = _formattedTextPropertyKey.DependencyProperty;
+		public static readonly DependencyProperty prefixProperty = DependencyProperty.Register(nameof(prefix), typeof(string), typeof(RctSpinBox), new PropertyMetadata(string.Empty));
+		public static readonly DependencyProperty suffixProperty = DependencyProperty.Register(nameof(suffix), typeof(string), typeof(RctSpinBox), new PropertyMetadata(string.Empty));
+		#endregion
 
+		#region Callbacks
 		private static void valueChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
 			var spinBox = d as RctSpinBox;
 			spinBox?.onValueChanged((double)e.NewValue);
 		}
-
 		#endregion
 
 		#region Routed Events
@@ -61,6 +73,17 @@ namespace SoftwareThemeDesigner
 			get { return (double)GetValue(valueProperty); }
 			set { SetValue(valueProperty, value); }
 		}
+		public string formattedText => GetValue(formattedTextProperty).ToString();
+		public string prefix
+		{
+			get { return GetValue(prefixProperty).ToString(); }
+			set { SetValue(prefixProperty, value); }
+		}
+		public string suffix
+		{
+			get { return GetValue(suffixProperty).ToString(); }
+			set { SetValue(suffixProperty, value); }
+		}
 		#endregion
 
 		#region Constructor
@@ -75,24 +98,32 @@ namespace SoftwareThemeDesigner
 		{
 			base.OnApplyTemplate();
 
-			Text = 0.ToString();
+			Text = 0.ToString(stringFormat);
+			SetValue(_formattedTextPropertyKey, $"{prefix}{Text}{suffix}");
 
-			_spinUpButton = GetTemplateChild("PATH_SpinUpButton") as Button;
+			_prefixTextBlock = GetTemplateChild("PART_PrefixTextBlock") as TextBlock;
+			if (_prefixTextBlock != null)
+			{
+				_prefixTextBlock.Text = prefix;
+			}
+
+			_suffixTextBlock = GetTemplateChild("PART_SuffixTextBlock") as TextBlock;
+			if (_suffixTextBlock != null)
+			{
+				_suffixTextBlock.Text = suffix;
+			}
+
+			_spinUpButton = GetTemplateChild("PART_SpinUpButton") as Button;
 			if (_spinUpButton != null)
 			{
 				_spinUpButton.Click += onSpinUpButtonClicked;
 			}
 
-			_spinDownButton = GetTemplateChild("PATH_SpinDownButton") as Button;
+			_spinDownButton = GetTemplateChild("PART_SpinDownButton") as Button;
 			if (_spinDownButton != null)
 			{
 				_spinDownButton.Click += onSpinDownButtonClicked;
 			}
-		}
-
-		protected virtual void onValueChanged(double value)
-		{
-			Text = value.ToString(stringFormat);
 		}
 
 		protected override void OnTextChanged(TextChangedEventArgs e)
@@ -118,12 +149,54 @@ namespace SoftwareThemeDesigner
 
 		protected override void OnGotMouseCapture(MouseEventArgs e)
 		{
-			SelectAll();
+			base.OnGotMouseCapture(e);
+			onMouseCaptureChanged(e, true);
+		}
+
+		protected override void OnLostMouseCapture(MouseEventArgs e)
+		{
+			base.OnLostMouseCapture(e);
+			onMouseCaptureChanged(e, false);
 		}
 
 		protected override void OnGotFocus(RoutedEventArgs e)
 		{
-			SelectAll();
+			base.OnGotFocus(e);
+			onActivatedChanged(true);
+		}
+
+		protected override void OnLostFocus(RoutedEventArgs e)
+		{
+			base.OnLostFocus(e);
+			onActivatedChanged(false);
+		}
+
+		protected virtual void onValueChanged(double newValue)
+		{
+			Text = value.ToString(stringFormat);
+			SetValue(_formattedTextPropertyKey, $"{prefix}{Text}{suffix}");
+		}
+
+		private void onMouseCaptureChanged(RoutedEventArgs e, bool isActivated)
+		{
+			// Prevents shading changes when clicking on spin buttons.
+			if (e.OriginalSource == _spinUpButton || e.OriginalSource == _spinDownButton) return;
+			onActivatedChanged(isActivated);
+		}
+
+		private void onActivatedChanged(bool isActivated)
+		{
+			if (isActivated)
+			{
+				SelectAll();
+				_prefixTextBlock.Opacity = translucentOpacity;
+				_suffixTextBlock.Opacity = translucentOpacity;
+			}
+			else
+			{
+				_prefixTextBlock.Opacity = 1;
+				_suffixTextBlock.Opacity = 1;
+			}
 		}
 
 		protected override void OnPreviewMouseWheel(MouseWheelEventArgs e)
@@ -148,11 +221,13 @@ namespace SoftwareThemeDesigner
 
 		protected virtual void onSpinUpButtonClicked(object sender, RoutedEventArgs e)
 		{
+			e.Handled = true;
 			raiseSpinEvent();
 		}
 
 		protected virtual void onSpinDownButtonClicked(object sender, RoutedEventArgs e)
 		{
+			e.Handled = true;
 			raiseSpinEvent(true);
 		}
 

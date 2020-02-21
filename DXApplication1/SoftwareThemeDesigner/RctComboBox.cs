@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
+using SoftwareThemeDesigner.Utilities;
 
 namespace SoftwareThemeDesigner
 {
@@ -77,7 +78,6 @@ namespace SoftwareThemeDesigner
 			if (searchTextBox != null)
 			{
 				searchTextBox.TextChanged += onSearchBoxTextChanged;
-				Items.Filter = filterPredicate;
 			}
 
 			popup = GetTemplateChild("PART_Popup") as Popup;
@@ -136,59 +136,11 @@ namespace SoftwareThemeDesigner
 
 		private void onSearchBoxTextChanged(object sender, TextChangedEventArgs e)
 		{
-
 			foreach (var item in hostPanel.Children.OfType<ComboBoxItem>())
 			{
-				var isAvailable = filterPredicate(item.Content);
+				var isAvailable = item.Content.containsFilterInOrder(searchTextBox.Text, DisplayMemberPath);
 				item.Visibility = isAvailable ? Visibility.Visible : Visibility.Collapsed;
 			}
-		}
-
-		private bool filterPredicate(object obj)
-		{
-			// O(n) mechanism for determining if source string contains character of filter string in order.
-			var filterCharArray = searchTextBox.Text.ToLower().ToCharArray();
-
-			if (!filterCharArray.Any())
-				return true;
-
-			string stringValue;
-
-			// Uses reflection -- efficient?
-			if (!string.IsNullOrWhiteSpace(DisplayMemberPath))
-			{
-
-				var paths = DisplayMemberPath.Split('.');
-
-				foreach (var path in paths)
-				{
-					obj = obj?.GetType().GetProperty(path)?.GetValue(obj);
-
-					if (obj == null)
-						return false;
-				}
-
-				stringValue = obj.ToString();
-			}
-			else
-			{
-				stringValue = obj.ToString();
-			}
-
-			var sourceCharArray = stringValue?.ToLower().ToCharArray() ?? new char[0];
-
-			var filterCharIndex = 0;
-
-			foreach (var sourceChar in sourceCharArray)
-			{
-				if (sourceChar == filterCharArray[filterCharIndex])
-					filterCharIndex++;
-
-				if (filterCharIndex >= filterCharArray.Length)
-					return true;
-			}
-
-			return false;
 		}
 
 		private void acceptValue()

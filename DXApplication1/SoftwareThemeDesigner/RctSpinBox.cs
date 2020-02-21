@@ -17,13 +17,12 @@ namespace SoftwareThemeDesigner
 
 		#region Dependency Properties
 		public static readonly DependencyProperty stringFormatProperty = DependencyProperty.Register(nameof(stringFormat), typeof(string), typeof(RctSpinBox), new PropertyMetadata(string.Empty));
+		public static readonly DependencyProperty incrementProperty = DependencyProperty.Register(nameof(increment), typeof(double), typeof(RctSpinBox), new PropertyMetadata(1d));
+		public static readonly DependencyProperty majorIncrementProperty = DependencyProperty.Register(nameof(majorIncrement), typeof(double), typeof(RctSpinBox), new PropertyMetadata(10d));
 		#endregion
 
 		#region Routed Events
-		public static readonly RoutedEvent spinEvent = EventManager.RegisterRoutedEvent(nameof(spin),
-			RoutingStrategy.Bubble,
-			typeof(SpinRoutedEventHandler),
-			typeof(RctSpinBox));
+		public static readonly RoutedEvent spinEvent = EventManager.RegisterRoutedEvent(nameof(spin), RoutingStrategy.Bubble, typeof(SpinRoutedEventHandler), typeof(RctSpinBox));
 		#endregion
 
 		#region Delegates
@@ -35,11 +34,20 @@ namespace SoftwareThemeDesigner
 		#endregion
 
 		#region Properties
-
 		public string stringFormat
 		{
 			get { return GetValue(stringFormatProperty).ToString(); }
 			set { SetValue(stringFormatProperty, value); }
+		}
+		public double increment
+		{
+			get { return (double)GetValue(incrementProperty); }
+			set { SetValue(incrementProperty, value); }
+		}
+		public double majorIncrement
+		{
+			get { return (double)GetValue(majorIncrementProperty); }
+			set { SetValue(majorIncrementProperty, value); }
 		}
 		#endregion
 
@@ -115,8 +123,10 @@ namespace SoftwareThemeDesigner
 		{
 			var oldValue = value;
 
-			if (decrease) value -= 1;
-			else value += 1;
+			var shiftDown = Keyboard.Modifiers == ModifierKeys.Shift;
+
+			if (decrease) value -= shiftDown ? majorIncrement : increment;
+			else value += shiftDown ? majorIncrement : increment;
 
 			Text = value.ToString(stringFormat);
 

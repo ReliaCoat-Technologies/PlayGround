@@ -28,7 +28,6 @@
 
 		<cc:RctSpinBox x:Name="spinBox"
 					   Margin="10"
-					   stringFormat="F3"
 					   labelText="spinBoxLabel" />
 
 	</StackPanel>

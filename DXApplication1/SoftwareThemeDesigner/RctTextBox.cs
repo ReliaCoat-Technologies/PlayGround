@@ -12,7 +12,7 @@ namespace SoftwareThemeDesigner
         #region Dependency Properties
         public static readonly DependencyProperty labelTextProperty = DependencyProperty.Register(nameof(labelText), typeof(string), typeof(RctTextBox));
         public static readonly DependencyProperty labelFontSizeProperty = DependencyProperty.Register(nameof(labelFontSize), typeof(double), typeof(RctTextBox),
-            new FrameworkPropertyMetadata(12d));
+            new FrameworkPropertyMetadata(14d));
         public static readonly DependencyProperty labelTextColorProperty = DependencyProperty.Register(nameof(labelTextColor), typeof(Brush), typeof(RctTextBox));
         #endregion
 
@@ -62,11 +62,13 @@ namespace SoftwareThemeDesigner
 
         protected override void OnGotMouseCapture(MouseEventArgs e)
         {
+			base.OnGotMouseCapture(e);
 	        SelectAll();
         }
 
         protected override void OnGotFocus(RoutedEventArgs e)
         {
+			base.OnGotFocus(e);
 	        SelectAll();
         }
 		#endregion

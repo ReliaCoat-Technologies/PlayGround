@@ -23,7 +23,7 @@ namespace SoftwareThemeDesigner
 		#region Dependency Properties
 		public static readonly DependencyProperty labelTextProperty = DependencyProperty.Register(nameof(labelText), typeof(string), typeof(RctComboBox));
 		public static readonly DependencyProperty labelFontSizeProperty = DependencyProperty.Register(nameof(labelFontSize), typeof(double), typeof(RctComboBox),
-			new FrameworkPropertyMetadata(12d));
+			new FrameworkPropertyMetadata(14d));
 		public static readonly DependencyProperty labelTextColorProperty = DependencyProperty.Register(nameof(labelTextColor), typeof(Brush), typeof(RctComboBox));
 		public static readonly DependencyProperty allowDeleteProperty = DependencyProperty.Register(nameof(allowDelete), typeof(bool), typeof(RctComboBox),
 			new FrameworkPropertyMetadata(true));

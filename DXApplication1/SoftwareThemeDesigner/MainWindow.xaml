@@ -17,21 +17,15 @@
 						DisplayMemberPath="nestedClass.country"
 						SelectedValuePath="nestedClass.country" />
 
-		<dxe:ComboBoxEdit Margin="10"
-						  ItemsSource="{Binding comboBoxItems}"
-						  SelectedItem="{Binding comboBoxValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-						  DisplayMember="nestedClass.country" />
-
 		<cc:RctTextBox Margin="10"
-					   Text="{Binding textBoxString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-					   labelText="Test Label" />
+		               Text="{Binding textBoxString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+		               labelText="Test Label" />
 
 		<cc:RctSpinBox x:Name="spinBox"
 					   Margin="10"
 					   suffix=" SLPM"
-					   maxValue="99"
+					   maxValue="1000"
 					   minValue="0"
-					   stringFormat="00"
 					   labelText="spinBoxLabel" />
 
 	</StackPanel>

@@ -29,6 +29,8 @@
 		<cc:RctSpinBox x:Name="spinBox"
 					   Margin="10"
 					   suffix=" SLPM"
+					   maxValue="99"
+					   minValue="0"
 					   stringFormat="00"
 					   labelText="spinBoxLabel" />
 

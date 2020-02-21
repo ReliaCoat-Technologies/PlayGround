@@ -30,6 +30,8 @@ namespace SoftwareThemeDesigner
 		public static readonly DependencyProperty formattedTextProperty = _formattedTextPropertyKey.DependencyProperty;
 		public static readonly DependencyProperty prefixProperty = DependencyProperty.Register(nameof(prefix), typeof(string), typeof(RctSpinBox), new PropertyMetadata(string.Empty));
 		public static readonly DependencyProperty suffixProperty = DependencyProperty.Register(nameof(suffix), typeof(string), typeof(RctSpinBox), new PropertyMetadata(string.Empty));
+		public static readonly DependencyProperty minValueProperty = DependencyProperty.Register(nameof(minValue), typeof(double), typeof(RctSpinBox), new PropertyMetadata(double.MinValue));
+		public static readonly DependencyProperty maxValueProperty = DependencyProperty.Register(nameof(maxValue), typeof(double), typeof(RctSpinBox), new PropertyMetadata(double.MaxValue));
 		#endregion
 
 		#region Callbacks
@@ -83,6 +85,17 @@ namespace SoftwareThemeDesigner
 		{
 			get { return GetValue(suffixProperty).ToString(); }
 			set { SetValue(suffixProperty, value); }
+		}
+
+		public double minValue
+		{
+			get { return (double)GetValue(minValueProperty); }
+			set { SetValue(minValueProperty, value); }
+		}
+		public double maxValue
+		{
+			get { return (double)GetValue(maxValueProperty); }
+			set { SetValue(maxValueProperty, value); }
 		}
 		#endregion
 
@@ -173,6 +186,12 @@ namespace SoftwareThemeDesigner
 
 		protected virtual void onValueChanged(double newValue)
 		{
+			if (value > maxValue)
+				value = maxValue;
+
+			if (value < minValue)
+				value = minValue;
+
 			Text = value.ToString(stringFormat);
 			SetValue(_formattedTextPropertyKey, $"{prefix}{Text}{suffix}");
 		}

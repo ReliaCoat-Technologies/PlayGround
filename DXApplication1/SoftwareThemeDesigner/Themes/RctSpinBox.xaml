@@ -16,8 +16,6 @@
 				Value="{dxi:ThemeResource {dxt:PaletteBrushThemeKey ResourceKey=Foreground}}" />
 		<Setter Property="TextWrapping"
 				Value="WrapWithOverflow" />
-		<Setter Property="Text"
-				Value="0" />
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type TextBoxBase}">

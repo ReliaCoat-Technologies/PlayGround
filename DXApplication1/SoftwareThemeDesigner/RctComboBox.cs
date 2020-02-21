@@ -108,9 +108,10 @@ namespace SoftwareThemeDesigner
 			if (e.Key == Key.Delete || e.Key == Key.Back)
 			{
 				if (allowDelete && !IsDropDownOpen)
+				{
 					SelectedItem = null;
-
-				return;
+					return;
+				}
 			}
 			if (e.Key == Key.Enter || e.Key == Key.Return)
 			{

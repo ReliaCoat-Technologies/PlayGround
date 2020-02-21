@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using SoftwareThemeDesigner.RoutedEvents;
 
 namespace SoftwareThemeDesigner
 {
@@ -13,15 +15,31 @@ namespace SoftwareThemeDesigner
 		private double value;
 		#endregion
 
+		#region Dependency Properties
+		public static readonly DependencyProperty stringFormatProperty = DependencyProperty.Register(nameof(stringFormat), typeof(string), typeof(RctSpinBox), new PropertyMetadata(string.Empty));
+		#endregion
+
 		#region Routed Events
-		public static readonly RoutedEvent SpinEvent = EventManager.RegisterRoutedEvent(nameof(Spin), RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(RctSpinBox));
+		public static readonly RoutedEvent spinEvent = EventManager.RegisterRoutedEvent(nameof(spin),
+			RoutingStrategy.Bubble,
+			typeof(SpinRoutedEventHandler),
+			typeof(RctSpinBox));
 		#endregion
 
 		#region Delegates
-		public event RoutedEventHandler Spin
+		public event SpinRoutedEventHandler spin
 		{
-			add { AddHandler(SpinEvent, value); }
-			remove { RemoveHandler(SpinEvent, value); }
+			add { AddHandler(spinEvent, value); }
+			remove { RemoveHandler(spinEvent, value); }
+		}
+		#endregion
+
+		#region Properties
+
+		public string stringFormat
+		{
+			get { return GetValue(stringFormatProperty).ToString(); }
+			set { SetValue(stringFormatProperty, value); }
 		}
 		#endregion
 
@@ -36,6 +54,8 @@ namespace SoftwareThemeDesigner
 		public override void OnApplyTemplate()
 		{
 			base.OnApplyTemplate();
+
+			Text = 0.ToString();
 
 			spinUpButton = GetTemplateChild("PATH_SpinUpButton") as Button;
 			if (spinUpButton != null)
@@ -61,10 +81,14 @@ namespace SoftwareThemeDesigner
 			{
 				value = outValue;
 			}
-			else
-			{
-				Text = value.ToString();
-			}
+
+			// Allows user to type in decimal point.
+			if (Text.Last() == '.' && Text.Count(x => x == '.') == 1)
+				return;
+
+			Text = value.ToString(stringFormat);
+
+			CaretIndex = Text.Length;
 		}
 
 		protected override void OnGotMouseCapture(MouseEventArgs e)
@@ -79,14 +103,24 @@ namespace SoftwareThemeDesigner
 
 		protected virtual void onSpinUpButtonClicked(object sender, RoutedEventArgs e)
 		{
-			value += 1;
-			Text = value.ToString();
+			raiseSpinEvent();
 		}
 
 		protected virtual void onSpinDownButtonClicked(object sender, RoutedEventArgs e)
 		{
-			value -= 1;
-			Text = value.ToString();
+			raiseSpinEvent(true);
+		}
+
+		protected void raiseSpinEvent(bool decrease = false)
+		{
+			var oldValue = value;
+
+			if (decrease) value -= 1;
+			else value += 1;
+
+			Text = value.ToString(stringFormat);
+
+			RaiseEvent(new SpinRoutedEventArgs(spinEvent, oldValue, value));
 		}
 		#endregion
 	}

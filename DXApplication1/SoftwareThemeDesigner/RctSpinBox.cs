@@ -10,15 +10,22 @@ namespace SoftwareThemeDesigner
 	public class RctSpinBox : RctTextBox
 	{
 		#region Fields
-		private Button spinUpButton;
-		private Button spinDownButton;
-		private double value;
+		private Button _spinUpButton;
+		private Button _spinDownButton;
 		#endregion
 
 		#region Dependency Properties
 		public static readonly DependencyProperty stringFormatProperty = DependencyProperty.Register(nameof(stringFormat), typeof(string), typeof(RctSpinBox), new PropertyMetadata(string.Empty));
 		public static readonly DependencyProperty incrementProperty = DependencyProperty.Register(nameof(increment), typeof(double), typeof(RctSpinBox), new PropertyMetadata(1d));
 		public static readonly DependencyProperty majorIncrementProperty = DependencyProperty.Register(nameof(majorIncrement), typeof(double), typeof(RctSpinBox), new PropertyMetadata(10d));
+		public static readonly DependencyProperty valueProperty = DependencyProperty.Register(nameof(value), typeof(double), typeof(RctSpinBox), new FrameworkPropertyMetadata(0d, valueChangedCallback));
+
+		private static void valueChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
+		{
+			var spinBox = d as RctSpinBox;
+			spinBox?.onValueChanged((double)e.NewValue);
+		}
+
 		#endregion
 
 		#region Routed Events
@@ -49,6 +56,11 @@ namespace SoftwareThemeDesigner
 			get { return (double)GetValue(majorIncrementProperty); }
 			set { SetValue(majorIncrementProperty, value); }
 		}
+		public double value
+		{
+			get { return (double)GetValue(valueProperty); }
+			set { SetValue(valueProperty, value); }
+		}
 		#endregion
 
 		#region Constructor
@@ -65,17 +77,22 @@ namespace SoftwareThemeDesigner
 
 			Text = 0.ToString();
 
-			spinUpButton = GetTemplateChild("PATH_SpinUpButton") as Button;
-			if (spinUpButton != null)
+			_spinUpButton = GetTemplateChild("PATH_SpinUpButton") as Button;
+			if (_spinUpButton != null)
 			{
-				spinUpButton.Click += onSpinUpButtonClicked;
+				_spinUpButton.Click += onSpinUpButtonClicked;
 			}
 
-			spinDownButton = GetTemplateChild("PATH_SpinDownButton") as Button;
-			if (spinDownButton != null)
+			_spinDownButton = GetTemplateChild("PATH_SpinDownButton") as Button;
+			if (_spinDownButton != null)
 			{
-				spinDownButton.Click += onSpinDownButtonClicked;
+				_spinDownButton.Click += onSpinDownButtonClicked;
 			}
+		}
+
+		protected virtual void onValueChanged(double value)
+		{
+			Text = value.ToString(stringFormat);
 		}
 
 		protected override void OnTextChanged(TextChangedEventArgs e)
@@ -109,6 +126,26 @@ namespace SoftwareThemeDesigner
 			SelectAll();
 		}
 
+		protected override void OnPreviewMouseWheel(MouseWheelEventArgs e)
+		{
+			raiseSpinEvent(e.Delta <= 0);
+		}
+
+		protected override void OnPreviewKeyUp(KeyEventArgs e)
+		{
+			switch (e.Key)
+			{
+				case Key.Up:
+					raiseSpinEvent();
+					return;
+				case Key.Down:
+					raiseSpinEvent(true);
+					return;
+				default:
+					return;
+			}
+		}
+
 		protected virtual void onSpinUpButtonClicked(object sender, RoutedEventArgs e)
 		{
 			raiseSpinEvent();
@@ -128,9 +165,9 @@ namespace SoftwareThemeDesigner
 			if (decrease) value -= shiftDown ? majorIncrement : increment;
 			else value += shiftDown ? majorIncrement : increment;
 
-			Text = value.ToString(stringFormat);
-
 			RaiseEvent(new SpinRoutedEventArgs(spinEvent, oldValue, value));
+
+			SelectAll();
 		}
 		#endregion
 	}

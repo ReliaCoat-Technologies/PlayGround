@@ -3,9 +3,9 @@
 				 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 				 xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
 				 xmlns:cc="clr-namespace:SoftwareThemeDesigner"
-				 xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
 				 Title="MainWindow"
 				 Height="350"
+				 TextElement.FontSize="40"
 				 Width="525">
 
 	<StackPanel>
@@ -13,20 +13,20 @@
 		<cc:RctComboBox Margin="10"
 						ItemsSource="{Binding comboBoxItems}"
 						SelectedItem="{Binding comboBoxValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-						labelText="ComboBox Label"
+						labelText="Country"
 						DisplayMemberPath="nestedClass.country"
 						SelectedValuePath="nestedClass.country" />
 
 		<cc:RctTextBox Margin="10"
 		               Text="{Binding textBoxString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-		               labelText="Test Label" />
+		               labelText="Comments" />
 
 		<cc:RctSpinBox x:Name="spinBox"
 					   Margin="10"
 					   suffix=" SLPM"
 					   maxValue="1000"
-					   minValue="0"
-					   labelText="spinBoxLabel" />
+					   minValue="-1000"
+					   labelText="Primary Gas Flow" />
 
 	</StackPanel>
 

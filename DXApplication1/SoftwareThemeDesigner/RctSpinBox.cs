@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -144,8 +143,15 @@ namespace SoftwareThemeDesigner
 		{
 			double outValue;
 
-			if (string.IsNullOrWhiteSpace(Text))
-				Text = "0";
+			if (string.IsNullOrWhiteSpace(Text.Trim('-', '0')))
+			{
+				Text = Text.Contains("-") 
+					? "-"  // Allows user to start negative number with minus sign.
+					: "0"; // Defaults to 0 if everything is deleted.
+
+				CaretIndex = 1;
+				return;
+			}
 
 			if (double.TryParse(Text, out outValue))
 			{
@@ -187,6 +193,9 @@ namespace SoftwareThemeDesigner
 
 		protected virtual void onValueChanged(double newValue)
 		{
+			if (Text == "-") // Allows user to type negative numbers
+				return;
+
 			if (value > maxValue)
 				value = maxValue;
 
@@ -233,6 +242,10 @@ namespace SoftwareThemeDesigner
 					return;
 				case Key.Down:
 					raiseSpinEvent(true);
+					return;
+				case Key.Subtract:
+				case Key.OemMinus:
+					value = -value;
 					return;
 				default:
 					return;

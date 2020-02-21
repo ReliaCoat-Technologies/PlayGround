@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 
 namespace SoftwareThemeDesigner
@@ -58,6 +59,16 @@ namespace SoftwareThemeDesigner
                 label.Foreground = labelTextColor;
             }
         }
-        #endregion
-    }
+
+        protected override void OnGotMouseCapture(MouseEventArgs e)
+        {
+	        SelectAll();
+        }
+
+        protected override void OnGotFocus(RoutedEventArgs e)
+        {
+	        SelectAll();
+        }
+		#endregion
+	}
 }

@@ -32,15 +32,17 @@
 									<Path x:Name="PART_CheckBoxShape"
 									      Fill="{TemplateBinding Foreground}"
 									      Stretch="Uniform"
-									      Height="20"
-									      Width="20"
 									      Margin="5"
 									      HorizontalAlignment="Center"
-									      VerticalAlignment="Center" />
+									      VerticalAlignment="Center">
+										<Path.RenderTransform>
+											<TranslateTransform Y="2"/>
+										</Path.RenderTransform>
+									</Path>
 
 								</Border>
 
-								<TextBlock Text="CheckBox"
+								<TextBlock x:Name="PART_Label"
 								           Margin="5"
 								           VerticalAlignment="Center" />
 

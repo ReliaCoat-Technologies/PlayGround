@@ -20,7 +20,8 @@ namespace SoftwareThemeDesigner
 
 			passwordBox.KeyUp += PasswordBoxOnKeyUp;
 
-			checkBox.Checked += CheckBoxOnChecked;
+			checkBox1.Checked += CheckBoxOnChecked;
+			checkBox2.Checked += CheckBoxOnChecked;
 		}
 
 		private void CheckBoxOnChecked(object sender, RoutedEventArgs e)

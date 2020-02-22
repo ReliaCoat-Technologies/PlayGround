@@ -5,7 +5,6 @@
 				 xmlns:cc="clr-namespace:SoftwareThemeDesigner"
 				 Title="MainWindow"
 				 Height="600"
-				 TextElement.FontSize="40"
 				 Width="525">
 
 	<StackPanel>
@@ -32,8 +31,17 @@
 						   Margin="10"
 						   labelText="Password" />
 
-		<cc:RctCheckBox x:Name="checkBox"
-		                Margin="10"/>
+		<UniformGrid Columns="2">
+			<cc:RctCheckBox x:Name="checkBox1"
+							IsThreeState="True"
+							labelText="Check Box 1"
+							Margin="10" />
+
+			<cc:RctCheckBox x:Name="checkBox2"
+							IsThreeState="True"
+							labelText="Check Box 2"
+							Margin="10" />
+		</UniformGrid>
 
 	</StackPanel>
 

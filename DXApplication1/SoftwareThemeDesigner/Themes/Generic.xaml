@@ -1,11 +1,12 @@
-<ResourceDictionary
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+					xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					xmlns:local="clr-namespace:SoftwareThemeDesigner">
 
-    <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="/Themes/RctTextBox.xaml"/>
-        <ResourceDictionary Source="/Themes/RctComboBox.xaml"/>
-        <ResourceDictionary Source="/Themes/RctSpinBox.xaml" />
+	<ResourceDictionary.MergedDictionaries>
+		<ResourceDictionary Source="/Themes/RctTextBox.xaml" />
+		<ResourceDictionary Source="/Themes/RctComboBox.xaml" />
+		<ResourceDictionary Source="/Themes/RctSpinBox.xaml" />
+		<ResourceDictionary Source="/Themes/RctPasswordBox.xaml" />
 	</ResourceDictionary.MergedDictionaries>
 
 </ResourceDictionary>

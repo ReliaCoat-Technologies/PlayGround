@@ -4,7 +4,7 @@
 				 xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
 				 xmlns:cc="clr-namespace:SoftwareThemeDesigner"
 				 Title="MainWindow"
-				 Height="350"
+				 Height="600"
 				 TextElement.FontSize="40"
 				 Width="525">
 
@@ -18,8 +18,8 @@
 						SelectedValuePath="nestedClass.country" />
 
 		<cc:RctTextBox Margin="10"
-		               Text="{Binding textBoxString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-		               labelText="Comments" />
+					   Text="{Binding textBoxString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+					   labelText="Comments" />
 
 		<cc:RctSpinBox x:Name="spinBox"
 					   Margin="10"
@@ -27,6 +27,10 @@
 					   maxValue="1000"
 					   minValue="-1000"
 					   labelText="Primary Gas Flow" />
+
+		<cc:RctPasswordBox x:Name="passwordBox"
+						   Margin="10"
+						   labelText="Password" />
 
 	</StackPanel>
 

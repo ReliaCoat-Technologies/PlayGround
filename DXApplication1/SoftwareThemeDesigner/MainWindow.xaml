@@ -32,6 +32,9 @@
 						   Margin="10"
 						   labelText="Password" />
 
+		<cc:RctCheckBox x:Name="checkBox"
+		                Margin="10"/>
+
 	</StackPanel>
 
 </dx:ThemedWindow>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 using System.Windows.Input;
 using DevExpress.Xpf.Core;
 using SoftwareThemeDesigner.RoutedEvents;
@@ -18,6 +19,13 @@ namespace SoftwareThemeDesigner
 			spinBox.spin += onSpin;
 
 			passwordBox.KeyUp += PasswordBoxOnKeyUp;
+
+			checkBox.Checked += CheckBoxOnChecked;
+		}
+
+		private void CheckBoxOnChecked(object sender, RoutedEventArgs e)
+		{
+			Console.WriteLine("Checkbox Checked");
 		}
 
 		private void onSpin(object sender, SpinRoutedEventArgs e)

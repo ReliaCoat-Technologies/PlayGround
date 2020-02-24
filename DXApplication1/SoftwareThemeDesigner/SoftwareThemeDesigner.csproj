@@ -66,6 +66,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="RctButton.cs" />
     <Compile Include="RctComboBox.cs" />
     <Compile Include="RctListBox.cs" />
     <Compile Include="RctPasswordBox.cs" />

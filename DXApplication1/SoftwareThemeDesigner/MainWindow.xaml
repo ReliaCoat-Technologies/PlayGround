@@ -15,7 +15,7 @@
 					   Margin="10"
 					   ItemsSource="{Binding comboBoxItems}"
 					   SelectedItem="{Binding comboBoxValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-					   DisplayMemberPath="nestedClass.country"/>
+					   DisplayMemberPath="nestedClass.country" />
 
 		<StackPanel>
 
@@ -44,13 +44,17 @@
 			<UniformGrid Columns="2">
 
 				<cc:RctCheckBox x:Name="checkBox1"
-				                labelText="Two-State"
-				                Margin="10" />
+								labelText="Two-State"
+								Margin="10" />
 
 				<cc:RctCheckBox x:Name="checkBox2"
 								IsThreeState="True"
 								labelText="Three-State"
 								Margin="10" />
+
+				<cc:RctButton Margin="10"
+							  Content="Hello World!"
+							  Click="OnButtonClick"/>
 
 			</UniformGrid>
 

@@ -42,5 +42,10 @@ namespace SoftwareThemeDesigner
 				passwordBox.clear();
 			}
 		}
+
+		private void OnButtonClick(object sender, RoutedEventArgs e)
+		{
+			Console.WriteLine("Button Clicked");
+		}
 	}
 }

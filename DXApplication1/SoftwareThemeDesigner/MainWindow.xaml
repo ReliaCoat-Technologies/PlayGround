@@ -53,7 +53,7 @@
 								Margin="10" />
 
 				<cc:RctButton Margin="10"
-							  Content="Hello World!"
+							  Content="Click Me"
 							  Click="OnButtonClick"/>
 
 			</UniformGrid>

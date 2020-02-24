@@ -4,45 +4,57 @@
 				 xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
 				 xmlns:cc="clr-namespace:SoftwareThemeDesigner"
 				 Title="MainWindow"
+				 WindowStartupLocation="CenterScreen"
 				 Height="600"
-				 Width="525">
+				 Width="1000">
 
-	<StackPanel>
+	<DockPanel>
 
-		<cc:RctComboBox Margin="10"
-						ItemsSource="{Binding comboBoxItems}"
-						SelectedItem="{Binding comboBoxValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-						labelText="Country"
-						DisplayMemberPath="nestedClass.country"
-						SelectedValuePath="nestedClass.country" />
-
-		<cc:RctTextBox Margin="10"
-					   Text="{Binding textBoxString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-					   labelText="Comments" />
-
-		<cc:RctSpinBox x:Name="spinBox"
+		<cc:RctListBox x:Name="listBox"
 					   Margin="10"
-					   suffix=" SLPM"
-					   maxValue="1000"
-					   minValue="-1000"
-					   labelText="Primary Gas Flow" />
+					   ItemsSource="{Binding comboBoxItems}"
+					   SelectedItem="{Binding comboBoxValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+					   DisplayMemberPath="nestedClass.country"/>
 
-		<cc:RctPasswordBox x:Name="passwordBox"
+		<StackPanel>
+
+			<cc:RctComboBox Margin="10"
+							ItemsSource="{Binding comboBoxItems}"
+							SelectedItem="{Binding comboBoxValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+							labelText="Country"
+							DisplayMemberPath="nestedClass.country"
+							SelectedValuePath="nestedClass.country" />
+
+			<cc:RctTextBox Margin="10"
+						   Text="{Binding textBoxString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+						   labelText="Comments" />
+
+			<cc:RctSpinBox x:Name="spinBox"
 						   Margin="10"
-						   labelText="Password" />
+						   suffix=" SLPM"
+						   maxValue="1000"
+						   minValue="-1000"
+						   labelText="Primary Gas Flow" />
 
-		<UniformGrid Columns="2">
-			<cc:RctCheckBox x:Name="checkBox1"
-							IsThreeState="True"
-							labelText="Check Box 1"
-							Margin="10" />
+			<cc:RctPasswordBox x:Name="passwordBox"
+							   Margin="10"
+							   labelText="Password" />
 
-			<cc:RctCheckBox x:Name="checkBox2"
-							IsThreeState="True"
-							labelText="Check Box 2"
-							Margin="10" />
-		</UniformGrid>
+			<UniformGrid Columns="2">
 
-	</StackPanel>
+				<cc:RctCheckBox x:Name="checkBox1"
+				                labelText="Two-State"
+				                Margin="10" />
+
+				<cc:RctCheckBox x:Name="checkBox2"
+								IsThreeState="True"
+								labelText="Three-State"
+								Margin="10" />
+
+			</UniformGrid>
+
+		</StackPanel>
+
+	</DockPanel>
 
 </dx:ThemedWindow>

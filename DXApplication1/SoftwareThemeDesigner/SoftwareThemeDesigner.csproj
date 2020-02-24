@@ -67,6 +67,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="RctComboBox.cs" />
+    <Compile Include="RctListBox.cs" />
     <Compile Include="RctPasswordBox.cs" />
     <Compile Include="RctSpinBox.cs" />
     <Compile Include="RctTextBox.cs" />
@@ -98,6 +99,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Themes\RctComboBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\RctListBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

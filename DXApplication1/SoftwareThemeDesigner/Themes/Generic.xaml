@@ -7,6 +7,8 @@
 		<ResourceDictionary Source="/Themes/RctSpinBox.xaml" />
 		<ResourceDictionary Source="/Themes/RctPasswordBox.xaml" />
 		<ResourceDictionary Source="/Themes/RctCheckBox.xaml" />
+		<ResourceDictionary Source="/Themes/RctListBox.xaml" />
 	</ResourceDictionary.MergedDictionaries>
+
 
 </ResourceDictionary>

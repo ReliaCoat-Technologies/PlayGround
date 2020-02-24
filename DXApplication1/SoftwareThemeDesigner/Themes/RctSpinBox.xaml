@@ -7,7 +7,7 @@
 	<Style TargetType="{x:Type swt:RctSpinBox}"
 		   BasedOn="{StaticResource {x:Type TextBox}}">
 		<Setter Property="Background"
-				Value="Gray" />
+		        Value="{dxi:ThemeResource {dxt:PaletteBrushThemeKey ResourceKey=Editor.Background}}" />
 		<Setter Property="TextAlignment"
 				Value="Center" />
 		<Setter Property="CaretBrush"

@@ -74,6 +74,7 @@
     <Compile Include="RctTextBox.cs" />
     <Compile Include="RoutedEvents\SpinRoutedEventHandler.cs" />
     <Compile Include="TestBindingClass.cs" />
+    <Compile Include="Utilities\ToUpperConverter.cs" />
     <Compile Include="Utilities\ValueFilterHelpers.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Page Include="MainWindow.xaml">

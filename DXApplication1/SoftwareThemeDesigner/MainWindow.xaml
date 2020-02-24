@@ -11,6 +11,7 @@
 	<DockPanel>
 
 		<cc:RctListBox x:Name="listBox"
+					   Width="300"
 					   Margin="10"
 					   ItemsSource="{Binding comboBoxItems}"
 					   SelectedItem="{Binding comboBoxValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

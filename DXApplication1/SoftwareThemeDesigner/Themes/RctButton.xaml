@@ -1,9 +1,9 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:utilities="clr-namespace:SoftwareThemeDesigner.Utilities"
-                    xmlns:softwareThemeDesigner="clr-namespace:SoftwareThemeDesigner"
-                    xmlns:native="http://schemas.devexpress.com/winfx/2008/xaml/core/internal"
-                    xmlns:themes="http://schemas.devexpress.com/winfx/2008/xaml/core/themekeys">
+                    xmlns:stt="clr-namespace:SoftwareThemeDesigner"
+                    xmlns:dxi="http://schemas.devexpress.com/winfx/2008/xaml/core/internal"
+                    xmlns:dxt="http://schemas.devexpress.com/winfx/2008/xaml/core/themekeys">
 
 	<utilities:ToUpperConverter x:Key="toUpper" />
 
@@ -15,36 +15,39 @@
 					  Direction="315"
 					  RenderingBias="Performance" />
 
-	<Style TargetType="{x:Type softwareThemeDesigner:RctButton}"
+	<Style TargetType="{x:Type stt:RctButton}"
 		   BasedOn="{StaticResource {x:Type Button}}">
 		<Setter Property="Background"
-				Value="{native:ThemeResource {themes:PaletteBrushThemeKey ResourceKey=Button.Background}}" />
+				Value="{dxi:ThemeResource {dxt:PaletteBrushThemeKey ResourceKey=Button.Background}}" />
 		<Setter Property="Foreground"
-				Value="{native:ThemeResource {themes:PaletteBrushThemeKey ResourceKey=Foreground}}" />
+				Value="{dxi:ThemeResource {dxt:PaletteBrushThemeKey ResourceKey=Foreground}}" />
 		<Setter Property="BorderBrush"
-				Value="{native:ThemeResource {themes:PaletteBrushThemeKey ResourceKey=Foreground}}" />
+				Value="{dxi:ThemeResource {dxt:PaletteBrushThemeKey ResourceKey=Foreground}}" />
 		<Setter Property="FontSize"
 				Value="16" />
 		<Setter Property="Template">
 			<Setter.Value>
-				<ControlTemplate TargetType="{x:Type softwareThemeDesigner:RctButton}">
+				<ControlTemplate TargetType="{x:Type stt:RctButton}">
 
 					<Grid>
 
 						<Border CornerRadius="5"
 								BorderThickness="0"
 								BorderBrush="{TemplateBinding BorderBrush}"
-								Background="{TemplateBinding Background}"
 								Effect="{StaticResource buttonShadowEffect}">
 							<Border.Style>
 								<Style TargetType="{x:Type Border}">
 									<Setter Property="ClipToBounds"
 											Value="False" />
+									<Setter Property="Background"
+											Value="{Binding RelativeSource={RelativeSource AncestorType=stt:RctButton}, Path=Background}"/>
 									<Style.Triggers>
-										<DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=softwareThemeDesigner:RctButton}, Path=IsPressed}"
+										<DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=stt:RctButton}, Path=IsPressed}"
 													 Value="True">
 											<Setter Property="ClipToBounds"
 													Value="True" />
+											<Setter Property="Background"
+													Value="{dxi:ThemeResource {dxt:PaletteBrushThemeKey ResourceKey=Backstage.Window.Background}}" />
 										</DataTrigger>
 									</Style.Triggers>
 								</Style>

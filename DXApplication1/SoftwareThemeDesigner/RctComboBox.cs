@@ -14,10 +14,13 @@ namespace SoftwareThemeDesigner
 	public class RctComboBox : ComboBox
 	{
 		#region Fields
-		private Popup popup;
-		private TextBox searchTextBox;
-		private TextBox editableTextBox;
-		private StackPanel hostPanel;
+		private Popup _popup;
+		private TextBlock _label;
+		private TextBox _searchTextBox;
+		private TextBox _editableTextBox;
+		private StackPanel _hostPanel;
+		private ToggleButton _toggleButton;
+		private RctRippleDecorator _rippleDecorator;
 		#endregion
 
 		#region Dependency Properties
@@ -66,35 +69,43 @@ namespace SoftwareThemeDesigner
 		{
 			base.OnApplyTemplate();
 
-			hostPanel = GetTemplateChild("PART_HostPanel") as StackPanel;
+			_hostPanel = GetTemplateChild("PART_HostPanel") as StackPanel;
 
-			editableTextBox = GetTemplateChild("PART_EditableTextBox") as TextBox;
-			if (editableTextBox != null)
+			_editableTextBox = GetTemplateChild("PART_EditableTextBox") as TextBox;
+			if (_editableTextBox != null)
 			{
-				editableTextBox.Focusable = false;
+				_editableTextBox.Focusable = false;
 			}
 
-			searchTextBox = GetTemplateChild("PART_SearchTextBox") as TextBox;
-			if (searchTextBox != null)
+			_searchTextBox = GetTemplateChild("PART_SearchTextBox") as TextBox;
+			if (_searchTextBox != null)
 			{
-				searchTextBox.TextChanged += onSearchBoxTextChanged;
+				_searchTextBox.TextChanged += onSearchBoxTextChanged;
 			}
 
-			popup = GetTemplateChild("PART_Popup") as Popup;
-			if (popup != null)
+			_popup = GetTemplateChild("PART_Popup") as Popup;
+			if (_popup != null)
 			{
-				popup.Opened += onPopupOpened;
+				_popup.Opened += onPopupOpened;
 			}
 
-			var label = GetTemplateChild("PART_Label") as TextBlock;
-			if (label != null)
+			_label = GetTemplateChild("PART_Label") as TextBlock;
+			if (_label != null)
 			{
 				if (labelTextColor == null)
 					labelTextColor = Foreground;
 
-				label.Text = labelText;
-				label.FontSize = labelFontSize;
-				label.Foreground = labelTextColor;
+				_label.Text = labelText;
+				_label.FontSize = labelFontSize;
+				_label.Foreground = labelTextColor;
+			}
+
+			_rippleDecorator = GetTemplateChild("PART_RippleDecorator") as RctRippleDecorator;
+
+			_toggleButton = GetTemplateChild("PART_ToggleButton") as ToggleButton;
+			if (_toggleButton != null)
+			{
+				_toggleButton.PreviewMouseLeftButtonDown += (s, e) => _rippleDecorator?.doAnimation(e);
 			}
 		}
 
@@ -129,23 +140,23 @@ namespace SoftwareThemeDesigner
 				return;
 			}
 
-			searchTextBox.Focus();
+			_searchTextBox.Focus();
 
 			base.OnPreviewKeyDown(e);
 		}
 
 		private void onSearchBoxTextChanged(object sender, TextChangedEventArgs e)
 		{
-			foreach (var item in hostPanel.Children.OfType<ComboBoxItem>())
+			foreach (var item in _hostPanel.Children.OfType<ComboBoxItem>())
 			{
-				var isAvailable = item.Content.containsFilterInOrder(searchTextBox.Text, DisplayMemberPath);
+				var isAvailable = item.Content.containsFilterInOrder(_searchTextBox.Text, DisplayMemberPath);
 				item.Visibility = isAvailable ? Visibility.Visible : Visibility.Collapsed;
 			}
 		}
 
 		private void acceptValue()
 		{
-			var filteredChildren = hostPanel
+			var filteredChildren = _hostPanel
 				.Children
 				.OfType<ComboBoxItem>()
 				.Select((x, i) => new { index = i, cbItem = x })
@@ -154,20 +165,20 @@ namespace SoftwareThemeDesigner
 
 			var firstHighlightedIndex = filteredChildren.FirstOrDefault(x => x.cbItem.IsHighlighted)?.index ?? -1;
 
-			if (!string.IsNullOrWhiteSpace(searchTextBox.Text) && filteredChildren.Count > 0)
+			if (!string.IsNullOrWhiteSpace(_searchTextBox.Text) && filteredChildren.Count > 0)
 				SelectedIndex = firstHighlightedIndex > 0 ? firstHighlightedIndex : filteredChildren.First().index;
 		}
 
 		private void onPopupOpened(object sender, EventArgs e)
 		{
-			searchTextBox.Text = string.Empty;
+			_searchTextBox.Text = string.Empty;
 		}
 
 		protected override void OnSelectionChanged(SelectionChangedEventArgs e)
 		{
 			base.OnSelectionChanged(e);
 			Console.WriteLine($"Selected Item: {SelectedItem ?? "Null"}");
-			editableTextBox.Text = SelectedValue?.ToString() ?? string.Empty;
+			_editableTextBox.Text = SelectedValue?.ToString() ?? string.Empty;
 		}
 		#endregion
 	}

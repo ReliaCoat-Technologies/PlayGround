@@ -70,6 +70,28 @@
 
 					<Grid>
 
+						<VisualStateManager.VisualStateGroups>
+							<VisualStateGroup x:Name="CommonStates">
+								<VisualState x:Name="Normal" />
+								<VisualState x:Name="MouseOver">
+									<Storyboard>
+										<DoubleAnimation Storyboard.TargetName="PART_Border"
+										                 Storyboard.TargetProperty="Opacity"
+										                 To="0.4"
+										                 Duration="0:0:0.1" />
+									</Storyboard>
+								</VisualState>
+								<VisualState x:Name="Focused">
+									<Storyboard>
+										<DoubleAnimation Storyboard.TargetName="PART_Border"
+										                 Storyboard.TargetProperty="Opacity"
+										                 To="0.55"
+										                 Duration="0:0:0.1" />
+									</Storyboard>
+								</VisualState>
+							</VisualStateGroup>
+						</VisualStateManager.VisualStateGroups>
+
 						<Grid.RowDefinitions>
 							<RowDefinition Height="Auto" />
 							<RowDefinition Height="Auto" />

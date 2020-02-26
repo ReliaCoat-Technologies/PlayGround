@@ -1,0 +1,52 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+					xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					xmlns:local="clr-namespace:SoftwareThemeDesigner">
+
+	<Style TargetType="{x:Type local:RctRippleEffectDecorator}">
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type local:RctRippleEffectDecorator}">
+
+					<Grid x:Name="PART_Grid"
+						  ClipToBounds="True"
+						  Background="{TemplateBinding Background}">
+
+						<Grid.Resources>
+							<Storyboard x:Key="PART_Animation"
+										Storyboard.TargetName="PART_Ellipse">
+								<DoubleAnimation Storyboard.TargetProperty="Width"
+												 From="0" />
+								<ThicknessAnimation Storyboard.TargetProperty="Margin" />
+								<DoubleAnimation Storyboard.TargetProperty="Opacity"
+								                 BeginTime="0:0:1"
+								                 Duration="0:0:0.5"
+								                 From="1"
+								                 To="0" />
+								<DoubleAnimation Storyboard.TargetProperty="Width"
+								                 BeginTime="0:0:0.5"
+								                 Duration="0:0:0"
+								                 To="0"/>
+								<DoubleAnimation Storyboard.TargetProperty="Opacity"
+												 BeginTime="0:0:0.5"
+												 Duration="0:0:0"
+												 To="1"/>
+							</Storyboard>
+						</Grid.Resources>
+
+						<Ellipse x:Name="PART_Ellipse"
+								 Fill="{Binding Path=highlightBackground, RelativeSource={RelativeSource TemplatedParent}}"
+								 Width="0"
+								 Height="{Binding Path=Width, RelativeSource={RelativeSource Self}}"
+								 HorizontalAlignment="Left"
+								 VerticalAlignment="Top" />
+
+						<ContentPresenter x:Name="PART_ContentPresenter" />
+
+					</Grid>
+
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+</ResourceDictionary>

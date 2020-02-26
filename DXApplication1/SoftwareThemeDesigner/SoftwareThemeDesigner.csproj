@@ -66,6 +66,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="NewControls.xaml.cs">
+      <DependentUpon>NewControls.xaml</DependentUpon>
+    </Compile>
     <Compile Include="RctButton.cs" />
     <Compile Include="RctComboBox.cs" />
     <Compile Include="RctListBox.cs" />
@@ -93,6 +96,10 @@
     <Compile Include="RctCheckBox.cs">
       <Generator>MSBuild:Compile</Generator>
     </Compile>
+    <Page Include="NewControls.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

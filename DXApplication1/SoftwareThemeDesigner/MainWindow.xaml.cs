@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using DevExpress.Xpf.Core;
+using DevExpress.Xpf.Editors;
 using SoftwareThemeDesigner.RoutedEvents;
 using SoftwareThemeDesigner.ViewModels;
 
@@ -48,6 +49,18 @@ namespace SoftwareThemeDesigner
 		private void OnButtonClick(object sender, RoutedEventArgs e)
 		{
 			Console.WriteLine("Button Clicked");
+		}
+
+		private void BaseEdit_OnEditValueChanged(object sender, EditValueChangedEventArgs e)
+		{
+			var value = (comboBoxEdit.EditValue as NestedTestClass).nestedClass.country;
+			Console.WriteLine($"ComboBoxEdit Value Changed: {value}");
+		}
+
+		private void ListBoxEdit_OnEditValueChanged(object sender, EditValueChangedEventArgs e)
+		{
+			var value = (listBoxEdit.EditValue as NestedTestClass).nestedClass.country;
+			Console.WriteLine($"ComboBoxEdit Value Changed: {value}");
 		}
 	}
 }

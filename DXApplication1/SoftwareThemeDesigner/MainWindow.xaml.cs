@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using DevExpress.Xpf.Core;
 using DevExpress.Xpf.Editors;
@@ -19,8 +18,6 @@ namespace SoftwareThemeDesigner
 
 			InitializeComponent();
 
-			spinBox.spin += onSpin;
-
 			passwordBox.KeyUp += PasswordBoxOnKeyUp;
 
 			checkBox1.Checked += CheckBoxOnChecked;
@@ -30,11 +27,6 @@ namespace SoftwareThemeDesigner
 		private void CheckBoxOnChecked(object sender, RoutedEventArgs e)
 		{
 			Console.WriteLine("Checkbox Checked");
-		}
-
-		private void onSpin(object sender, SpinRoutedEventArgs e)
-		{
-			Console.WriteLine($"Spin Event Handled: Old Value = {e.oldValue}, New Value = {e.newValue}");
 		}
 
 		private void PasswordBoxOnKeyUp(object sender, KeyEventArgs e)
@@ -53,14 +45,41 @@ namespace SoftwareThemeDesigner
 
 		private void BaseEdit_OnEditValueChanged(object sender, EditValueChangedEventArgs e)
 		{
-			var value = (comboBoxEdit.EditValue as NestedTestClass).nestedClass.country;
-			Console.WriteLine($"ComboBoxEdit Value Changed: {value}");
+			Console.WriteLine($"DevExpress Drop-Down Value Changed: {comboBoxEdit.EditValue}");
 		}
 
 		private void ListBoxEdit_OnEditValueChanged(object sender, EditValueChangedEventArgs e)
 		{
-			var value = (listBoxEdit.EditValue as NestedTestClass).nestedClass.country;
-			Console.WriteLine($"ComboBoxEdit Value Changed: {value}");
+			var value = (listBoxEdit.EditValue as NestedTestClass)?.nestedClass?.country;
+			Console.WriteLine($"DevExpress ListBox Value Changed: {value}");
+		}
+
+		private void SpinEdit_OnEditValueChanged(object sender, EditValueChangedEventArgs e)
+		{
+			var value = Convert.ToDouble(spinEdit.EditValue);
+			Console.WriteLine($"DevExpress SpinBox Value Changed: {value}");
+		}
+
+		private void ListBox_OnSelected(object sender, SelectionChangedEventArgs e)
+		{
+			var value = (listBox.SelectedItem as NestedTestClass)?.nestedClass?.country;
+			Console.WriteLine($"New ListBox Value Changed: {value}");
+		}
+
+		private void Selector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			var value = (comboBox.SelectedItem as NestedTestClass)?.nestedClass?.country;
+			Console.WriteLine($"New ComboBox Value Changed: {value}");
+		}
+
+		private void onSpin(object sender, SpinRoutedEventArgs e)
+		{
+			Console.WriteLine($"Spin Event Handled: Old Value = {e.oldValue}, New Value = {e.newValue}");
+		}
+
+		private void TextBoxBase_OnTextChanged(object sender, TextChangedEventArgs e)
+		{
+			Console.WriteLine($"Text Box Value Updated: {textBox.Text}");
 		}
 	}
 }

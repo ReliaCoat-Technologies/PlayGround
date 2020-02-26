@@ -1,7 +1,9 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 using SoftwareThemeDesigner.RoutedEvents;
 
@@ -14,6 +16,8 @@ namespace SoftwareThemeDesigner
 		#endregion
 
 		#region Fields
+		private BindingExpression _bindingExpression;
+		private double _typedValue;
 		private Button _spinUpButton;
 		private RctRippleDecorator _spinUpRippleDecorator;
 		private Button _spinDownButton;
@@ -45,14 +49,14 @@ namespace SoftwareThemeDesigner
 		#endregion
 
 		#region Routed Events
-		public static readonly RoutedEvent spinEvent = EventManager.RegisterRoutedEvent(nameof(spin), RoutingStrategy.Bubble, typeof(SpinRoutedEventHandler), typeof(RctSpinBox));
+		public static readonly RoutedEvent valueChangedEvent = EventManager.RegisterRoutedEvent(nameof(valueChanged), RoutingStrategy.Bubble, typeof(SpinRoutedEventHandler), typeof(RctSpinBox));
 		#endregion
 
 		#region Delegates
-		public event SpinRoutedEventHandler spin
+		public event SpinRoutedEventHandler valueChanged
 		{
-			add { AddHandler(spinEvent, value); }
-			remove { RemoveHandler(spinEvent, value); }
+			add { AddHandler(valueChangedEvent, value); }
+			remove { RemoveHandler(valueChangedEvent, value); }
 		}
 		#endregion
 
@@ -113,6 +117,10 @@ namespace SoftwareThemeDesigner
 		{
 			base.OnApplyTemplate();
 
+			_bindingExpression = GetBindingExpression(valueProperty);
+			if (_bindingExpression?.ParentBinding.UpdateSourceTrigger == UpdateSourceTrigger.PropertyChanged)
+				throw new InvalidEnumArgumentException("TextEditMod Warning: Setting UpdateSourceTrigger to PropertyChanged will cause source to change while typing. Suggested UpdateSourceTrigger for this control is LostFocus.");
+
 			Text = 0.ToString(stringFormat);
 			SetValue(_formattedTextPropertyKey, $"{prefix}{Text}{suffix}");
 
@@ -153,7 +161,9 @@ namespace SoftwareThemeDesigner
 
 			if (string.IsNullOrWhiteSpace(Text.Trim('-', '0')))
 			{
-				Text = Text.Contains("-") 
+				_typedValue = 0;
+
+				Text = Text.Contains("-")
 					? "-"  // Allows user to start negative number with minus sign.
 					: "0"; // Defaults to 0 if everything is deleted.
 
@@ -163,14 +173,14 @@ namespace SoftwareThemeDesigner
 
 			if (double.TryParse(Text, out outValue))
 			{
-				value = outValue;
+				_typedValue = outValue;
 			}
 
 			// Allows user to type in decimal point.
 			if (Text.Last() == '.' && Text.Count(x => x == '.') == 1)
 				return;
 
-			Text = value.ToString(stringFormat);
+			Text = _typedValue.ToString(stringFormat);
 
 			CaretIndex = Text.Length;
 		}
@@ -210,13 +220,15 @@ namespace SoftwareThemeDesigner
 			if (value < minValue)
 				value = minValue;
 
+			_bindingExpression?.UpdateSource();
+
 			Text = value.ToString(stringFormat);
 			SetValue(_formattedTextPropertyKey, $"{prefix}{Text}{suffix}");
 		}
 
 		private void onMouseCaptureChanged(RoutedEventArgs e, bool isActivated)
 		{
-			// Prevents shading changes when clicking on spin buttons.
+			// Prevents shading changes when clicking on valueChanged buttons.
 			if (e.OriginalSource == _spinUpButton || e.OriginalSource == _spinDownButton) return;
 			onActivatedChanged(isActivated);
 		}
@@ -233,6 +245,7 @@ namespace SoftwareThemeDesigner
 			{
 				_prefixTextBlock.Opacity = 1;
 				_suffixTextBlock.Opacity = 1;
+				acceptValue();
 			}
 		}
 
@@ -243,6 +256,8 @@ namespace SoftwareThemeDesigner
 
 		protected override void OnPreviewKeyUp(KeyEventArgs e)
 		{
+			base.OnPreviewKeyUp(e);
+
 			switch (e.Key)
 			{
 				case Key.Up:
@@ -253,7 +268,12 @@ namespace SoftwareThemeDesigner
 					return;
 				case Key.Subtract:
 				case Key.OemMinus:
-					value = -value;
+					if (_typedValue == 0) return;
+					_typedValue = -_typedValue;
+					Text = _typedValue.ToString(stringFormat);
+					return;
+				case Key.Return:
+					acceptValue();
 					return;
 				default:
 					return;
@@ -272,6 +292,16 @@ namespace SoftwareThemeDesigner
 			raiseSpinEvent(true);
 		}
 
+		private void acceptValue()
+		{
+			if (_typedValue == value) return;
+
+			var oldValue = value;
+			value = _typedValue;
+
+			RaiseEvent(new SpinRoutedEventArgs(valueChangedEvent, oldValue, value));
+		}
+
 		protected void raiseSpinEvent(bool decrease = false)
 		{
 			var oldValue = value;
@@ -281,7 +311,7 @@ namespace SoftwareThemeDesigner
 			if (decrease) value -= shiftDown ? majorIncrement : increment;
 			else value += shiftDown ? majorIncrement : increment;
 
-			RaiseEvent(new SpinRoutedEventArgs(spinEvent, oldValue, value));
+			RaiseEvent(new SpinRoutedEventArgs(valueChangedEvent, oldValue, value));
 
 			SelectAll();
 		}

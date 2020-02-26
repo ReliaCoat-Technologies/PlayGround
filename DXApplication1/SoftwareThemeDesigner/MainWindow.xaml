@@ -75,9 +75,11 @@
 							   VerticalAlignment="Center"
 							   DockPanel.Dock="Left" />
 
-					<dxe:SpinEdit TextWrapping="WrapWithOverflow"
+					<dxe:SpinEdit x:Name="spinEdit"
+								  TextWrapping="WrapWithOverflow"
 								  MinValue="-1000"
-								  MaxValue="1000" />
+								  MaxValue="1000"
+								  EditValueChanged="SpinEdit_OnEditValueChanged" />
 
 				</DockPanel>
 
@@ -149,28 +151,33 @@
 							   Width="300"
 							   Margin="10"
 							   ItemsSource="{Binding comboBoxItems}"
-							   SelectedItem="{Binding comboBoxValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-							   DisplayMemberPath="nestedClass.country" />
+							   DisplayMemberPath="nestedClass.country"
+							   SelectionChanged="ListBox_OnSelected" />
 
 				<StackPanel>
 
-					<cc:RctComboBox Margin="10"
+					<cc:RctComboBox x:Name="comboBox"
+									Margin="10"
 									ItemsSource="{Binding comboBoxItems}"
-									SelectedItem="{Binding comboBoxValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
 									labelText="Country"
 									DisplayMemberPath="nestedClass.country"
-									SelectedValuePath="nestedClass.country" />
+									SelectedValuePath="nestedClass.country"
+									SelectionChanged="Selector_OnSelectionChanged" />
 
-					<cc:RctTextBox Margin="10"
+					<cc:RctTextBox x:Name="textBox"
+								   Margin="10"
 								   TextWrapping="WrapWithOverflow"
-								   Text="{Binding textBoxString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+								   Text="{Binding textBoxString, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+								   TextChanged="TextBoxBase_OnTextChanged"
 								   labelText="Comments" />
 
 					<cc:RctSpinBox x:Name="spinBox"
 								   Margin="10"
 								   suffix=" SLPM"
+								   value="{Binding spinBoxValue, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
 								   maxValue="1000"
 								   minValue="-1000"
+								   valueChanged="onSpin"
 								   labelText="Primary Gas Flow" />
 
 					<cc:RctPasswordBox x:Name="passwordBox"

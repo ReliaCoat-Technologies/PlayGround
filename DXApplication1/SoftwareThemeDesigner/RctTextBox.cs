@@ -1,6 +1,8 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -9,6 +11,10 @@ namespace SoftwareThemeDesigner
 	[TemplatePart(Name = "PART_Label", Type = typeof(TextBlock))]
 	public class RctTextBox : TextBox
 	{
+		#region Fields
+		private BindingExpression _bindingExpression;
+		#endregion
+
 		#region Dependency Properties
 		public static readonly DependencyProperty labelTextProperty = DependencyProperty.Register(nameof(labelText), typeof(string), typeof(RctTextBox));
 		public static readonly DependencyProperty labelFontSizeProperty = DependencyProperty.Register(nameof(labelFontSize), typeof(double), typeof(RctTextBox),
@@ -49,6 +55,10 @@ namespace SoftwareThemeDesigner
 		{
 			base.OnApplyTemplate();
 
+			_bindingExpression = GetBindingExpression(TextProperty);
+			if (_bindingExpression?.ParentBinding.UpdateSourceTrigger == UpdateSourceTrigger.PropertyChanged)
+				throw new InvalidEnumArgumentException("TextEditMod Warning: Setting UpdateSourceTrigger to PropertyChanged will cause source to change while typing. Suggested UpdateSourceTrigger for this control is LostFocus.");
+
 			var label = GetTemplateChild("PART_Label") as TextBlock;
 			if (label != null)
 			{
@@ -59,6 +69,16 @@ namespace SoftwareThemeDesigner
 				label.FontSize = labelFontSize;
 				label.Foreground = labelTextColor;
 			}
+		}
+
+		protected override void OnPreviewKeyDown(KeyEventArgs e)
+		{
+			if (e.Key == Key.Enter || e.Key == Key.Return)
+			{
+				_bindingExpression?.UpdateSource();
+			}
+
+			base.OnPreviewKeyDown(e);
 		}
 
 		protected override void OnGotMouseCapture(MouseEventArgs e)

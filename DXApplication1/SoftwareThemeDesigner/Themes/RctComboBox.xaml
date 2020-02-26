@@ -129,9 +129,10 @@
 								   AllowsTransparency="True"
 								   Focusable="False"
 								   Margin="25">
+
 								<Grid Margin="12"
-									  Background="Transparent"
-									  HorizontalAlignment="Right">
+								      Background="Transparent"
+								      HorizontalAlignment="Right">
 
 									<Grid.RowDefinitions>
 										<RowDefinition />

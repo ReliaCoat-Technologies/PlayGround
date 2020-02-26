@@ -109,6 +109,22 @@ namespace SoftwareThemeDesigner
 			}
 		}
 
+		protected override void OnGotFocus(RoutedEventArgs e)
+		{
+			if (!IsDropDownOpen)
+				IsDropDownOpen = true;
+
+			base.OnGotFocus(e);
+		}
+
+		protected override void OnGotMouseCapture(MouseEventArgs e)
+		{
+			if (IsDropDownOpen)
+				IsDropDownOpen = true;
+
+			base.OnGotMouseCapture(e);
+		}
+
 		protected override void OnPreviewKeyDown(KeyEventArgs e)
 		{
 			if (e.Key == Key.Escape)
@@ -177,7 +193,6 @@ namespace SoftwareThemeDesigner
 		protected override void OnSelectionChanged(SelectionChangedEventArgs e)
 		{
 			base.OnSelectionChanged(e);
-			Console.WriteLine($"Selected Item: {SelectedItem ?? "Null"}");
 			_editableTextBox.Text = SelectedValue?.ToString() ?? string.Empty;
 		}
 		#endregion

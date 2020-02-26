@@ -71,7 +71,7 @@ namespace SoftwareThemeDesigner
 
 		public void doAnimation(RoutedEventArgs e)
 		{
-			Console.WriteLine("Beginning Storyboard");
+			// Console.WriteLine("Beginning Storyboard");
 
 			var targetWidth = Math.Max(ActualWidth, ActualHeight) * 2;
 			var mousePosition = (e as MouseButtonEventArgs).GetPosition(this);

@@ -11,13 +11,20 @@ namespace SoftwareThemeDesigner.ViewModels
 		private string _textBoxString;
 		private ObservableCollection<NestedTestClass> _comboBoxItems;
 		private NestedTestClass _comboBoxValue;
+		private double _spinBoxValue;
+
 		#endregion
 
 		#region Properties
 		public string textBoxString
 		{
 			get { return _textBoxString; }
-			set { _textBoxString = value; RaisePropertyChanged(() => textBoxString); }
+			set
+			{
+				_textBoxString = value;
+				RaisePropertyChanged(() => textBoxString);
+				Console.WriteLine($"Text Box Binding Value Changed: {_textBoxString}");
+			}
 		}
 		public ObservableCollection<NestedTestClass> comboBoxItems
 		{
@@ -31,9 +38,19 @@ namespace SoftwareThemeDesigner.ViewModels
 			{
 				_comboBoxValue = value;
 				RaisePropertyChanged(() => comboBoxValue);
-				Console.WriteLine($"Change Value Raised: {value?.nestedClass?.country ?? "Null"}");
 			}
 		}
+		public double spinBoxValue
+		{
+			get { return _spinBoxValue; }
+			set
+			{
+				_spinBoxValue = value;
+				RaisePropertyChanged(() => spinBoxValue);
+				Console.WriteLine($"Spin Box Binding Value Changed: {_spinBoxValue}");
+			}
+		}
+
 		#endregion
 
 		#region Constructor

@@ -15,7 +15,9 @@ namespace SoftwareThemeDesigner
 
 		#region Fields
 		private Button _spinUpButton;
+		private RctRippleDecorator _spinUpRippleDecorator;
 		private Button _spinDownButton;
+		private RctRippleDecorator _spinDownRippleDecorator;
 		private TextBlock _prefixTextBlock;
 		private TextBlock _suffixTextBlock;
 		#endregion
@@ -126,16 +128,22 @@ namespace SoftwareThemeDesigner
 				_suffixTextBlock.Text = suffix;
 			}
 
+			_spinUpRippleDecorator = GetTemplateChild("PART_SpinUpRippleDecorator") as RctRippleDecorator;
+
 			_spinUpButton = GetTemplateChild("PART_SpinUpButton") as Button;
 			if (_spinUpButton != null)
 			{
 				_spinUpButton.Click += onSpinUpButtonClicked;
+				_spinUpButton.PreviewMouseLeftButtonDown += (s, e) => _spinUpRippleDecorator?.doAnimation(e);
 			}
+
+			_spinDownRippleDecorator = GetTemplateChild("PART_SpinDownRippleDecorator") as RctRippleDecorator;
 
 			_spinDownButton = GetTemplateChild("PART_SpinDownButton") as Button;
 			if (_spinDownButton != null)
 			{
 				_spinDownButton.Click += onSpinDownButtonClicked;
+				_spinDownButton.PreviewMouseLeftButtonDown += (s, e) => _spinDownRippleDecorator?.doAnimation(e);
 			}
 		}
 

@@ -7,7 +7,7 @@
 	<Style TargetType="{x:Type swt:RctSpinBox}"
 		   BasedOn="{StaticResource {x:Type TextBox}}">
 		<Setter Property="Background"
-		        Value="{dxi:ThemeResource {dxt:PaletteBrushThemeKey ResourceKey=Editor.Background}}" />
+				Value="{dxi:ThemeResource {dxt:PaletteBrushThemeKey ResourceKey=Editor.Background}}" />
 		<Setter Property="TextAlignment"
 				Value="Center" />
 		<Setter Property="CaretBrush"
@@ -54,62 +54,80 @@
 									   FontSize="{TemplateBinding FontSize}"
 									   Foreground="{TemplateBinding Foreground}"
 									   DockPanel.Dock="Left"
-									   VerticalAlignment="Center"/>
+									   VerticalAlignment="Center" />
 
 							<TextBlock x:Name="PART_SuffixTextBlock"
 									   FontSize="{TemplateBinding FontSize}"
 									   Foreground="{TemplateBinding Foreground}"
 									   DockPanel.Dock="Right"
-									   VerticalAlignment="Center"/>
+									   VerticalAlignment="Center" />
 
 							<ScrollViewer x:Name="PART_ContentHost"
 										  HorizontalAlignment="Center"
-										  VerticalAlignment="Center"/>
+										  VerticalAlignment="Center" />
 
 						</DockPanel>
 
-						<Button x:Name="PART_SpinUpButton"
-								Grid.Row="0"
-								Grid.Column="1">
-							<Button.Template>
-								<ControlTemplate>
-									<Border Background="Transparent">
-										<Path x:Name="PART_DownArrow"
-											  HorizontalAlignment="Center"
-											  VerticalAlignment="Center"
-											  Fill="{TemplateBinding Foreground}"
-											  Margin="5"
-											  Height="10"
-											  Width="10"
-											  Opacity="0.9"
-											  Stretch="Uniform"
-											  Data="M7.41,15.41L12,10.83L16.59,15.41L18,14L12,8L6,14L7.41,15.41Z" />
-									</Border>
-								</ControlTemplate>
-							</Button.Template>
-						</Button>
+						<swt:RctRippleDecorator x:Name="PART_SpinUpRippleDecorator"
+												highlightBackground="{dxi:ThemeResource {dxt:PaletteBrushThemeKey ResourceKey=SelectionBackground}}"
+												DockPanel.Dock="Right"
+												rippleSize="1.5"
+												Grid.Row="0"
+												Grid.Column="1"
+												Height="{Binding ElementName=PART_SpinUpButton, Path=ActualHeight}"
+												Width="{Binding ElementName=PART_SpinUpButton, Path=ActualWidth}">
 
-						<Button x:Name="PART_SpinDownButton"
-								Grid.Row="1"
-								Grid.Column="1">
-							<Button.Template>
-								<ControlTemplate>
-									<Border Background="Transparent">
-										<Path x:Name="PATH_DownArrow"
-											  HorizontalAlignment="Center"
-											  VerticalAlignment="Center"
-											  Fill="{TemplateBinding Foreground}"
-											  Margin="5"
-											  Height="10"
-											  Width="10"
-											  Opacity="0.9"
-											  Stretch="Uniform"
-											  Data="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z" />
-									</Border>
-								</ControlTemplate>
+							<Button x:Name="PART_SpinUpButton">
+								<Button.Template>
+									<ControlTemplate>
+										<Border Background="Transparent">
+											<Path x:Name="PART_DownArrow"
+												  HorizontalAlignment="Center"
+												  VerticalAlignment="Center"
+												  Fill="{TemplateBinding Foreground}"
+												  Margin="5"
+												  Height="10"
+												  Width="10"
+												  Opacity="0.9"
+												  Stretch="Uniform"
+												  Data="M7.41,15.41L12,10.83L16.59,15.41L18,14L12,8L6,14L7.41,15.41Z" />
+										</Border>
+									</ControlTemplate>
+								</Button.Template>
+							</Button>
 
-							</Button.Template>
-						</Button>
+						</swt:RctRippleDecorator>
+
+						<swt:RctRippleDecorator x:Name="PART_SpinDownRippleDecorator"
+												highlightBackground="{dxi:ThemeResource {dxt:PaletteBrushThemeKey ResourceKey=SelectionBackground}}"
+												DockPanel.Dock="Right"
+												rippleSize="1.5"
+												Grid.Row="1"
+												Grid.Column="1"
+												Height="{Binding ElementName=PART_SpinDownButton, Path=ActualHeight}"
+												Width="{Binding ElementName=PART_SpinDownButton, Path=ActualWidth}">
+
+							<Button x:Name="PART_SpinDownButton">
+								<Button.Template>
+									<ControlTemplate>
+										<Border Background="Transparent">
+											<Path x:Name="PATH_DownArrow"
+												  HorizontalAlignment="Center"
+												  VerticalAlignment="Center"
+												  Fill="{TemplateBinding Foreground}"
+												  Margin="5"
+												  Height="10"
+												  Width="10"
+												  Opacity="0.9"
+												  Stretch="Uniform"
+												  Data="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z" />
+										</Border>
+									</ControlTemplate>
+
+								</Button.Template>
+							</Button>
+
+						</swt:RctRippleDecorator>
 
 						<Line x:Name="PART_Line"
 							  Grid.Row="2"

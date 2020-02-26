@@ -4,7 +4,7 @@
 				 xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
 				 xmlns:cc="clr-namespace:SoftwareThemeDesigner"
 				 Title="MainWindow"
-				 FontFamily="Roboto"
+				 FontFamily="./#Roboto"
 				 WindowStartupLocation="CenterScreen"
 				 Height="600"
 				 Width="1000">

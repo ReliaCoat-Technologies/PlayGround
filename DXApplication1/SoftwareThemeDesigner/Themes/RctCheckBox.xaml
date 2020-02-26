@@ -24,11 +24,10 @@
 								Background="Transparent"
 								VerticalAlignment="Center">
 
-							<local:RctRippleDecorator Background="Black"
-													  highlightBackground="{dxi:ThemeResource {dxt:PaletteBrushThemeKey ResourceKey=SelectionBackground}}"
-													  Margin="10"
-													  Height="{Binding ElementName=PART_CheckBoxShape, Path=ActualHeight}"
-													  Width="{Binding ElementName=PART_CheckBoxShape, Path=ActualHeight}">
+							<local:RctRippleDecorator highlightBackground="{dxi:ThemeResource {dxt:PaletteBrushThemeKey ResourceKey=SelectionBackground}}"
+													  rippleSize="3"
+							                          Height="{Binding ElementName=PART_CheckBoxShape, Path=ActualHeight}"
+							                          Width="{Binding ElementName=PART_CheckBoxShape, Path=ActualWidth}">
 
 								<Border Background="Transparent">
 									<Grid>

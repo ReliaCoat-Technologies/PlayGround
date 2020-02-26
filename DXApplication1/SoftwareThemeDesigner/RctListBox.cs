@@ -10,8 +10,9 @@ namespace SoftwareThemeDesigner
 	public class RctListBox : ListBox
 	{
 		#region Fields
-		private TextBox searchTextBox;
-		private StackPanel hostPanel;
+		private TextBox _searchTextBox;
+		private StackPanel _hostPanel;
+		private RctRippleDecorator _rippleDecorator;
 		#endregion
 
 		#region Constructor
@@ -24,13 +25,21 @@ namespace SoftwareThemeDesigner
 		#region Methods
 		public override void OnApplyTemplate()
 		{
-			hostPanel = GetTemplateChild("PART_HostPanel") as StackPanel;
+			_hostPanel = GetTemplateChild("PART_HostPanel") as StackPanel;
 
-			searchTextBox = GetTemplateChild("PART_SearchTextBox") as TextBox;
-			if (searchTextBox != null)
+			_rippleDecorator = GetTemplateChild("PART_RippleDecorator") as RctRippleDecorator;
+
+			_searchTextBox = GetTemplateChild("PART_SearchTextBox") as TextBox;
+			if (_searchTextBox != null)
 			{
-				searchTextBox.PreviewKeyDown += SearchTextBoxOnPreviewKeyDown;
-				searchTextBox.TextChanged += onSearchBoxTextChanged;
+				_searchTextBox.PreviewKeyDown += SearchTextBoxOnPreviewKeyDown;
+				_searchTextBox.TextChanged += onSearchBoxTextChanged;
+
+				// Enables ripple effect when selecting text box.
+				_searchTextBox.PreviewMouseLeftButtonDown += (s, e) =>
+				{
+					_rippleDecorator.doAnimation(e);
+				};
 			}
 		}
 
@@ -38,7 +47,7 @@ namespace SoftwareThemeDesigner
 		{
 			if (e.Key != Key.Tab) return;
 
-			SelectedItem = hostPanel.Children.OfType<ListBoxItem>()
+			SelectedItem = _hostPanel.Children.OfType<ListBoxItem>()
 				.FirstOrDefault(x => x.IsVisible)
 				?.Content;
 
@@ -57,15 +66,15 @@ namespace SoftwareThemeDesigner
 			{
 				return;
 			}
-			
-			searchTextBox.Focus();
+
+			_searchTextBox.Focus();
 
 			base.OnPreviewKeyDown(e);
 		}
 
 		private void acceptValue()
 		{
-			var filteredChildren = hostPanel
+			var filteredChildren = _hostPanel
 				.Children
 				.OfType<ComboBoxItem>()
 				.Select((x, i) => new { index = i, cbItem = x })
@@ -74,15 +83,15 @@ namespace SoftwareThemeDesigner
 
 			var firstHighlightedIndex = filteredChildren.FirstOrDefault(x => x.cbItem.IsHighlighted)?.index ?? -1;
 
-			if (!string.IsNullOrWhiteSpace(searchTextBox.Text) && filteredChildren.Count > 0)
+			if (!string.IsNullOrWhiteSpace(_searchTextBox.Text) && filteredChildren.Count > 0)
 				SelectedIndex = firstHighlightedIndex > 0 ? firstHighlightedIndex : filteredChildren.First().index;
 		}
 
 		private void onSearchBoxTextChanged(object sender, TextChangedEventArgs e)
 		{
-			foreach (var item in hostPanel.Children.OfType<ListBoxItem>())
+			foreach (var item in _hostPanel.Children.OfType<ListBoxItem>())
 			{
-				var isAvailable = item.Content.containsFilterInOrder(searchTextBox.Text, DisplayMemberPath);
+				var isAvailable = item.Content.containsFilterInOrder(_searchTextBox.Text, DisplayMemberPath);
 				item.Visibility = isAvailable ? Visibility.Visible : Visibility.Collapsed;
 			}
 		}

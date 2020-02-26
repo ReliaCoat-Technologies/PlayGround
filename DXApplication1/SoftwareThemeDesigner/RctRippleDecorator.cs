@@ -5,6 +5,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
+using DevExpress.DirectX.Common.Direct2D;
 
 namespace SoftwareThemeDesigner
 {
@@ -19,9 +20,17 @@ namespace SoftwareThemeDesigner
 		#region DependencyProperties
 		public static readonly DependencyProperty highlightBackgroundProperty = DependencyProperty.Register(nameof(highlightBackground), typeof(Brush), typeof(RctRippleDecorator),
 			new FrameworkPropertyMetadata(Brushes.White));
+		public static readonly DependencyProperty rippleSizeProperty = DependencyProperty.Register(nameof(rippleSize), typeof(double), typeof(RctRippleDecorator),
+			new FrameworkPropertyMetadata(1d));
 		#endregion
 
 		#region Properites
+
+		public double rippleSize
+		{
+			get { return (double)GetValue(rippleSizeProperty); }
+			set { SetValue(rippleSizeProperty, value); }
+		}
 		public Brush highlightBackground
 		{
 			get { return (Brush)GetValue(highlightBackgroundProperty); }
@@ -42,14 +51,26 @@ namespace SoftwareThemeDesigner
 			base.OnApplyTemplate();
 
 			_ellipse = GetTemplateChild("PART_Ellipse") as Ellipse;
+			if (_ellipse != null)
+			{
+				if (rippleSize != 1)
+				{
+					_ellipse.RenderTransform = new ScaleTransform
+					{
+						ScaleX = rippleSize,
+						ScaleY = rippleSize
+					};
+				}
+			}
+
 			_grid = GetTemplateChild("PART_Grid") as Grid;
 			_storyBoard = _grid.FindResource("PART_Storyboard") as Storyboard;
+
+			AddHandler(MouseDownEvent, new RoutedEventHandler((s, e) => doAnimation(e)));
 		}
 
-		protected override void OnMouseDown(MouseButtonEventArgs e)
+		public void doAnimation(RoutedEventArgs e)
 		{
-			base.OnPreviewMouseDown(e);
-
 			Console.WriteLine("Beginning Storyboard");
 
 			var targetWidth = Math.Max(ActualWidth, ActualHeight) * 2;

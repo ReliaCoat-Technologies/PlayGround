@@ -70,6 +70,7 @@
     <Compile Include="RctComboBox.cs" />
     <Compile Include="RctListBox.cs" />
     <Compile Include="RctPasswordBox.cs" />
+    <Compile Include="RctRippleDecorator.cs" />
     <Compile Include="RctSpinBox.cs" />
     <Compile Include="RctTextBox.cs" />
     <Compile Include="RoutedEvents\SpinRoutedEventHandler.cs" />
@@ -113,6 +114,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Themes\RctPasswordBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\RctRippleDecorator.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

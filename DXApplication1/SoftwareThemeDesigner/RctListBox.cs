@@ -34,12 +34,6 @@ namespace SoftwareThemeDesigner
 			{
 				_searchTextBox.PreviewKeyDown += SearchTextBoxOnPreviewKeyDown;
 				_searchTextBox.TextChanged += onSearchBoxTextChanged;
-
-				// Enables ripple effect when selecting text box.
-				_searchTextBox.PreviewMouseLeftButtonDown += (s, e) =>
-				{
-					_rippleDecorator.doAnimation(e);
-				};
 			}
 		}
 

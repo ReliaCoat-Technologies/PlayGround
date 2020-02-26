@@ -23,16 +23,16 @@
 							<Grid>
 
 								<Path x:Name="PART_CheckBoxShape"
-									  Fill="{TemplateBinding Foreground}"
-									  Stretch="Uniform"
-									  Margin="5"
-									  HorizontalAlignment="Center"
-									  VerticalAlignment="Center" />
+								      Fill="{TemplateBinding Foreground}"
+								      Stretch="Uniform"
+								      Margin="5"
+								      HorizontalAlignment="Center"
+								      VerticalAlignment="Center" />
 
 								<ContentPresenter Margin="4,0,0,0"
-												  VerticalAlignment="Center"
-												  HorizontalAlignment="Left"
-												  RecognizesAccessKey="True" />
+								                  VerticalAlignment="Center"
+								                  HorizontalAlignment="Left"
+								                  RecognizesAccessKey="True" />
 
 							</Grid>
 

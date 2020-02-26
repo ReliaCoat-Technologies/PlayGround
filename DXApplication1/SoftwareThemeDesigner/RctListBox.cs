@@ -39,22 +39,24 @@ namespace SoftwareThemeDesigner
 
 		private void SearchTextBoxOnPreviewKeyDown(object sender, KeyEventArgs e)
 		{
-			if (e.Key != Key.Tab) return;
+			if (e.Key == Key.Enter || e.Key == Key.Return)
+			{
+				SelectedItem = _hostPanel.Children.OfType<ListBoxItem>()
+					.FirstOrDefault(x => x.IsVisible)
+					?.Content;
 
-			SelectedItem = _hostPanel.Children.OfType<ListBoxItem>()
-				.FirstOrDefault(x => x.IsVisible)
-				?.Content;
+				Focus();
 
-			Focus();
-
-			e.Handled = true;
+				e.Handled = true;
+			}
 		}
 
 		protected override void OnPreviewKeyDown(KeyEventArgs e)
 		{
-			if (e.Key == Key.Enter || e.Key == Key.Return)
+			if (e.Key == Key.Tab)
 			{
-				acceptValue();
+				base.OnPreviewKeyDown(e);
+				return;
 			}
 			if (e.Key == Key.Up || e.Key == Key.Down)
 			{
@@ -64,21 +66,6 @@ namespace SoftwareThemeDesigner
 			_searchTextBox.Focus();
 
 			base.OnPreviewKeyDown(e);
-		}
-
-		private void acceptValue()
-		{
-			var filteredChildren = _hostPanel
-				.Children
-				.OfType<ComboBoxItem>()
-				.Select((x, i) => new { index = i, cbItem = x })
-				.Where(x => x.cbItem.IsVisible)
-				.ToList();
-
-			var firstHighlightedIndex = filteredChildren.FirstOrDefault(x => x.cbItem.IsHighlighted)?.index ?? -1;
-
-			if (!string.IsNullOrWhiteSpace(_searchTextBox.Text) && filteredChildren.Count > 0)
-				SelectedIndex = firstHighlightedIndex > 0 ? firstHighlightedIndex : filteredChildren.First().index;
 		}
 
 		private void onSearchBoxTextChanged(object sender, TextChangedEventArgs e)

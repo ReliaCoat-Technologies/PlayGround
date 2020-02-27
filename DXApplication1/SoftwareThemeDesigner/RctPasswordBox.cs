@@ -44,11 +44,17 @@ namespace SoftwareThemeDesigner
 			}
 		}
 
+		protected override void OnGotMouseCapture(MouseEventArgs e)
+		{
+			_passwordBox.Focus();
+			Focusable = false; // Prevents focusing on control when focus is gained when de-focusing password box.
+		}
+
 		protected override void OnGotFocus(RoutedEventArgs e)
 		{
 			base.OnGotFocus(e);
-			_passwordBox.Focus();
 
+			_passwordBox.Focus();
 			Focusable = false; // Prevents focusing on control when focus is gained when de-focusing password box.
 		}
 

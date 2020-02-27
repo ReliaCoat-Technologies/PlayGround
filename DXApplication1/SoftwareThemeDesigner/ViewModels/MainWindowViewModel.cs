@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Windows.Data;
 using DevExpress.Mvvm;
 
 namespace SoftwareThemeDesigner.ViewModels
@@ -9,7 +11,7 @@ namespace SoftwareThemeDesigner.ViewModels
 	public class MainWindowViewModel : ViewModelBase
 	{
 		#region Constants
-		private const string continentNameHeader ="Continent_Name";
+		private const string continentNameHeader = "Continent_Name";
 		private const string continentCodeHeader = "Continent_Code";
 		private const string countryNameHeader = "Country_Name";
 		private const string countryCodeHeader = "Three_Letter_Country_Code";
@@ -20,6 +22,8 @@ namespace SoftwareThemeDesigner.ViewModels
 		private ObservableCollection<Country> _comboBoxItems;
 		private Country _comboBoxValue;
 		private double _spinBoxValue;
+		private ICollectionView _comboBoxCollectionView;
+
 		#endregion
 
 		#region Properties
@@ -37,6 +41,12 @@ namespace SoftwareThemeDesigner.ViewModels
 		{
 			get { return _comboBoxItems; }
 			set { _comboBoxItems = value; RaisePropertyChanged(() => comboBoxItems); }
+		}
+
+		public ICollectionView comboBoxCollectionView
+		{
+			get { return _comboBoxCollectionView; }
+			set { _comboBoxCollectionView = value; RaisePropertyChanged(() => comboBoxCollectionView); }
 		}
 		public Country comboBoxValue
 		{
@@ -80,6 +90,8 @@ namespace SoftwareThemeDesigner.ViewModels
 					x[continentCodeColumn]));
 
 			comboBoxItems = new ObservableCollection<Country>(countryList);
+			comboBoxCollectionView = CollectionViewSource.GetDefaultView(comboBoxItems);
+			comboBoxCollectionView.GroupDescriptions.Add(new PropertyGroupDescription(nameof(Country.continentName)));
 		}
 		#endregion
 	}

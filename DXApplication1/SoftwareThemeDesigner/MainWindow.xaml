@@ -4,6 +4,7 @@
 				 xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
 				 xmlns:cc="clr-namespace:SoftwareThemeDesigner"
 				 xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+				 xmlns:forms="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
 				 Title="MainWindow"
 				 WindowStartupLocation="CenterScreen"
 				 Height="700"
@@ -35,7 +36,8 @@
 							 DockPanel.Dock="Left"
 							 Width="300"
 							 Margin="10"
-							 ItemsSource="{Binding comboBoxItems}"
+							 ItemsSource="{Binding comboBoxCollectionView}"
+							 AllowCollectionView="True"
 							 DisplayMember="countryName"
 							 EditValueChanged="ListBoxEdit_OnEditValueChanged" />
 
@@ -49,10 +51,11 @@
 							   DockPanel.Dock="Left" />
 
 					<dxe:ComboBoxEdit x:Name="comboBoxEdit"
-									  ItemsSource="{Binding comboBoxItems}"
+									  ItemsSource="{Binding comboBoxCollectionView}"
 									  IsTextEditable="False"
 									  HorizontalScrollBarVisibility="Auto"
-									  DisplayMember="nestedClass.countryName"
+									  DisplayMember="countryName"
+									  AllowCollectionView="True"
 									  ValueMember="countryName"
 									  EditValueChanged="BaseEdit_OnEditValueChanged" />
 				</DockPanel>
@@ -150,19 +153,36 @@
 				<cc:RctListBox x:Name="listBox"
 							   Width="300"
 							   Margin="10"
-							   ItemsSource="{Binding comboBoxItems}"
-							   DisplayMemberPath="countryName"
-							   SelectionChanged="ListBox_OnSelected" />
+							   ItemsSource="{Binding comboBoxCollectionView}"
+							   SelectionChanged="ListBox_OnSelected">
+					<cc:RctListBox.ItemTemplate>
+						<DataTemplate>
+							<DockPanel>
+								<TextBlock Text="--" DockPanel.Dock="Left"/>
+								<TextBlock Text="{Binding Path=countryName}" />
+							</DockPanel>
+						</DataTemplate>
+					</cc:RctListBox.ItemTemplate>
+				</cc:RctListBox>
 
 				<StackPanel>
 
 					<cc:RctComboBox x:Name="comboBox"
 									Margin="10"
-									ItemsSource="{Binding comboBoxItems}"
+									ItemsSource="{Binding comboBoxCollectionView}"
 									labelText="Country"
-									DisplayMemberPath="countryName"
 									SelectedValuePath="countryName"
-									SelectionChanged="Selector_OnSelectionChanged" />
+									SelectionChanged="Selector_OnSelectionChanged">
+						<cc:RctComboBox.ItemTemplate>
+							<DataTemplate>
+								<DockPanel>
+									<TextBlock Text="--"
+									           DockPanel.Dock="Right" />
+									<TextBlock Text="{Binding Path=countryName}" />
+								</DockPanel>
+							</DataTemplate>
+						</cc:RctComboBox.ItemTemplate>
+					</cc:RctComboBox>
 
 					<cc:RctTextBox x:Name="textBox"
 								   Margin="10"

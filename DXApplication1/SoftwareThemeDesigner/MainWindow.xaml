@@ -36,9 +36,14 @@
 							 Width="300"
 							 Margin="10"
 							 ItemsSource="{Binding comboBoxCollectionView}"
+							 ScrollViewer.CanContentScroll="False"
 							 AllowCollectionView="True"
 							 DisplayMember="countryName"
-							 EditValueChanged="ListBoxEdit_OnEditValueChanged" />
+							 EditValueChanged="ListBoxEdit_OnEditValueChanged">
+				<dxe:ListBoxEdit.GroupStyle>
+					<GroupStyle/>
+				</dxe:ListBoxEdit.GroupStyle>
+			</dxe:ListBoxEdit>
 
 			<StackPanel>
 
@@ -53,10 +58,16 @@
 									  ItemsSource="{Binding comboBoxCollectionView}"
 									  IsTextEditable="False"
 									  HorizontalScrollBarVisibility="Auto"
+									  ScrollViewer.CanContentScroll="False"
 									  DisplayMember="countryName"
 									  AllowCollectionView="True"
 									  ValueMember="countryName"
-									  EditValueChanged="BaseEdit_OnEditValueChanged" />
+									  EditValueChanged="BaseEdit_OnEditValueChanged">
+						<dxe:ComboBoxEdit.GroupStyle>
+							<GroupStyle />
+						</dxe:ComboBoxEdit.GroupStyle>
+					</dxe:ComboBoxEdit>
+
 				</DockPanel>
 
 				<DockPanel Margin="10">
@@ -156,7 +167,7 @@
 							   Margin="10"
 							   SelectionChanged="ListBox_OnSelected"
 							   ItemsSource="{Binding comboBoxCollectionView}"
-							   DisplayMemberPath="countryName"/>
+							   DisplayMemberPath="countryName" />
 
 				<StackPanel DockPanel.Dock="Top">
 
@@ -166,7 +177,7 @@
 									labelText="Country"
 									DisplayMemberPath="countryName"
 									SelectedValuePath="countryName"
-									SelectionChanged="Selector_OnSelectionChanged"/>
+									SelectionChanged="Selector_OnSelectionChanged" />
 
 					<cc:RctTextBox x:Name="textBox"
 								   Margin="10"

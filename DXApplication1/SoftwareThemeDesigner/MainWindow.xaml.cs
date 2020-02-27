@@ -50,7 +50,7 @@ namespace SoftwareThemeDesigner
 
 		private void ListBoxEdit_OnEditValueChanged(object sender, EditValueChangedEventArgs e)
 		{
-			var value = (listBoxEdit.EditValue as NestedTestClass)?.nestedClass?.country;
+			var value = (listBoxEdit.EditValue as Country)?.countryName;
 			Console.WriteLine($"DevExpress ListBox Value Changed: {value}");
 		}
 
@@ -62,13 +62,13 @@ namespace SoftwareThemeDesigner
 
 		private void ListBox_OnSelected(object sender, SelectionChangedEventArgs e)
 		{
-			var value = (listBox.SelectedItem as NestedTestClass)?.nestedClass?.country;
+			var value = (listBox.SelectedItem as Country)?.countryName;
 			Console.WriteLine($"New ListBox Value Changed: {value}");
 		}
 
 		private void Selector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			var value = (comboBox.SelectedItem as NestedTestClass)?.nestedClass?.country;
+			var value = (comboBox.SelectedItem as Country)?.countryName;
 			Console.WriteLine($"New ComboBox Value Changed: {value}");
 		}
 

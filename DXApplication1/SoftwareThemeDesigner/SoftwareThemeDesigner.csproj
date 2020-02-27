@@ -66,9 +66,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="NewControls.xaml.cs">
-      <DependentUpon>NewControls.xaml</DependentUpon>
-    </Compile>
     <Compile Include="RctButton.cs" />
     <Compile Include="RctComboBox.cs" />
     <Compile Include="RctListBox.cs" />
@@ -77,7 +74,7 @@
     <Compile Include="RctSpinBox.cs" />
     <Compile Include="RctTextBox.cs" />
     <Compile Include="RoutedEvents\SpinRoutedEventHandler.cs" />
-    <Compile Include="TestBindingClass.cs" />
+    <Compile Include="Country.cs" />
     <Compile Include="Utilities\ToUpperConverter.cs" />
     <Compile Include="Utilities\ValueFilterHelpers.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
@@ -96,10 +93,6 @@
     <Compile Include="RctCheckBox.cs">
       <Generator>MSBuild:Compile</Generator>
     </Compile>
-    <Page Include="NewControls.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -163,7 +156,9 @@
     <AppDesigner Include="Properties\" />
     <Resource Include="Roboto.ttf" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="CountryList.csv" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.

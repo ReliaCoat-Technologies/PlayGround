@@ -36,7 +36,7 @@
 							 Width="300"
 							 Margin="10"
 							 ItemsSource="{Binding comboBoxItems}"
-							 DisplayMember="nestedClass.country"
+							 DisplayMember="countryName"
 							 EditValueChanged="ListBoxEdit_OnEditValueChanged" />
 
 			<StackPanel>
@@ -52,8 +52,8 @@
 									  ItemsSource="{Binding comboBoxItems}"
 									  IsTextEditable="False"
 									  HorizontalScrollBarVisibility="Auto"
-									  DisplayMember="nestedClass.country"
-									  ValueMember="nestedClass.country"
+									  DisplayMember="nestedClass.countryName"
+									  ValueMember="countryName"
 									  EditValueChanged="BaseEdit_OnEditValueChanged" />
 				</DockPanel>
 
@@ -151,7 +151,7 @@
 							   Width="300"
 							   Margin="10"
 							   ItemsSource="{Binding comboBoxItems}"
-							   DisplayMemberPath="nestedClass.country"
+							   DisplayMemberPath="countryName"
 							   SelectionChanged="ListBox_OnSelected" />
 
 				<StackPanel>
@@ -160,8 +160,8 @@
 									Margin="10"
 									ItemsSource="{Binding comboBoxItems}"
 									labelText="Country"
-									DisplayMemberPath="nestedClass.country"
-									SelectedValuePath="nestedClass.country"
+									DisplayMemberPath="countryName"
+									SelectedValuePath="countryName"
 									SelectionChanged="Selector_OnSelectionChanged" />
 
 					<cc:RctTextBox x:Name="textBox"

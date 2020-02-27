@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace SoftwareThemeDesigner
 {
@@ -43,7 +44,21 @@ namespace SoftwareThemeDesigner
 			{
 				// Forwards text from internal password box to current password box.
 				_passwordBox.PasswordChanged += (s, e) => password = _passwordBox.Password;
+				_passwordBox.GotFocus += (s, e) => updateVisualState(true);
+				_passwordBox.GotMouseCapture += (s, e) => updateVisualState(true);
+				_passwordBox.LostFocus += (s, e) => updateVisualState(true);
+				_passwordBox.LostMouseCapture += (s, e) => updateVisualState(true);
 			}
+		}
+
+		private void updateVisualState(bool useTransitions)
+		{
+			Console.WriteLine($"Password Box In Focus: {_passwordBox.IsFocused}");
+
+			VisualStateManager.GoToState(this, _passwordBox.IsFocused
+					? "PasswordFocused"
+					: "Normal",
+				useTransitions);
 		}
 
 		public void clear()

@@ -20,7 +20,6 @@ namespace SoftwareThemeDesigner
 		public static readonly DependencyProperty labelFontSizeProperty = DependencyProperty.Register(nameof(labelFontSize), typeof(double), typeof(RctTextBox),
 			new FrameworkPropertyMetadata(14d));
 		public static readonly DependencyProperty labelTextColorProperty = DependencyProperty.Register(nameof(labelTextColor), typeof(Brush), typeof(RctTextBox));
-		
 		#endregion
 
 		#region Properties

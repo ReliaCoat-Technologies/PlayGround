@@ -90,16 +90,10 @@ namespace SoftwareThemeDesigner
 				_popup.Opened += onPopupOpened;
 			}
 
-			_label = GetTemplateChild("PART_Label") as TextBlock;
-			if (_label != null)
-			{
-				if (labelTextColor == null)
-					labelTextColor = Foreground;
+			if (GetValue(labelTextColorProperty) as Brush == null)
+				SetValue(labelTextColorProperty, Foreground);
 
-				_label.Text = labelText;
-				_label.FontSize = labelFontSize;
-				_label.Foreground = labelTextColor;
-			}
+			_label = GetTemplateChild("PART_Label") as TextBlock;
 
 			_rippleDecorator = GetTemplateChild("PART_RippleDecorator") as RctRippleDecorator;
 
@@ -114,22 +108,6 @@ namespace SoftwareThemeDesigner
 			var defaultGroupStyle = FindResource("defaultGroupStyle") as GroupStyle;
 			if (defaultGroupStyle != null)
 				GroupStyle.Add(defaultGroupStyle);
-		}
-
-		protected override void OnGotFocus(RoutedEventArgs e)
-		{
-			if (!IsDropDownOpen)
-				IsDropDownOpen = true;
-
-			base.OnGotFocus(e);
-		}
-
-		protected override void OnGotMouseCapture(MouseEventArgs e)
-		{
-			if (IsDropDownOpen)
-				IsDropDownOpen = true;
-
-			base.OnGotMouseCapture(e);
 		}
 
 		protected override void OnPreviewKeyDown(KeyEventArgs e)

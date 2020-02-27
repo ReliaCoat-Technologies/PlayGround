@@ -18,31 +18,9 @@
 				Value="WrapWithOverflow" />
 		<Setter Property="Template">
 			<Setter.Value>
-				<ControlTemplate TargetType="{x:Type TextBoxBase}">
+				<ControlTemplate TargetType="{x:Type swt:RctSpinBox}">
 
 					<Grid>
-
-						<VisualStateManager.VisualStateGroups>
-							<VisualStateGroup x:Name="CommonStates">
-								<VisualState x:Name="Normal" />
-								<VisualState x:Name="MouseOver">
-									<Storyboard>
-										<DoubleAnimation Storyboard.TargetName="PART_Border"
-										                 Storyboard.TargetProperty="Opacity"
-										                 To="0.7"
-										                 Duration="0:0:0.1" />
-									</Storyboard>
-								</VisualState>
-								<VisualState x:Name="Focused">
-									<Storyboard>
-										<DoubleAnimation Storyboard.TargetName="PART_Border"
-										                 Storyboard.TargetProperty="Opacity"
-										                 To="1"
-										                 Duration="0:0:0.1" />
-									</Storyboard>
-								</VisualState>
-							</VisualStateGroup>
-						</VisualStateManager.VisualStateGroups>
 
 						<Grid.RowDefinitions>
 							<RowDefinition Height="Auto" />
@@ -163,9 +141,10 @@
 							  StrokeEndLineCap="Square" />
 
 						<TextBlock x:Name="PART_Label"
-								   Text="Label"
 								   Focusable="False"
-								   Foreground="{TemplateBinding Foreground}"
+								   Text="{TemplateBinding labelText}"
+								   FontSize="{TemplateBinding labelFontSize}"
+								   Foreground="{TemplateBinding labelTextColor}"
 								   Grid.Row="3"
 								   Grid.Column="0"
 								   Grid.ColumnSpan="2"
@@ -174,6 +153,18 @@
 								   HorizontalAlignment="Left" />
 
 					</Grid>
+
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsFocused"
+						         Value="True">
+							<Setter TargetName="PART_Label"
+							        Property="Foreground"
+							        Value="{dxi:ThemeResource {dxt:PaletteBrushThemeKey ResourceKey=SelectionBackground}}" />
+							<Setter TargetName="PART_Line"
+							        Property="Stroke"
+							        Value="{dxi:ThemeResource {dxt:PaletteBrushThemeKey ResourceKey=SelectionBackground}}" />
+						</Trigger>
+					</ControlTemplate.Triggers>
 
 				</ControlTemplate>
 			</Setter.Value>

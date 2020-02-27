@@ -13,6 +13,7 @@ namespace SoftwareThemeDesigner
 	{
 		#region Fields
 		private BindingExpression _bindingExpression;
+		private TextBlock _label;
 		#endregion
 
 		#region Dependency Properties
@@ -58,16 +59,10 @@ namespace SoftwareThemeDesigner
 			if (_bindingExpression?.ParentBinding.UpdateSourceTrigger == UpdateSourceTrigger.PropertyChanged)
 				throw new InvalidEnumArgumentException("TextEditMod Warning: Setting UpdateSourceTrigger to PropertyChanged will cause source to change while typing. Suggested UpdateSourceTrigger for this control is LostFocus.");
 
-			var label = GetTemplateChild("PART_Label") as TextBlock;
-			if (label != null)
-			{
-				if (labelTextColor == null)
-					labelTextColor = Foreground;
+			_label = GetTemplateChild("PART_Label") as TextBlock;
 
-				label.Text = labelText;
-				label.FontSize = labelFontSize;
-				label.Foreground = labelTextColor;
-			}
+			if(GetValue(labelTextColorProperty) as Brush == null)
+				SetValue(labelTextColorProperty, Foreground);
 		}
 
 		protected override void OnPreviewKeyDown(KeyEventArgs e)

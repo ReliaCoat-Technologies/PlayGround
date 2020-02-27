@@ -109,6 +109,9 @@ namespace SoftwareThemeDesigner
 		static RctSpinBox()
 		{
 			DefaultStyleKeyProperty.OverrideMetadata(typeof(RctSpinBox), new FrameworkPropertyMetadata(typeof(RctSpinBox)));
+			labelTextProperty.AddOwner(typeof(RctSpinBox));
+			labelFontSizeProperty.AddOwner(typeof(RctSpinBox));
+			labelTextColorProperty.AddOwner(typeof(RctSpinBox));
 		}
 		#endregion
 

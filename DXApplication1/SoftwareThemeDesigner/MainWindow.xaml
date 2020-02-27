@@ -4,7 +4,6 @@
 				 xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
 				 xmlns:cc="clr-namespace:SoftwareThemeDesigner"
 				 xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
-				 xmlns:forms="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
 				 Title="MainWindow"
 				 WindowStartupLocation="CenterScreen"
 				 Height="700"
@@ -151,21 +150,16 @@
 			<DockPanel>
 
 				<cc:RctListBox x:Name="listBox"
+							   DockPanel.Dock="Left"
+							   FontSize="16"
 							   Width="300"
+							   ScrollViewer.CanContentScroll="False"
 							   Margin="10"
+							   SelectionChanged="ListBox_OnSelected"
 							   ItemsSource="{Binding comboBoxCollectionView}"
-							   SelectionChanged="ListBox_OnSelected">
-					<cc:RctListBox.ItemTemplate>
-						<DataTemplate>
-							<DockPanel>
-								<TextBlock Text="--" DockPanel.Dock="Left"/>
-								<TextBlock Text="{Binding Path=countryName}" />
-							</DockPanel>
-						</DataTemplate>
-					</cc:RctListBox.ItemTemplate>
-				</cc:RctListBox>
+							   DisplayMemberPath="countryName"/>
 
-				<StackPanel>
+				<StackPanel DockPanel.Dock="Top">
 
 					<cc:RctComboBox x:Name="comboBox"
 									Margin="10"
@@ -173,15 +167,9 @@
 									labelText="Country"
 									SelectedValuePath="countryName"
 									SelectionChanged="Selector_OnSelectionChanged">
-						<cc:RctComboBox.ItemTemplate>
-							<DataTemplate>
-								<DockPanel>
-									<TextBlock Text="--"
-									           DockPanel.Dock="Right" />
-									<TextBlock Text="{Binding Path=countryName}" />
-								</DockPanel>
-							</DataTemplate>
-						</cc:RctComboBox.ItemTemplate>
+						<cc:RctComboBox.GroupStyle>
+							<GroupStyle />
+						</cc:RctComboBox.GroupStyle>
 					</cc:RctComboBox>
 
 					<cc:RctTextBox x:Name="textBox"

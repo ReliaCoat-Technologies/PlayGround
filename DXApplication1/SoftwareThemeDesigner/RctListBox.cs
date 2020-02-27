@@ -3,6 +3,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using DevExpress.Xpf.Core.Native;
 using SoftwareThemeDesigner.Utilities;
 
 namespace SoftwareThemeDesigner
@@ -11,7 +12,7 @@ namespace SoftwareThemeDesigner
 	{
 		#region Fields
 		private TextBox _searchTextBox;
-		private StackPanel _hostPanel;
+		private ItemsPresenter _hostPanel;
 		private RctRippleDecorator _rippleDecorator;
 		#endregion
 
@@ -25,7 +26,7 @@ namespace SoftwareThemeDesigner
 		#region Methods
 		public override void OnApplyTemplate()
 		{
-			_hostPanel = GetTemplateChild("PART_HostPanel") as StackPanel;
+			_hostPanel = GetTemplateChild("PART_HostPanel") as ItemsPresenter;
 
 			_rippleDecorator = GetTemplateChild("PART_RippleDecorator") as RctRippleDecorator;
 
@@ -35,13 +36,17 @@ namespace SoftwareThemeDesigner
 				_searchTextBox.PreviewKeyDown += SearchTextBoxOnPreviewKeyDown;
 				_searchTextBox.TextChanged += onSearchBoxTextChanged;
 			}
+
+			var defaultGroupStyle = FindResource("defaultGroupStyle") as GroupStyle;
+			if (defaultGroupStyle != null)
+				GroupStyle.Add(defaultGroupStyle);
 		}
 
 		private void SearchTextBoxOnPreviewKeyDown(object sender, KeyEventArgs e)
 		{
 			if (e.Key == Key.Enter || e.Key == Key.Return)
 			{
-				SelectedItem = _hostPanel.Children.OfType<ListBoxItem>()
+				SelectedItem = _hostPanel.VisualChildren().OfType<ListBoxItem>()
 					.FirstOrDefault(x => x.IsVisible)
 					?.Content;
 
@@ -70,7 +75,7 @@ namespace SoftwareThemeDesigner
 
 		private void onSearchBoxTextChanged(object sender, TextChangedEventArgs e)
 		{
-			foreach (var item in _hostPanel.Children.OfType<ListBoxItem>())
+			foreach (var item in _hostPanel.VisualChildren().OfType<ListBoxItem>())
 			{
 				var isAvailable = item.Content.containsFilterInOrder(_searchTextBox.Text, DisplayMemberPath);
 				item.Visibility = isAvailable ? Visibility.Visible : Visibility.Collapsed;

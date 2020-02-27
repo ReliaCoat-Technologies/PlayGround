@@ -193,6 +193,9 @@ namespace SoftwareThemeDesigner
 		protected override void OnSelectionChanged(SelectionChangedEventArgs e)
 		{
 			base.OnSelectionChanged(e);
+
+			if (_editableTextBox == null) return;
+
 			_editableTextBox.Text = SelectedValue?.ToString() ?? string.Empty;
 		}
 		#endregion

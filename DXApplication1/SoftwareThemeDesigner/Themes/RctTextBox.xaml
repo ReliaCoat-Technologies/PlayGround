@@ -66,6 +66,9 @@
 							<Setter TargetName="PART_Label"
 									Property="Foreground"
 									Value="{dxi:ThemeResource {dxt:PaletteBrushThemeKey ResourceKey=SelectionBackground}}" />
+							<Setter TargetName="PART_Label"
+							        Property="Opacity"
+							        Value="1" />
 							<Setter TargetName="PART_Line"
 									Property="Stroke"
 									Value="{dxi:ThemeResource {dxt:PaletteBrushThemeKey ResourceKey=SelectionBackground}}" />

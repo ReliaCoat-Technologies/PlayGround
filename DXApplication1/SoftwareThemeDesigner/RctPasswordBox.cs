@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace SoftwareThemeDesigner
 {
@@ -8,6 +9,7 @@ namespace SoftwareThemeDesigner
 	{
 		#region Fields
 		private PasswordBox _passwordBox;
+		private bool _isLosingFocus;
 		#endregion
 
 		#region Dependency Properties
@@ -26,14 +28,10 @@ namespace SoftwareThemeDesigner
 		static RctPasswordBox()
 		{
 			DefaultStyleKeyProperty.OverrideMetadata(typeof(RctPasswordBox), new FrameworkPropertyMetadata(typeof(RctPasswordBox)));
-			labelTextProperty.AddOwner(typeof(PasswordBox));
-			labelFontSizeProperty.AddOwner(typeof(PasswordBox));
-			labelTextColorProperty.AddOwner(typeof(PasswordBox));
 		}
 		#endregion
 
 		#region Methods
-
 		public override void OnApplyTemplate()
 		{
 			base.OnApplyTemplate();
@@ -42,7 +40,27 @@ namespace SoftwareThemeDesigner
 			if (_passwordBox != null)
 			{
 				_passwordBox.PasswordChanged += (s, e) => password = _passwordBox.Password;
+				_passwordBox.LostFocus += PasswordBoxOnLostKeyboardFocus;
 			}
+		}
+
+		protected override void OnGotFocus(RoutedEventArgs e)
+		{
+			base.OnGotFocus(e);
+			_passwordBox.Focus();
+
+			Focusable = false; // Prevents focusing on control when focus is gained when de-focusing password box.
+		}
+
+		private void PasswordBoxOnLostKeyboardFocus(object sender, RoutedEventArgs routedEventArgs)
+		{
+			var request = new TraversalRequest(Keyboard.Modifiers == ModifierKeys.Shift
+				? FocusNavigationDirection.Previous
+				: FocusNavigationDirection.Next);
+
+			MoveFocus(request);
+
+			Focusable = true; // Re-enables focus on control
 		}
 
 		public void clear()

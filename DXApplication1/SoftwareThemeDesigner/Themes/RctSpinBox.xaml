@@ -142,12 +142,12 @@
 
 						<TextBlock x:Name="PART_Label"
 								   Focusable="False"
-								   Text="{TemplateBinding labelText}"
-								   FontSize="{TemplateBinding labelFontSize}"
-								   Foreground="{TemplateBinding labelTextColor}"
 								   Grid.Row="3"
 								   Grid.Column="0"
 								   Grid.ColumnSpan="2"
+								   Text="{TemplateBinding labelText}"
+								   FontSize="{TemplateBinding labelFontSize}"
+								   Foreground="{TemplateBinding labelTextColor}"
 								   Margin="10,0"
 								   Opacity="0.75"
 								   HorizontalAlignment="Left" />
@@ -156,13 +156,16 @@
 
 					<ControlTemplate.Triggers>
 						<Trigger Property="IsFocused"
-						         Value="True">
+								 Value="True">
 							<Setter TargetName="PART_Label"
-							        Property="Foreground"
-							        Value="{dxi:ThemeResource {dxt:PaletteBrushThemeKey ResourceKey=SelectionBackground}}" />
+									Property="Foreground"
+									Value="{dxi:ThemeResource {dxt:PaletteBrushThemeKey ResourceKey=SelectionBackground}}" />
+							<Setter TargetName="PART_Label"
+									Property="Opacity"
+									Value="1" />
 							<Setter TargetName="PART_Line"
-							        Property="Stroke"
-							        Value="{dxi:ThemeResource {dxt:PaletteBrushThemeKey ResourceKey=SelectionBackground}}" />
+									Property="Stroke"
+									Value="{dxi:ThemeResource {dxt:PaletteBrushThemeKey ResourceKey=SelectionBackground}}" />
 						</Trigger>
 					</ControlTemplate.Triggers>
 

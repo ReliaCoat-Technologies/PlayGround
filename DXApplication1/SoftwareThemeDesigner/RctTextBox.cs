@@ -46,7 +46,6 @@ namespace SoftwareThemeDesigner
 		{
 			DefaultStyleKeyProperty.OverrideMetadata(typeof(RctTextBox), new FrameworkPropertyMetadata(typeof(RctTextBox)));
 			FontSizeProperty.OverrideMetadata(typeof(RctTextBox), new FrameworkPropertyMetadata(24d));
-			BorderBrushProperty.OverrideMetadata(typeof(RctTextBox), new FrameworkPropertyMetadata(Brushes.White));
 		}
 		#endregion
 

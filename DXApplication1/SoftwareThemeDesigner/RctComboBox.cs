@@ -61,7 +61,6 @@ namespace SoftwareThemeDesigner
 		{
 			DefaultStyleKeyProperty.OverrideMetadata(typeof(RctComboBox), new FrameworkPropertyMetadata(typeof(RctComboBox)));
 			FontSizeProperty.OverrideMetadata(typeof(RctComboBox), new FrameworkPropertyMetadata(24d));
-			BorderBrushProperty.OverrideMetadata(typeof(RctComboBox), new FrameworkPropertyMetadata(Brushes.White));
 		}
 		#endregion
 

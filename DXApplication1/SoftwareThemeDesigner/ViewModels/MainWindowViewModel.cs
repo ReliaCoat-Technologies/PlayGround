@@ -91,7 +91,7 @@ namespace SoftwareThemeDesigner.ViewModels
 
 			comboBoxItems = new ObservableCollection<Country>(countryList);
 			comboBoxCollectionView = CollectionViewSource.GetDefaultView(comboBoxItems);
-			// comboBoxCollectionView.GroupDescriptions.Add(new PropertyGroupDescription(nameof(Country.continentName)));
+			comboBoxCollectionView.GroupDescriptions.Add(new PropertyGroupDescription(nameof(Country.continentName)));
 		}
 		#endregion
 	}

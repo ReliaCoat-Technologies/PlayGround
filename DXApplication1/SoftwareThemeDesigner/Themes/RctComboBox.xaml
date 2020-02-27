@@ -14,17 +14,27 @@
 		<Setter Property="Background"
 				Value="Transparent" />
 		<Setter Property="FontSize"
-				Value="24" />
+		        Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:RctComboBox}}, Path=FontSize}" />
+		<Setter Property="MaxWidth"
+				Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:RctComboBox}}, Path=ActualWidth}" />
 		<Setter Property="Template">
 			<Setter.Value>
+
 				<ControlTemplate TargetType="{x:Type ListBoxItem}">
-					<Border Background="{TemplateBinding Background}">
+
+					<Border ClipToBounds="True"
+							Padding="5"
+					        Background="{TemplateBinding Background}">
+
 						<ContentPresenter x:Name="Content"
-										  Margin="5"
-										  HorizontalAlignment="Center" />
+										  VerticalAlignment="Center"
+						                  HorizontalAlignment="Center" />
 					</Border>
+
 				</ControlTemplate>
+
 			</Setter.Value>
+
 		</Setter>
 		<Style.Triggers>
 			<Trigger Property="IsHighlighted"
@@ -52,8 +62,51 @@
 
 	<Style TargetType="{x:Type local:RctComboBox}"
 		   BasedOn="{StaticResource {x:Type ComboBox}}">
+
+		<Style.Resources>
+			<GroupStyle x:Key="defaultGroupStyle">
+				<GroupStyle.HeaderTemplate>
+					<DataTemplate>
+						<StackPanel>
+
+							<Grid>
+								<Grid.RowDefinitions>
+									<RowDefinition Height="Auto" />
+									<RowDefinition Height="Auto" />
+								</Grid.RowDefinitions>
+
+								<Border Background="Gray"
+								        Grid.Row="0"
+								        Opacity="0.4"
+								        CornerRadius="5,5,0,0" />
+
+								<TextBlock Text="{Binding Name}"
+								           Grid.Row="0"
+								           FontWeight="Bold"
+								           HorizontalAlignment="Center"
+								           VerticalAlignment="Center"
+								           Margin="5" />
+
+								<Line Grid.Row="1"
+								      X2="1"
+								      Stretch="Fill"
+								      StrokeThickness="1"
+								      Stroke="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:RctComboBox}}, Path=Foreground}"
+								      StrokeStartLineCap="Square"
+								      StrokeEndLineCap="Square" />
+
+							</Grid>
+
+						</StackPanel>
+					</DataTemplate>
+				</GroupStyle.HeaderTemplate>
+			</GroupStyle>
+		</Style.Resources>
+
+		<Setter Property="FontSize"
+		        Value="24"/>
 		<Setter Property="Foreground"
-				Value="{dxi:ThemeResource {dxt:PaletteBrushThemeKey ResourceKey=Foreground}}" />
+		        Value="{dxi:ThemeResource {dxt:PaletteBrushThemeKey ResourceKey=Foreground}}" />
 		<Setter Property="Background"
 				Value="{dxi:ThemeResource {dxt:PaletteBrushThemeKey ResourceKey=Editor.Background}}" />
 		<Setter Property="HorizontalContentAlignment"
@@ -174,9 +227,8 @@
 												  Grid.Row="1"
 												  Margin="5">
 
-										<StackPanel IsItemsHost="True"
-													x:Name="PART_HostPanel"
-													KeyboardNavigation.DirectionalNavigation="Contained" />
+										<ItemsPresenter x:Name="PART_HostPanel"
+										                KeyboardNavigation.DirectionalNavigation="Contained" />
 
 									</ScrollViewer>
 

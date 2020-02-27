@@ -37,6 +37,8 @@ namespace SoftwareThemeDesigner
 				_searchTextBox.TextChanged += onSearchBoxTextChanged;
 			}
 
+			ScrollViewer.SetCanContentScroll(this, false);
+
 			var defaultGroupStyle = FindResource("defaultGroupStyle") as GroupStyle;
 			if (defaultGroupStyle != null)
 				GroupStyle.Add(defaultGroupStyle);

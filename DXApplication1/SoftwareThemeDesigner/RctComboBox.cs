@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
+using DevExpress.Xpf.Core.Native;
 using SoftwareThemeDesigner.Utilities;
 
 namespace SoftwareThemeDesigner
@@ -18,7 +19,7 @@ namespace SoftwareThemeDesigner
 		private TextBlock _label;
 		private TextBox _searchTextBox;
 		private TextBox _editableTextBox;
-		private StackPanel _hostPanel;
+		private ItemsPresenter _hostPanel;
 		private ToggleButton _toggleButton;
 		private RctRippleDecorator _rippleDecorator;
 		#endregion
@@ -69,7 +70,7 @@ namespace SoftwareThemeDesigner
 		{
 			base.OnApplyTemplate();
 
-			_hostPanel = GetTemplateChild("PART_HostPanel") as StackPanel;
+			_hostPanel = GetTemplateChild("PART_HostPanel") as ItemsPresenter;
 
 			_editableTextBox = GetTemplateChild("PART_EditableTextBox") as TextBox;
 			if (_editableTextBox != null)
@@ -107,6 +108,12 @@ namespace SoftwareThemeDesigner
 			{
 				_toggleButton.PreviewMouseLeftButtonDown += (s, e) => _rippleDecorator?.doAnimation(e);
 			}
+
+			ScrollViewer.SetCanContentScroll(this, false);
+
+			var defaultGroupStyle = FindResource("defaultGroupStyle") as GroupStyle;
+			if (defaultGroupStyle != null)
+				GroupStyle.Add(defaultGroupStyle);
 		}
 
 		protected override void OnGotFocus(RoutedEventArgs e)
@@ -163,7 +170,7 @@ namespace SoftwareThemeDesigner
 
 		private void onSearchBoxTextChanged(object sender, TextChangedEventArgs e)
 		{
-			foreach (var item in _hostPanel.Children.OfType<ComboBoxItem>())
+			foreach (var item in _hostPanel.VisualChildren().OfType<ComboBoxItem>())
 			{
 				var isAvailable = item.Content.containsFilterInOrder(_searchTextBox.Text, DisplayMemberPath);
 				item.Visibility = isAvailable ? Visibility.Visible : Visibility.Collapsed;
@@ -173,7 +180,7 @@ namespace SoftwareThemeDesigner
 		private void acceptValue()
 		{
 			var filteredChildren = _hostPanel
-				.Children
+				.VisualChildren()
 				.OfType<ComboBoxItem>()
 				.Select((x, i) => new { index = i, cbItem = x })
 				.Where(x => x.cbItem.IsVisible)

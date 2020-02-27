@@ -153,7 +153,6 @@
 							   DockPanel.Dock="Left"
 							   FontSize="16"
 							   Width="300"
-							   ScrollViewer.CanContentScroll="False"
 							   Margin="10"
 							   SelectionChanged="ListBox_OnSelected"
 							   ItemsSource="{Binding comboBoxCollectionView}"
@@ -165,12 +164,9 @@
 									Margin="10"
 									ItemsSource="{Binding comboBoxCollectionView}"
 									labelText="Country"
+									DisplayMemberPath="countryName"
 									SelectedValuePath="countryName"
-									SelectionChanged="Selector_OnSelectionChanged">
-						<cc:RctComboBox.GroupStyle>
-							<GroupStyle />
-						</cc:RctComboBox.GroupStyle>
-					</cc:RctComboBox>
+									SelectionChanged="Selector_OnSelectionChanged"/>
 
 					<cc:RctTextBox x:Name="textBox"
 								   Margin="10"

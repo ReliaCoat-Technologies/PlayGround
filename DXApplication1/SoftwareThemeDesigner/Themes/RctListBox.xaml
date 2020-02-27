@@ -15,10 +15,12 @@
 				Value="True" />
 		<Setter Property="HorizontalAlignment"
 				Value="Stretch" />
-		<Setter Property="FontSize"
-				Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:RctListBox}}, Path=FontSize}" />
 		<Setter Property="Background"
 				Value="Transparent" />
+		<Setter Property="FontSize"
+		        Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:RctListBox}}, Path=FontSize}" />
+		<Setter Property="MaxWidth"
+				Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:RctListBox}}, Path=ActualWidth}"/>
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type ListBoxItem}">

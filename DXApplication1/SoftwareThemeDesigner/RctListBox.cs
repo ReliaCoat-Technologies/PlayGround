@@ -77,10 +77,22 @@ namespace SoftwareThemeDesigner
 
 		private void onSearchBoxTextChanged(object sender, TextChangedEventArgs e)
 		{
-			foreach (var item in _hostPanel.VisualChildren().OfType<ListBoxItem>())
+			var children = _hostPanel.VisualChildren().ToList();
+
+			foreach (var listBoxItem in children.OfType<ListBoxItem>())
 			{
-				var isAvailable = item.Content.containsFilterInOrder(_searchTextBox.Text, DisplayMemberPath);
-				item.Visibility = isAvailable ? Visibility.Visible : Visibility.Collapsed;
+				var isAvailable = listBoxItem.Content.containsFilterInOrder(_searchTextBox.Text, DisplayMemberPath);
+				listBoxItem.Visibility = isAvailable ? Visibility.Visible : Visibility.Collapsed;
+			}
+
+			foreach (var groupItem in children.OfType<GroupItem>())
+			{
+				var hasVisibleChildren = groupItem
+					.VisualChildren()
+					.OfType<ListBoxItem>()
+					.Any(x => x.Visibility == Visibility.Visible);
+
+				groupItem.Visibility = hasVisibleChildren ? Visibility.Visible : Visibility.Collapsed;
 			}
 		}
 		#endregion

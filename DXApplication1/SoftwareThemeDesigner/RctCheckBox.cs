@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 
@@ -25,6 +26,8 @@ namespace SoftwareThemeDesigner
 
 		#region Fields
 		private Path _checkBoxShape;
+		private Border _hostBorder;
+		private TextBlock _label;
 		#endregion
 
 		#region Properties
@@ -82,15 +85,31 @@ namespace SoftwareThemeDesigner
 				}
 			}
 
-			var label = GetTemplateChild("PART_Label") as TextBlock;
-			if (label != null)
-			{
-				if (labelTextColor == null)
-					labelTextColor = Foreground;
+			_hostBorder = GetTemplateChild("PART_CheckBoxShape") as Border;
 
-				label.Text = labelText;
-				label.FontSize = labelFontSize;
-				label.Foreground = labelTextColor;
+			if (GetValue(labelTextColorProperty) as Brush == null)
+				SetValue(labelTextColorProperty, Foreground);
+
+			_label = GetTemplateChild("PART_Label") as TextBlock;
+		}
+
+		protected override void OnPreviewKeyDown(KeyEventArgs e)
+		{
+			base.OnPreviewKeyDown(e);
+
+			if (e.Key != Key.Enter && e.Key != Key.Return) return;
+
+			switch (IsChecked)
+			{
+				case false:
+					IsChecked = true;
+					return;
+				case true:
+					IsChecked = IsThreeState ? (bool?)null : false;
+					return;
+				case null:
+					IsChecked = false;
+					return;
 			}
 		}
 

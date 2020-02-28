@@ -20,7 +20,7 @@
 			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type local:RctTextBox}">
 
-					<Grid>
+					<Grid x:Name="PART_HostGrid">
 
 						<Grid.RowDefinitions>
 							<RowDefinition Height="Auto" />
@@ -61,18 +61,33 @@
 					</Grid>
 
 					<ControlTemplate.Triggers>
+
 						<Trigger Property="IsFocused"
-								 Value="True">
+						         Value="True">
+
 							<Setter TargetName="PART_Label"
-									Property="Foreground"
-									Value="{dxi:ThemeResource {dxt:PaletteBrushThemeKey ResourceKey=SelectionBackground}}" />
+							        Property="Foreground"
+							        Value="{dxi:ThemeResource {dxt:PaletteBrushThemeKey ResourceKey=SelectionBackground}}" />
+
 							<Setter TargetName="PART_Label"
 							        Property="Opacity"
 							        Value="1" />
+
 							<Setter TargetName="PART_Line"
 									Property="Stroke"
 									Value="{dxi:ThemeResource {dxt:PaletteBrushThemeKey ResourceKey=SelectionBackground}}" />
+
 						</Trigger>
+
+						<Trigger Property="IsEnabled"
+						         Value="False">
+
+							<Setter TargetName="PART_HostGrid"
+							        Property="Opacity"
+							        Value="0.6" />
+
+						</Trigger>
+
 					</ControlTemplate.Triggers>
 
 				</ControlTemplate>

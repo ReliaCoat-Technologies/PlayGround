@@ -18,9 +18,9 @@
 		<Setter Property="Background"
 				Value="Transparent" />
 		<Setter Property="FontSize"
-		        Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:RctListBox}}, Path=FontSize}" />
+				Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:RctListBox}}, Path=FontSize}" />
 		<Setter Property="MaxWidth"
-				Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:RctListBox}}, Path=ActualWidth}"/>
+				Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:RctListBox}}, Path=ActualWidth}" />
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type ListBoxItem}">
@@ -58,29 +58,29 @@
 
 							<Grid>
 								<Grid.RowDefinitions>
-									<RowDefinition Height="Auto"/>
-									<RowDefinition Height="Auto"/>
+									<RowDefinition Height="Auto" />
+									<RowDefinition Height="Auto" />
 								</Grid.RowDefinitions>
 
 								<Border Background="Gray"
 										Grid.Row="0"
-								        Opacity="0.4"
-								        CornerRadius="5,5,0,0"/>
+										Opacity="0.4"
+										CornerRadius="5,5,0,0" />
 
 								<TextBlock Text="{Binding Name}"
 										   Grid.Row="0"
-								           FontWeight="Bold"
-								           HorizontalAlignment="Center"
+										   FontWeight="Bold"
+										   HorizontalAlignment="Center"
 										   VerticalAlignment="Center"
-								           Margin="5" />
+										   Margin="5" />
 
 								<Line Grid.Row="1"
-								      X2="1"
-								      Stretch="Fill"
-								      StrokeThickness="1"
-								      Stroke="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:RctListBox}}, Path=Foreground}"
-								      StrokeStartLineCap="Square"
-								      StrokeEndLineCap="Square" />
+									  X2="1"
+									  Stretch="Fill"
+									  StrokeThickness="1"
+									  Stroke="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:RctListBox}}, Path=Foreground}"
+									  StrokeStartLineCap="Square"
+									  StrokeEndLineCap="Square" />
 
 							</Grid>
 
@@ -91,7 +91,7 @@
 		</Style.Resources>
 
 		<Setter Property="SnapsToDevicePixels"
-		        Value="True" />
+				Value="True" />
 		<Setter Property="HorizontalAlignment"
 				Value="Stretch" />
 		<Setter Property="HorizontalContentAlignment"
@@ -108,7 +108,7 @@
 			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type local:RctListBox}">
 
-					<Grid>
+					<Grid x:Name="PART_HostGrid">
 
 						<Grid.RowDefinitions>
 							<RowDefinition Height="Auto" />
@@ -150,6 +150,19 @@
 						</ScrollViewer>
 
 					</Grid>
+
+					<ControlTemplate.Triggers>
+
+						<Trigger Property="IsEnabled"
+								 Value="False">
+
+							<Setter TargetName="PART_HostGrid"
+									Property="Opacity"
+									Value="0.6" />
+
+						</Trigger>
+
+					</ControlTemplate.Triggers>
 
 				</ControlTemplate>
 			</Setter.Value>

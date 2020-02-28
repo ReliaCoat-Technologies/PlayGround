@@ -122,7 +122,7 @@
 			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type local:RctComboBox}">
 
-					<Grid>
+					<Grid x:Name="PART_HostGrid">
 
 						<Grid.RowDefinitions>
 							<RowDefinition Height="Auto" />
@@ -275,6 +275,16 @@
 							        Property="Stroke"
 							        Value="{dxi:ThemeResource {dxt:PaletteBrushThemeKey ResourceKey=SelectionBackground}}" />
 						</Trigger>
+
+						<Trigger Property="IsEnabled"
+						         Value="False">
+
+							<Setter TargetName="PART_HostGrid"
+							        Property="Opacity"
+							        Value="0.6" />
+
+						</Trigger>
+
 					</ControlTemplate.Triggers>
 
 				</ControlTemplate>

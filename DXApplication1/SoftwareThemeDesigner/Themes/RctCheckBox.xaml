@@ -18,7 +18,7 @@
 			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type local:RctCheckBox}">
 
-					<DockPanel>
+					<DockPanel x:Name="PART_HostDockPanel">
 
 						<Border DockPanel.Dock="Left"
 								Focusable="false"
@@ -70,11 +70,20 @@
 					<ControlTemplate.Triggers>
 
 						<Trigger Property="IsChecked"
-						         Value="True">
+								 Value="True">
 
 							<Setter TargetName="PART_CheckBoxShape"
-							        Property="Fill"
-							        Value="{dxi:ThemeResource {dxt:PaletteBrushThemeKey ResourceKey=SelectionBackground}}" />
+									Property="Fill"
+									Value="{dxi:ThemeResource {dxt:PaletteBrushThemeKey ResourceKey=SelectionBackground}}" />
+
+						</Trigger>
+
+						<Trigger Property="IsEnabled"
+								 Value="False">
+
+							<Setter TargetName="PART_HostDockPanel"
+									Property="Opacity"
+									Value="0.6" />
 
 						</Trigger>
 

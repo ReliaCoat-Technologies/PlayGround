@@ -26,31 +26,64 @@
 				<ControlTemplate TargetType="{x:Type stt:RctButton}">
 
 					<Border x:Name="PART_Border"
-							Background="{Binding RelativeSource={RelativeSource AncestorType=stt:RctButton}, Path=Background}"
+							Background="{TemplateBinding Background}"
 							ClipToBounds="True"
 							CornerRadius="5">
 
-						<stt:RctRippleDecorator highlightBackground="{dxi:ThemeResource {dxt:PaletteBrushThemeKey ResourceKey=SelectionBackground}}"
-												Height="{Binding ElementName=PART_ContentHost, Path=ActualHeight}"
-												Width="{Binding ElementName=PART_ContentHost, Path=ActualWidth}">
+						<Grid>
 
-							<ContentPresenter x:Name="PART_ContentHost">
-								<ContentPresenter.ContentTemplate>
-									<DataTemplate>
+							<Border x:Name="PART_MouseOverHighlightBorder"
+									Background="{TemplateBinding Foreground}"
+									Opacity="0" 
+									CornerRadius="5"/>
 
-										<Border Background="Transparent">
-											<TextBlock Text="{Binding Converter={StaticResource toUpper}}"
-													   TextAlignment="Center"
-													   VerticalAlignment="Center"/>
-										</Border>
+							<stt:RctRippleDecorator highlightBackground="{dxi:ThemeResource {dxt:PaletteBrushThemeKey ResourceKey=SelectionBackground}}"
+													Height="{Binding ElementName=PART_MouseOverHighlightBorder, Path=ActualHeight}"
+													Width="{Binding ElementName=PART_MouseOverHighlightBorder, Path=ActualWidth}">
 
-									</DataTemplate>
-								</ContentPresenter.ContentTemplate>
-							</ContentPresenter>
+								<ContentPresenter x:Name="PART_ContentHost">
+									<ContentPresenter.ContentTemplate>
+										<DataTemplate>
 
-						</stt:RctRippleDecorator>
+											<Border Background="Transparent">
+
+												<TextBlock Text="{Binding Converter={StaticResource toUpper}}"
+												           TextAlignment="Center"
+												           VerticalAlignment="Center" />
+
+											</Border>
+
+										</DataTemplate>
+									</ContentPresenter.ContentTemplate>
+								</ContentPresenter>
+
+							</stt:RctRippleDecorator>
+
+						</Grid>
 
 					</Border>
+
+					<ControlTemplate.Triggers>
+
+						<Trigger Property="IsEnabled"
+								 Value="False">
+
+							<Setter TargetName="PART_Border"
+									Property="Opacity"
+									Value="0.6" />
+
+						</Trigger>
+
+						<Trigger Property="IsMouseOver"
+								 Value="True">
+
+							<Setter TargetName="PART_MouseOverHighlightBorder"
+									Property="Opacity"
+									Value="0.1" />
+
+						</Trigger>
+
+					</ControlTemplate.Triggers>
 
 				</ControlTemplate>
 			</Setter.Value>

@@ -67,6 +67,19 @@
 
 					</DockPanel>
 
+					<ControlTemplate.Triggers>
+
+						<Trigger Property="IsChecked"
+						         Value="True">
+
+							<Setter TargetName="PART_CheckBoxShape"
+							        Property="Fill"
+							        Value="{dxi:ThemeResource {dxt:PaletteBrushThemeKey ResourceKey=SelectionBackground}}" />
+
+						</Trigger>
+
+					</ControlTemplate.Triggers>
+
 				</ControlTemplate>
 			</Setter.Value>
 		</Setter>

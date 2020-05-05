@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -61,6 +63,8 @@ namespace SoftwareThemeDesigner
 		{
 			DefaultStyleKeyProperty.OverrideMetadata(typeof(RctComboBox), new FrameworkPropertyMetadata(typeof(RctComboBox)));
 			FontSizeProperty.OverrideMetadata(typeof(RctComboBox), new FrameworkPropertyMetadata(24d));
+
+			
 		}
 		#endregion
 
@@ -136,13 +140,20 @@ namespace SoftwareThemeDesigner
 			if (e.Key == Key.Up || e.Key == Key.Down)
 			{
 				IsDropDownOpen = true;
-
 				return;
 			}
 
 			_searchTextBox.Focus();
 
 			base.OnPreviewKeyDown(e);
+		}
+
+		protected override void OnGotFocus(RoutedEventArgs e)
+		{
+			base.OnGotFocus(e);
+
+			if (!IsDropDownOpen)
+				IsDropDownOpen = true;
 		}
 
 		private void onSearchBoxTextChanged(object sender, TextChangedEventArgs e)

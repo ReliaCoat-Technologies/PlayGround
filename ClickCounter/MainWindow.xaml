@@ -1,0 +1,62 @@
+﻿<Window x:Class="ClickCounter.MainWindow"
+		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		mc:Ignorable="d"
+		Title="Mouse Click Tracker"
+		Height="350"
+		Width="525">
+
+	<StackPanel Margin="10">
+
+		<ToggleButton Margin="5"
+					  Content="Start Recording"
+					  IsChecked="{Binding isRecording, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+		<Button Content="Reset Counter"
+				Margin="5"
+				Command="{Binding resetCounterCommand}" />
+
+		<Button Content="Export Data"
+				Margin="5"
+				Command="{Binding exportDataCommand}" />
+
+		<DockPanel Margin="5">
+			<TextBlock Text="Total Number of Clicks: " />
+			<TextBlock Text="{Binding numClicks}" />
+		</DockPanel>
+
+		<DockPanel Margin="5">
+			<TextBlock Text="Left Clicks: " />
+			<TextBlock Text="{Binding numLeftClicks}" />
+		</DockPanel>
+
+		<DockPanel Margin="5">
+			<TextBlock Text="Right Clicks: " />
+			<TextBlock Text="{Binding numRightClicks}" />
+		</DockPanel>
+
+		<DockPanel Margin="5">
+			<TextBlock Text="Middle Clicks: " />
+			<TextBlock Text="{Binding numMiddleClicks}" />
+		</DockPanel>
+
+		<DockPanel Margin="5">
+			<TextBlock Text="Start Time: " />
+			<TextBlock Text="{Binding timeStart}" />
+		</DockPanel>
+
+		<DockPanel Margin="5">
+			<TextBlock Text="Last Click Time: " />
+			<TextBlock Text="{Binding lastClickTime}" />
+		</DockPanel>
+
+		<DockPanel Margin="5">
+			<TextBlock Text="Test Duration: " />
+			<TextBlock Text="{Binding testDuration}" />
+		</DockPanel>
+
+	</StackPanel>
+
+</Window>

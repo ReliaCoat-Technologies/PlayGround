@@ -9,6 +9,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolutionCleaner", "Solution
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoftwareThemeDesigner", "DXApplication1\SoftwareThemeDesigner\SoftwareThemeDesigner.csproj", "{C8B8E91B-037B-4594-9837-9580D4F30591}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClickCounter", "ClickCounter\ClickCounter.csproj", "{AF852067-1531-458C-A625-74DEF05CE93C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PasswordCriteria", "PasswordCriteria\PasswordCriteria.csproj", "{DC65EC2B-4D66-4B34-B7C6-8C42FE2EE648}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +31,14 @@ Global
 		{C8B8E91B-037B-4594-9837-9580D4F30591}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C8B8E91B-037B-4594-9837-9580D4F30591}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C8B8E91B-037B-4594-9837-9580D4F30591}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF852067-1531-458C-A625-74DEF05CE93C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF852067-1531-458C-A625-74DEF05CE93C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF852067-1531-458C-A625-74DEF05CE93C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF852067-1531-458C-A625-74DEF05CE93C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC65EC2B-4D66-4B34-B7C6-8C42FE2EE648}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC65EC2B-4D66-4B34-B7C6-8C42FE2EE648}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC65EC2B-4D66-4B34-B7C6-8C42FE2EE648}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC65EC2B-4D66-4B34-B7C6-8C42FE2EE648}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

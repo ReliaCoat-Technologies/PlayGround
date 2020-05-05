@@ -148,14 +148,6 @@ namespace SoftwareThemeDesigner
 			base.OnPreviewKeyDown(e);
 		}
 
-		protected override void OnGotFocus(RoutedEventArgs e)
-		{
-			base.OnGotFocus(e);
-
-			if (!IsDropDownOpen)
-				IsDropDownOpen = true;
-		}
-
 		private void onSearchBoxTextChanged(object sender, TextChangedEventArgs e)
 		{
 			var children = _hostPanel.VisualChildren().ToList();

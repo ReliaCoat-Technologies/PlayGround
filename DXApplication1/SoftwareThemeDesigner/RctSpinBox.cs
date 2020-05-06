@@ -211,6 +211,8 @@ namespace SoftwareThemeDesigner
 
 		protected virtual void onValueChanged(double newValue)
 		{
+			var oldValue = value;
+
 			if (Text == "-") // Allows user to type negative numbers
 				return;
 
@@ -224,6 +226,8 @@ namespace SoftwareThemeDesigner
 
 			Text = value.ToString(stringFormat);
 			SetValue(_formattedTextPropertyKey, $"{prefix}{Text}{suffix}");
+
+			RaiseEvent(new SpinRoutedEventArgs(valueChangedEvent, oldValue, value));
 		}
 
 		private void onMouseCaptureChanged(RoutedEventArgs e, bool isActivated)
@@ -296,22 +300,15 @@ namespace SoftwareThemeDesigner
 		{
 			if (_typedValue == value) return;
 
-			var oldValue = value;
 			value = _typedValue;
-
-			RaiseEvent(new SpinRoutedEventArgs(valueChangedEvent, oldValue, value));
 		}
 
 		protected void raiseSpinEvent(bool decrease = false)
 		{
-			var oldValue = value;
-
 			var shiftDown = Keyboard.Modifiers == ModifierKeys.Shift;
 
-			if (decrease) value -= shiftDown ? majorIncrement : increment;
-			else value += shiftDown ? majorIncrement : increment;
-
-			RaiseEvent(new SpinRoutedEventArgs(valueChangedEvent, oldValue, value));
+			if (decrease) value = _typedValue - (shiftDown ? majorIncrement : increment);
+			else value = _typedValue + (shiftDown ? majorIncrement : increment);
 
 			SelectAll();
 		}

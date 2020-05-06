@@ -43,7 +43,16 @@ namespace SoftwareThemeDesigner
 		public static readonly DependencyProperty selectionBrushProperty = DependencyProperty.Register(nameof(selectionBrush), typeof(Brush), typeof(RctComboBox),
 			new FrameworkPropertyMetadata(Brushes.DarkCyan));
 		public static readonly DependencyProperty valueProperty = DependencyProperty.Register(nameof(value), typeof(object), typeof(RctComboBox),
-			new FrameworkPropertyMetadata(null));
+			new FrameworkPropertyMetadata(null, valueChangedCallback));
+
+		#region Callbacks
+		private static void valueChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
+		{
+			var comboBox = d as RctComboBox;
+			comboBox?.onValueChanged(e.NewValue);
+		}
+		#endregion
+
 		public static readonly DependencyProperty valueTextProperty = valueTextPropertyKey.DependencyProperty;
 		#endregion
 
@@ -88,12 +97,7 @@ namespace SoftwareThemeDesigner
 		public object value
 		{
 			get { return GetValue(valueProperty); }
-			set
-			{
-				SetValue(valueProperty, value);
-				valueText = value.getObjectMember(DisplayMemberPath);
-				RaiseEvent(new RoutedEventArgs(valueChangedEvent, value));
-			}
+			set { SetValue(valueProperty, value); }
 		}
 		public string valueText
 		{
@@ -162,6 +166,12 @@ namespace SoftwareThemeDesigner
 				GroupStyle.Add(defaultGroupStyle);
 		}
 
+		public void onValueChanged(object newValue)
+		{
+			valueText = value.getObjectMember(DisplayMemberPath);
+			RaiseEvent(new RoutedEventArgs(valueChangedEvent, value));
+		}
+
 		protected override void OnItemsSourceChanged(IEnumerable oldValue, IEnumerable newValue)
 		{
 			_allComboBoxItems?.Clear();
@@ -220,13 +230,17 @@ namespace SoftwareThemeDesigner
 
 				return;
 			}
+			if (e.Key >= Key.A && e.Key <= Key.Z
+				|| e.Key >= Key.D0 && e.Key <= Key.D9
+				|| e.Key >= Key.NumPad0 && e.Key <= Key.NumPad9)
+			{
+				SelectedItem = null;
 
-			SelectedItem = null;
+				if (!IsDropDownOpen)
+					IsDropDownOpen = true;
 
-			if (!IsDropDownOpen)
-				IsDropDownOpen = true;
-
-			_searchTextBox.Focus();
+				_searchTextBox.Focus();
+			}
 
 			base.OnPreviewKeyDown(e);
 		}

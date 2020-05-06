@@ -32,10 +32,7 @@ namespace SoftwareThemeDesigner
 		private void PasswordBoxOnKeyUp(object sender, KeyEventArgs e)
 		{
 			if (e.Key == Key.Enter || e.Key == Key.Return)
-			{
 				Console.WriteLine($"Typed Password: {passwordBox.password}");
-				passwordBox.clear();
-			}
 		}
 
 		private void OnButtonClick(object sender, RoutedEventArgs e)

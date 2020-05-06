@@ -56,6 +56,8 @@ namespace SoftwareThemeDesigner
 
 			_passwordBox.Focus();
 			Focusable = false; // Prevents focusing on control when focus is gained when de-focusing password box.
+
+			_passwordBox.SelectAll();
 		}
 
 		private void PasswordBoxOnLostKeyboardFocus(object sender, RoutedEventArgs routedEventArgs)

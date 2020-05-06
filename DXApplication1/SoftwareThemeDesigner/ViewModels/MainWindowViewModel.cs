@@ -55,6 +55,7 @@ namespace SoftwareThemeDesigner.ViewModels
 			{
 				_comboBoxValue = value;
 				RaisePropertyChanged(() => comboBoxValue);
+				Console.WriteLine($"ComboBox Value Changed: {_comboBoxValue?.countryName}");
 			}
 		}
 		public double spinBoxValue

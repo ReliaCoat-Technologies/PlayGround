@@ -109,6 +109,8 @@
 				Value="False" />
 		<Setter Property="IsReadOnly"
 				Value="True" />
+		<Setter Property="selectionBrush"
+				Value="{dxi:ThemeResource {dxt:PaletteBrushThemeKey ResourceKey=SelectionBackground}}"/>
 		<Setter Property="ItemContainerStyle"
 				Value="{StaticResource RctComboBoxItemStyle}" />
 		<Setter Property="Template">
@@ -210,15 +212,14 @@
 
 							<Grid>
 
-								<TextBox x:Name="PART_EditableTextBox"
-										 Background="Transparent"
-										 BorderBrush="Transparent"
-										 HorizontalAlignment="Stretch"
-										 HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-										 FontSize="{TemplateBinding FontSize}"
-										 IsReadOnly="{TemplateBinding IsReadOnly}"
-										 Text="{TemplateBinding SelectionBoxItem}"
-										 Margin="0,5">
+								<TextBox Background="Transparent"
+								         BorderBrush="Transparent"
+								         HorizontalAlignment="Stretch"
+								         HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+								         FontSize="{TemplateBinding FontSize}"
+								         IsReadOnly="{TemplateBinding IsReadOnly}"
+								         Text="{TemplateBinding valueText}"
+								         Margin="0,5">
 
 									<TextBox.Template>
 										<ControlTemplate TargetType="{x:Type TextBox}">

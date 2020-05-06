@@ -173,11 +173,12 @@
 
 					<cc:RctComboBox x:Name="comboBox"
 									Margin="10"
+									value="{Binding comboBoxValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
 									ItemsSource="{Binding comboBoxCollectionView}"
 									labelText="Country"
 									DisplayMemberPath="countryName"
 									SelectedValuePath="countryName"
-									SelectionChanged="Selector_OnSelectionChanged" />
+									valueChanged="onComboBoxItemChanged"/>
 
 					<cc:RctTextBox x:Name="textBox"
 								   Margin="10"

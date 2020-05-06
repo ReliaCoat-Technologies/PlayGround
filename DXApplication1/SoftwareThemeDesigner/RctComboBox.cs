@@ -27,6 +27,12 @@ namespace SoftwareThemeDesigner
 		private RctRippleDecorator _rippleDecorator;
 		#endregion
 
+		#region Dependency Property Keys
+		private static readonly DependencyPropertyKey valueTextPropertyKey = DependencyProperty.RegisterReadOnly(
+			nameof(valueText), typeof(string), typeof(RctComboBox),
+			new FrameworkPropertyMetadata(null));
+		#endregion
+
 		#region Dependency Properties
 		public static readonly DependencyProperty labelTextProperty = DependencyProperty.Register(nameof(labelText), typeof(string), typeof(RctComboBox));
 		public static readonly DependencyProperty labelFontSizeProperty = DependencyProperty.Register(nameof(labelFontSize), typeof(double), typeof(RctComboBox),
@@ -34,6 +40,23 @@ namespace SoftwareThemeDesigner
 		public static readonly DependencyProperty labelTextColorProperty = DependencyProperty.Register(nameof(labelTextColor), typeof(Brush), typeof(RctComboBox));
 		public static readonly DependencyProperty allowDeleteProperty = DependencyProperty.Register(nameof(allowDelete), typeof(bool), typeof(RctComboBox),
 			new FrameworkPropertyMetadata(true));
+		public static readonly DependencyProperty selectionBrushProperty = DependencyProperty.Register(nameof(selectionBrush), typeof(Brush), typeof(RctComboBox),
+			new FrameworkPropertyMetadata(Brushes.DarkCyan));
+		public static readonly DependencyProperty valueProperty = DependencyProperty.Register(nameof(value), typeof(object), typeof(RctComboBox),
+			new FrameworkPropertyMetadata(null));
+		public static readonly DependencyProperty valueTextProperty = valueTextPropertyKey.DependencyProperty;
+		#endregion
+
+		#region Routed Events
+		public static readonly RoutedEvent valueChangedEvent = EventManager.RegisterRoutedEvent(nameof(valueChanged), RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(RctComboBox));
+		#endregion
+
+		#region Delegates
+		public event RoutedEventHandler valueChanged
+		{
+			add { AddHandler(valueChangedEvent, value); }
+			remove { RemoveHandler(valueChangedEvent, value); }
+		}
 		#endregion
 
 		#region Properties
@@ -56,6 +79,26 @@ namespace SoftwareThemeDesigner
 		{
 			get { return (bool)GetValue(allowDeleteProperty); }
 			set { SetValue(allowDeleteProperty, value); }
+		}
+		public Brush selectionBrush
+		{
+			get { return (Brush)GetValue(selectionBrushProperty); }
+			set { SetValue(selectionBrushProperty, value); }
+		}
+		public object value
+		{
+			get { return GetValue(valueProperty); }
+			set
+			{
+				SetValue(valueProperty, value);
+				valueText = value.getObjectMember(DisplayMemberPath);
+				RaiseEvent(new RoutedEventArgs(valueChangedEvent, value));
+			}
+		}
+		public string valueText
+		{
+			get { return GetValue(valueTextProperty).ToString(); }
+			protected set { SetValue(valueTextPropertyKey, value); }
 		}
 		protected int currentIndex => _visibleComboBoxItems.FirstOrDefault(x => x.Value.DataContext == SelectedItem).Key;
 		#endregion
@@ -102,8 +145,6 @@ namespace SoftwareThemeDesigner
 			if (GetValue(labelTextColorProperty) as Brush == null)
 				SetValue(labelTextColorProperty, Foreground);
 
-			_label = GetTemplateChild("PART_Label") as TextBlock;
-
 			_rippleDecorator = GetTemplateChild("PART_RippleDecorator") as RctRippleDecorator;
 
 			_toggleButton = GetTemplateChild("PART_ToggleButton") as ToggleButton;
@@ -143,7 +184,12 @@ namespace SoftwareThemeDesigner
 			if (e.Key == Key.Enter || e.Key == Key.Return)
 			{
 				if (IsDropDownOpen)
+				{
+					if (_searchTextBox.IsFocused)
+						SelectedItem = _visibleComboBoxItems.Values.FirstOrDefault()?.DataContext;
+
 					acceptValue();
+				}
 			}
 			if (e.Key == Key.Tab)
 			{
@@ -230,17 +276,7 @@ namespace SoftwareThemeDesigner
 
 		private void acceptValue()
 		{
-			var filteredChildren = _hostPanel
-				.VisualChildren()
-				.OfType<ComboBoxItem>()
-				.Select((x, i) => new { index = i, cbItem = x })
-				.Where(x => x.cbItem.IsVisible)
-				.ToList();
-
-			var firstHighlightedIndex = filteredChildren.FirstOrDefault(x => x.cbItem.IsHighlighted)?.index ?? -1;
-
-			if (!string.IsNullOrWhiteSpace(_searchTextBox.Text) && filteredChildren.Count > 0)
-				SelectedIndex = firstHighlightedIndex > 0 ? firstHighlightedIndex : filteredChildren.First().index;
+			value = SelectedItem;
 		}
 
 		private void onPopupOpened(object sender, EventArgs e)
@@ -256,6 +292,7 @@ namespace SoftwareThemeDesigner
 				if (_allComboBoxItems.Contains(item)) continue;
 
 				item.MouseMove += onItemMouseEnter;
+				item.PreviewMouseUp += onItemMouseUp;
 
 				_allComboBoxItems.Add(item);
 				_visibleComboBoxItems.Add(i, item);
@@ -271,17 +308,23 @@ namespace SoftwareThemeDesigner
 			SelectedItem = comboBoxItem.DataContext;
 		}
 
+		private void onItemMouseUp(object sender, MouseButtonEventArgs e)
+		{
+			IsDropDownOpen = false;
+			acceptValue();
+		}
+
 		protected override void OnSelectionChanged(SelectionChangedEventArgs e)
 		{
 			base.OnSelectionChanged(e);
 
-			foreach (var item in _allComboBoxItems.Where(x => x.Background == Brushes.Red))
+			foreach (var item in _allComboBoxItems.Where(x => x.Background == selectionBrush))
 				item.Background = Brushes.Transparent;
 
 			var selectedComboBoxItem = _allComboBoxItems.FirstOrDefault(x => x.DataContext == SelectedItem);
 
 			if (selectedComboBoxItem != null)
-				selectedComboBoxItem.Background = Brushes.Red;
+				selectedComboBoxItem.Background = selectionBrush;
 
 			if (_editableTextBox == null) return;
 

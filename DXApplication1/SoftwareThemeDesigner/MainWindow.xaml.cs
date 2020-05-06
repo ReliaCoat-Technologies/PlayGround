@@ -66,12 +66,6 @@ namespace SoftwareThemeDesigner
 			Console.WriteLine($"New ListBox Value Changed: {value}");
 		}
 
-		private void Selector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-		{
-			var value = (comboBox.SelectedItem as Country)?.countryName;
-			Console.WriteLine($"New ComboBox Value Changed: {value}");
-		}
-
 		private void onSpin(object sender, SpinRoutedEventArgs e)
 		{
 			Console.WriteLine($"Spin Event Handled: Old Value = {e.oldValue}, New Value = {e.newValue}");
@@ -80,6 +74,12 @@ namespace SoftwareThemeDesigner
 		private void TextBoxBase_OnTextChanged(object sender, TextChangedEventArgs e)
 		{
 			Console.WriteLine($"Text Box Value Updated: {textBox.Text}");
+		}
+
+		private void onComboBoxItemChanged(object sender, RoutedEventArgs e)
+		{
+			var value = (comboBox.value as Country)?.countryName;
+			Console.WriteLine($"New ComboBox Value Changed: {value}");
 		}
 	}
 }

@@ -5,7 +5,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
-using DevExpress.DirectX.Common.Direct2D;
 
 namespace SoftwareThemeDesigner
 {

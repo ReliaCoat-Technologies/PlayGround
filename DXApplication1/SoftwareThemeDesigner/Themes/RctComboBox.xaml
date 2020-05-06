@@ -5,8 +5,8 @@
 					xmlns:dxt="http://schemas.devexpress.com/winfx/2008/xaml/core/themekeys">
 
 	<Style x:Key="RctComboBoxItemStyle"
-		   TargetType="{x:Type ComboBoxItem}"
-		   BasedOn="{StaticResource {x:Type ComboBoxItem}}">
+	       TargetType="{x:Type ComboBoxItem}"
+	       BasedOn="{StaticResource {x:Type ComboBoxItem}}">
 		<Setter Property="SnapsToDevicePixels"
 				Value="True" />
 		<Setter Property="HorizontalAlignment"
@@ -188,19 +188,9 @@
 											Opacity="0.25"
 											Grid.Row="0" />
 
-									<TextBox x:Name="PART_SearchTextBox"
-											 Grid.Row="0"
-											 Margin="10"
-											 BorderThickness="0"
-											 BorderBrush="Transparent"
-											 Background="Transparent"
-											 HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-											 FontSize="24"
-											 IsReadOnly="False" />
-
 									<ScrollViewer SnapsToDevicePixels="True"
-												  Grid.Row="1"
-												  Margin="5">
+									              Grid.Row="1"
+									              Margin="5">
 
 										<ItemsPresenter x:Name="PART_HostPanel"
 										                KeyboardNavigation.DirectionalNavigation="Contained" />
@@ -212,9 +202,11 @@
 
 							<Grid>
 
-								<TextBox Background="Transparent"
+								<TextBox x:Name="PART_DisplayTextBox"
+										 Background="Transparent"
 								         BorderBrush="Transparent"
 								         HorizontalAlignment="Stretch"
+										 VerticalAlignment="Center"
 								         HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
 								         FontSize="{TemplateBinding FontSize}"
 								         IsReadOnly="{TemplateBinding IsReadOnly}"
@@ -228,6 +220,17 @@
 													Background="{TemplateBinding Background}" />
 										</ControlTemplate>
 									</TextBox.Template>
+
+								</TextBox>
+
+								<TextBox x:Name="PART_SearchTextBox"
+								         BorderBrush="Transparent"
+								         Background="Transparent"
+								         HorizontalAlignment="Stretch"
+								         VerticalAlignment="Center"
+								         HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+								         FontSize="{TemplateBinding FontSize}"
+								         IsReadOnly="False">
 
 								</TextBox>
 

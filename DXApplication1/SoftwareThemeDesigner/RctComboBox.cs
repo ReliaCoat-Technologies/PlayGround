@@ -21,7 +21,7 @@ namespace SoftwareThemeDesigner
 		private readonly IDictionary<int, ComboBoxItem> _visibleComboBoxItems;
 		private Popup _popup;
 		private TextBox _searchTextBox;
-		private TextBox _editableTextBox;
+		private TextBox _displayTextBox;
 		private ItemsPresenter _hostPanel;
 		private ToggleButton _toggleButton;
 		private RctRippleDecorator _rippleDecorator;
@@ -97,7 +97,7 @@ namespace SoftwareThemeDesigner
 		}
 		public string valueText
 		{
-			get { return GetValue(valueTextProperty).ToString(); }
+			get { return GetValue(valueTextProperty)?.ToString(); }
 			protected set { SetValue(valueTextPropertyKey, value); }
 		}
 		protected int currentIndex => _visibleComboBoxItems.FirstOrDefault(x => x.Value.DataContext == SelectedItem).Key;
@@ -124,15 +124,16 @@ namespace SoftwareThemeDesigner
 
 			_hostPanel = GetTemplateChild("PART_HostPanel") as ItemsPresenter;
 
-			_editableTextBox = GetTemplateChild("PART_EditableTextBox") as TextBox;
-			if (_editableTextBox != null)
+			_displayTextBox = GetTemplateChild("PART_DisplayTextBox") as TextBox;
+			if (_displayTextBox != null)
 			{
-				_editableTextBox.Focusable = false;
+				_displayTextBox.Focusable = false;
 			}
 
 			_searchTextBox = GetTemplateChild("PART_SearchTextBox") as TextBox;
 			if (_searchTextBox != null)
 			{
+				_searchTextBox.Visibility = Visibility.Collapsed;
 				_searchTextBox.TextChanged += onSearchBoxTextChanged;
 			}
 
@@ -140,6 +141,7 @@ namespace SoftwareThemeDesigner
 			if (_popup != null)
 			{
 				_popup.Opened += onPopupOpened;
+				_popup.Closed += onPopupClosed;
 			}
 
 			if (GetValue(labelTextColorProperty) as Brush == null)
@@ -219,6 +221,11 @@ namespace SoftwareThemeDesigner
 				return;
 			}
 
+			SelectedItem = null;
+
+			if (!IsDropDownOpen)
+				IsDropDownOpen = true;
+
 			_searchTextBox.Focus();
 
 			base.OnPreviewKeyDown(e);
@@ -281,6 +288,9 @@ namespace SoftwareThemeDesigner
 
 		private void onPopupOpened(object sender, EventArgs e)
 		{
+			_displayTextBox.Visibility = Visibility.Collapsed;
+			_searchTextBox.Visibility = Visibility.Visible;
+
 			_searchTextBox.Text = string.Empty;
 
 			var items = _hostPanel.VisualChildren().OfType<ComboBoxItem>().ToList();
@@ -297,6 +307,13 @@ namespace SoftwareThemeDesigner
 				_allComboBoxItems.Add(item);
 				_visibleComboBoxItems.Add(i, item);
 			}
+		}
+
+		private void onPopupClosed(object sender, EventArgs e)
+		{
+			_searchTextBox.Visibility = Visibility.Collapsed;
+			_displayTextBox.Visibility = Visibility.Visible;
+			_displayTextBox.Text = valueText;
 		}
 
 		private void onItemMouseEnter(object sender, MouseEventArgs e)
@@ -326,9 +343,9 @@ namespace SoftwareThemeDesigner
 			if (selectedComboBoxItem != null)
 				selectedComboBoxItem.Background = selectionBrush;
 
-			if (_editableTextBox == null) return;
+			if (_displayTextBox == null) return;
 
-			_editableTextBox.Text = SelectedValue?.ToString() ?? string.Empty;
+			_displayTextBox.Text = SelectedValue?.ToString() ?? string.Empty;
 		}
 		#endregion
 	}

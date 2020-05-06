@@ -36,13 +36,6 @@
 			</Setter.Value>
 
 		</Setter>
-		<Style.Triggers>
-			<Trigger Property="IsHighlighted"
-					 Value="True">
-				<Setter Property="Background"
-						Value="{dxi:ThemeResource {dxt:PaletteBrushThemeKey ResourceKey=SelectionBackground}}" />
-			</Trigger>
-		</Style.Triggers>
 	</Style>
 
 	<ControlTemplate x:Key="toggleButtonTemplate">

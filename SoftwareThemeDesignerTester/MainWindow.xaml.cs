@@ -5,9 +5,9 @@ using System.Windows.Input;
 using DevExpress.Xpf.Core;
 using DevExpress.Xpf.Editors;
 using SoftwareThemeDesigner.RoutedEvents;
-using SoftwareThemeDesigner.ViewModels;
+using SoftwareThemeDesignerTester.ViewModels;
 
-namespace SoftwareThemeDesigner
+namespace SoftwareThemeDesignerTester
 {
 	public partial class MainWindow : ThemedWindow
 	{

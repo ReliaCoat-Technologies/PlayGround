@@ -6,7 +6,7 @@ using System.Linq;
 using System.Windows.Data;
 using DevExpress.Mvvm;
 
-namespace SoftwareThemeDesigner.ViewModels
+namespace SoftwareThemeDesignerTester.ViewModels
 {
 	public class MainWindowViewModel : ViewModelBase
 	{

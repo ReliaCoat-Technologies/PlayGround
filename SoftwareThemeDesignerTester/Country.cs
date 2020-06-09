@@ -1,4 +1,4 @@
-﻿namespace SoftwareThemeDesigner
+﻿namespace SoftwareThemeDesignerTester
 {
 	public class Country
 	{

@@ -2,15 +2,13 @@
 					xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
 	<ResourceDictionary.MergedDictionaries>
-		<ResourceDictionary Source="/Themes/RctTextBox.xaml" />
-		<ResourceDictionary Source="/Themes/RctComboBox.xaml" />
-		<ResourceDictionary Source="/Themes/RctSpinBox.xaml" />
-		<ResourceDictionary Source="/Themes/RctPasswordBox.xaml" />
-		<ResourceDictionary Source="/Themes/RctCheckBox.xaml" />
-		<ResourceDictionary Source="/Themes/RctListBox.xaml" />
-		<ResourceDictionary Source="/Themes/RctButton.xaml" />
+		<ResourceDictionary Source="pack://application:,,,/Themes/RctTextBox.xaml" />
+		<ResourceDictionary Source="pack://application:,,,/Themes/RctComboBox.xaml" />
+		<ResourceDictionary Source="pack://application:,,,/Themes/RctSpinBox.xaml" />
+		<ResourceDictionary Source="pack://application:,,,/Themes/RctPasswordBox.xaml" />
+		<ResourceDictionary Source="pack://application:,,,/Themes/RctCheckBox.xaml" />
+		<ResourceDictionary Source="pack://application:,,,/Themes/RctListBox.xaml" />
+		<ResourceDictionary Source="pack://application:,,,/Themes/RctButton.xaml" />
 	</ResourceDictionary.MergedDictionaries>
-
-
 
 </ResourceDictionary>

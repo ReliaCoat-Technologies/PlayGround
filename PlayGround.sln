@@ -21,7 +21,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReliaCoat.Common.UI", "..\R
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReliaCoat.Common.UI.Extensions", "..\ReliaCoat.Core\ReliaCoat.Common.UI.Extensions\ReliaCoat.Common.UI.Extensions.csproj", "{4B0635FA-2FE0-4781-8E52-39924DE836A2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageAnalysis", "ImageAnalysis\ImageAnalysis.csproj", "{5A1C1A45-1B80-4386-ADEE-97283F4E6E93}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccordFrameworkImageAnalysis", "AccordFrameworkImageAnalysis\AccordFrameworkImageAnalysis.csproj", "{E4141C7E-9E62-49A1-BE71-FFDD9E8429D0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -65,10 +65,10 @@ Global
 		{4B0635FA-2FE0-4781-8E52-39924DE836A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4B0635FA-2FE0-4781-8E52-39924DE836A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4B0635FA-2FE0-4781-8E52-39924DE836A2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5A1C1A45-1B80-4386-ADEE-97283F4E6E93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5A1C1A45-1B80-4386-ADEE-97283F4E6E93}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5A1C1A45-1B80-4386-ADEE-97283F4E6E93}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5A1C1A45-1B80-4386-ADEE-97283F4E6E93}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E4141C7E-9E62-49A1-BE71-FFDD9E8429D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4141C7E-9E62-49A1-BE71-FFDD9E8429D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4141C7E-9E62-49A1-BE71-FFDD9E8429D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4141C7E-9E62-49A1-BE71-FFDD9E8429D0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,10 +1,14 @@
-﻿using System;
-using Accord.Imaging.Filters;
-using System.Drawing;
+﻿using Accord.Imaging.Filters;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.Drawing.Imaging;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace ImageAnalysis
+namespace AccordFrameworkImageAnalysis
 {
 	public static class ImageFunctions
 	{

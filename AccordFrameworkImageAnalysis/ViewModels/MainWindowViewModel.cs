@@ -1,19 +1,14 @@
 ﻿using System;
-using System.Drawing;
-using System.Linq;
-using System.Windows.Input;
 using DevExpress.Mvvm;
-using ImageAnalysis.Utilities;
+using System.Windows.Input;
+using System.Drawing;
 using System.Threading.Tasks;
-using System.Windows.Media;
-using System.Windows.Shapes;
-using Accord;
-using Accord.Imaging;
-using Accord.Imaging.Filters;
+using AccordFrameworkImageAnalysis.Utilities;
 using Accord.Imaging.Moments;
-using Accord.Math.Geometry;
+using Accord.Imaging;
+using System.Linq;
 
-namespace ImageAnalysis.ViewModels
+namespace AccordFrameworkImageAnalysis.ViewModels
 {
 	public class MainWindowViewModel : ViewModelBase
 	{

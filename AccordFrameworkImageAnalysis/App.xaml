@@ -1,7 +1,8 @@
-﻿<Application x:Class="ImageAnalysis.App"
+﻿<Application x:Class="AccordFrameworkImageAnalysis.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             StartupUri="ImageAnalysisMainWindow.xaml">
+             xmlns:local="clr-namespace:AccordFrameworkImageAnalysis"
+             StartupUri="MainWindow.xaml">
     <Application.Resources>
          
     </Application.Resources>

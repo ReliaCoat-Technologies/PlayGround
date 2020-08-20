@@ -1,17 +1,16 @@
-﻿<dx:ThemedWindow x:Class="ImageAnalysis.ImageAnalysisMainWindow"
-				 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-				 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-				 xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
-				 xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
-				 xmlns:converters="clr-namespace:ReliaCoat.Common.UI;assembly=ReliaCoat.Common.UI"
-				 Title="MainWindow"
-				 WindowStartupLocation="CenterScreen"
-				 Height="900"
-				 Width="1400">
+﻿<Window x:Class="AccordFrameworkImageAnalysis.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AccordFrameworkImageAnalysis"
+		xmlns:converters="clr-namespace:ReliaCoat.Common.UI;assembly=ReliaCoat.Common.UI"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="800" Width="1300">
 
-	<dx:ThemedWindow.Resources>
+	<Window.Resources>
 		<converters:DrawingToMediaConverter x:Key="d2m"/>
-	</dx:ThemedWindow.Resources>
+	</Window.Resources>
 
 	<DockPanel>
 
@@ -36,7 +35,6 @@
 
 		</UniformGrid>
 		
-
 	</DockPanel>
 
-</dx:ThemedWindow>
+</Window>

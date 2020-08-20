@@ -25,6 +25,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -62,6 +63,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="HelperFunctions.cs" />
+    <Compile Include="TestEnumerator.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -110,9 +113,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DXApplication1\SoftwareThemeDesigner\SoftwareThemeDesigner.csproj">
-      <Project>{c8b8e91b-037b-4594-9837-9580d4f30591}</Project>
-      <Name>SoftwareThemeDesigner</Name>
+    <ProjectReference Include="..\..\ReliaCoat.Core\ReliaCoat.Common.UI.Controls\ReliaCoat.Common.UI.Controls.csproj">
+      <Project>{d73b6b14-7b56-48cb-8e57-23a6d1cae786}</Project>
+      <Name>ReliaCoat.Common.UI.Controls</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

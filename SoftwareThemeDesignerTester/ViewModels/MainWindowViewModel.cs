@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
-using System.Linq;
 using System.Windows.Data;
 using DevExpress.Mvvm;
 
@@ -10,89 +11,48 @@ namespace SoftwareThemeDesignerTester.ViewModels
 {
 	public class MainWindowViewModel : ViewModelBase
 	{
-		#region Constants
-		private const string continentNameHeader = "Continent_Name";
-		private const string continentCodeHeader = "Continent_Code";
-		private const string countryNameHeader = "Country_Name";
-		private const string countryCodeHeader = "Three_Letter_Country_Code";
-		#endregion
-
 		#region Fields
-		private string _textBoxString;
-		private ObservableCollection<Country> _comboBoxItems;
-		private Country _comboBoxValue;
-		private double _spinBoxValue;
-		private ICollectionView _comboBoxCollectionView;
-
+		private Country _selectedCountry;
+		private ObservableCollection<Country> _countryList;
+		private ICollectionView _collectionView;
 		#endregion
 
 		#region Properties
-		public string textBoxString
+		public ObservableCollection<Country> countryList
 		{
-			get { return _textBoxString; }
+			get { return _countryList; }
 			set
 			{
-				_textBoxString = value;
-				RaisePropertyChanged(() => textBoxString);
-				Console.WriteLine($"Text Box Binding Value Changed: {_textBoxString}");
+				_countryList = value;
+				RaisePropertyChanged(() => countryList);
+
+				collectionView = CollectionViewSource.GetDefaultView(_countryList);
+				collectionView.GroupDescriptions.Add(new PropertyGroupDescription(nameof(Country.continentName)));
 			}
-		}
-		public ObservableCollection<Country> comboBoxItems
-		{
-			get { return _comboBoxItems; }
-			set { _comboBoxItems = value; RaisePropertyChanged(() => comboBoxItems); }
 		}
 
-		public ICollectionView comboBoxCollectionView
+		public Country selectedCountry
 		{
-			get { return _comboBoxCollectionView; }
-			set { _comboBoxCollectionView = value; RaisePropertyChanged(() => comboBoxCollectionView); }
-		}
-		public Country comboBoxValue
-		{
-			get { return _comboBoxValue; }
+			get { return _selectedCountry; }
 			set
 			{
-				_comboBoxValue = value;
-				RaisePropertyChanged(() => comboBoxValue);
-				Console.WriteLine($"ComboBox Value Changed: {_comboBoxValue?.countryName}");
+				_selectedCountry = value;
+				RaisePropertyChanged(() => selectedCountry);
+				Console.WriteLine(_selectedCountry.countryName);
 			}
 		}
-		public double spinBoxValue
+
+		public ICollectionView collectionView
 		{
-			get { return _spinBoxValue; }
-			set
-			{
-				_spinBoxValue = value;
-				RaisePropertyChanged(() => spinBoxValue);
-				Console.WriteLine($"Spin Box Binding Value Changed: {_spinBoxValue}");
-			}
+			get { return _collectionView; }
+			set { _collectionView = value; RaisePropertyChanged(() => collectionView); }
 		}
 		#endregion
 
 		#region Constructor
 		public MainWindowViewModel()
 		{
-			var countriesText = File.ReadAllLines("CountryList.csv");
-
-			var headerRow = countriesText.First().Split(',').ToList();
-
-			var continentNameColumn = headerRow.IndexOf(continentNameHeader);
-			var continentCodeColumn = headerRow.IndexOf(continentCodeHeader);
-			var countryNameColumn = headerRow.IndexOf(countryNameHeader);
-			var countryCodeColumn = headerRow.IndexOf(countryCodeHeader);
-
-			var countryList = countriesText
-				.Skip(1) // Skip header row
-				.Select(x => x.Split(','))
-				.Select(x => new Country(x[countryNameColumn],
-					x[countryCodeColumn],
-					x[continentNameColumn],
-					x[continentCodeColumn]));
-
-			comboBoxItems = new ObservableCollection<Country>(countryList);
-			comboBoxCollectionView = CollectionViewSource.GetDefaultView(comboBoxItems);
-			comboBoxCollectionView.GroupDescriptions.Add(new PropertyGroupDescription(nameof(Country.continentName)));
+			countryList = new ObservableCollection<Country>(HelperFunctions.getCountryList());
 		}
 		#endregion
 	}

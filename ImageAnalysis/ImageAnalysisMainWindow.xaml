@@ -1,0 +1,42 @@
+﻿<dx:ThemedWindow x:Class="ImageAnalysis.ImageAnalysisMainWindow"
+				 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+				 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+				 xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+				 xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+				 xmlns:converters="clr-namespace:ReliaCoat.Common.UI;assembly=ReliaCoat.Common.UI"
+				 Title="MainWindow"
+				 WindowStartupLocation="CenterScreen"
+				 Height="900"
+				 Width="1400">
+
+	<dx:ThemedWindow.Resources>
+		<converters:DrawingToMediaConverter x:Key="d2m"/>
+	</dx:ThemedWindow.Resources>
+
+	<DockPanel>
+
+		<Button Margin="10"
+		        Content="Start Image Analysis"
+		        DockPanel.Dock="Top"
+		        Command="{Binding processImageCommand}"/>
+
+		<UniformGrid Columns="2">
+
+			<Image Margin="10"
+			       Source="{Binding originalImage, Converter={StaticResource d2m}}" />
+
+			<Image Margin="10"
+			       Source="{Binding workingImage, Converter={StaticResource d2m}}" />
+
+			<Image Margin="10"
+			       Source="{Binding thresholdedImage, Converter={StaticResource d2m}}" />
+
+			<Image Margin="10"
+			       Source="{Binding firstBlobImage, Converter={StaticResource d2m}}" />
+
+		</UniformGrid>
+		
+
+	</DockPanel>
+
+</dx:ThemedWindow>

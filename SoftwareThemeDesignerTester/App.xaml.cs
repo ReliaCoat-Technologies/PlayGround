@@ -17,6 +17,9 @@ namespace SoftwareThemeDesignerTester
 			};
 
 			Theme.RegisterTheme(theme);
+
+			var window = new MainWindow();
+			window.Show();
 		}
 	}
 }

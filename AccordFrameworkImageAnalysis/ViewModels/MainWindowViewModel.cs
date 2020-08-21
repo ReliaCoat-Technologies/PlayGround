@@ -4,8 +4,8 @@ using System.Windows.Input;
 using System.Drawing;
 using System.Threading.Tasks;
 using AccordFrameworkImageAnalysis.Utilities;
-using Accord.Imaging.Moments;
-using Accord.Imaging;
+using System.Collections.ObjectModel;
+using System.Drawing.Imaging;
 using System.Linq;
 
 namespace AccordFrameworkImageAnalysis.ViewModels
@@ -16,7 +16,7 @@ namespace AccordFrameworkImageAnalysis.ViewModels
 		private Bitmap _originalImage;
 		private Bitmap _workingImage;
 		private Bitmap _thresholdedImage;
-		private Bitmap _firstBlobImage;
+		private ObservableCollection<ContiguousPoreInfo> _poreInfoList;
 		#endregion
 
 		#region Properties
@@ -35,20 +35,22 @@ namespace AccordFrameworkImageAnalysis.ViewModels
 			get { return _thresholdedImage; }
 			set { _thresholdedImage = value; RaisePropertyChanged(() => thresholdedImage); }
 		}
-		public Bitmap firstBlobImage
+		public ObservableCollection<ContiguousPoreInfo> poreInfoList
 		{
-			get { return _firstBlobImage; }
-			set { _firstBlobImage = value; RaisePropertyChanged(() => firstBlobImage); }
+			get { return _poreInfoList; }
+			set { _poreInfoList = value; RaisePropertyChanged(() => poreInfoList); }
 		}
 		#endregion
 
 		#region Commands
 		public ICommand processImageCommand { get; set; }
+
 		#endregion
 
 		#region Constructor
 		public MainWindowViewModel()
 		{
+			poreInfoList = new ObservableCollection<ContiguousPoreInfo>();
 			processImageCommand = new DelegateCommand(async () => await processImageAsync());
 		}
 
@@ -72,28 +74,23 @@ namespace AccordFrameworkImageAnalysis.ViewModels
 				.otsuThresholdImage()
 				.invertimage();
 
-			var blobCounter = new BlobCounter(thresholdedImage);
+			var poreList = thresholdedImage.getBlobs().ToList();
 
-			var blobs = blobCounter
-				.GetObjectsInformation()
-				.OrderByDescending(x => x.Area)
-				.ToList();
+			foreach (var blob in poreList)
+				poreInfoList.Add(blob);
 
-			var firstBlob = blobs.FirstOrDefault();
+			var blankBitmap = new Bitmap(workingImage.Width, workingImage.Height, PixelFormat.Format24bppRgb);
 
-			blobCounter.ExtractBlobsImage(thresholdedImage, firstBlob, false);
+			using (var gfx = Graphics.FromImage(blankBitmap))
+			{
+				var pen = new Pen(Brushes.Black);
+				gfx.DrawRectangle(pen, new Rectangle(0, 0, blankBitmap.Width, blankBitmap.Height));
+			}
 
-			firstBlobImage = firstBlob.Image.ToManagedImage();
+			foreach(var pore in poreList)
+				pore.drawPore(blankBitmap);
 
-			var image = new Bitmap(firstBlobImage.Width, firstBlobImage.Height);
-
-			var moment = new CentralMoments(firstBlobImage, 2);
-
-			var area = firstBlob.Area;
-			var momentArea = moment.Mu00 / 255;
-			var cog = firstBlob.CenterOfGravity;
-			var angle = moment.GetOrientation() * 180 / Math.PI;
-			var size = moment.GetSize();
+			thresholdedImage = blankBitmap;
 		}
 		#endregion
 	}

@@ -82,6 +82,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ContiguousPoreInfo.cs" />
+    <Compile Include="PoreType.cs" />
     <Compile Include="ImageFunctions.cs" />
     <Compile Include="Utilities\ImageFileManager.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />

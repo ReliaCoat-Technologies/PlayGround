@@ -1,12 +1,9 @@
-﻿using Accord.Imaging.Filters;
-using System;
+﻿using Accord.Imaging;
+using Accord.Imaging.Filters;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AccordFrameworkImageAnalysis
 {
@@ -23,17 +20,9 @@ namespace AccordFrameworkImageAnalysis
 
 		public static Bitmap correctFlatField(this Bitmap inputImage, int blurRadius = 75)
 		{
-			var sw = new Stopwatch();
-			sw.Start();
-
 			var flatFieldCorrection = new FlatFieldCorrection();
 
-			var result = flatFieldCorrection.Apply(inputImage);
-
-			sw.Stop();
-			Console.WriteLine(sw.ElapsedMilliseconds);
-
-			return result;
+			return flatFieldCorrection.Apply(inputImage);
 		}
 
 		public static Bitmap invertimage(this Bitmap inputImage)
@@ -52,6 +41,22 @@ namespace AccordFrameworkImageAnalysis
 			var thresholdValue = thresholding.CalculateThreshold(inputImage, rect);
 
 			return thresholding.Apply(inputImage);
+		}
+
+		public static IEnumerable<ContiguousPoreInfo> getBlobs(this Bitmap inputImage)
+		{
+			var blobCounter = new BlobCounter(inputImage);
+
+			var blobs = blobCounter
+				.GetObjectsInformation()
+				.OrderByDescending(x => x.Area)
+				.ToList();
+
+			foreach(var blob in blobs)
+			{
+				blobCounter.ExtractBlobsImage(inputImage, blob, false);
+				yield return new ContiguousPoreInfo(blob);
+			}
 		}
 	}
 }

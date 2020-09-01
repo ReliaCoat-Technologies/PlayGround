@@ -1,0 +1,82 @@
+﻿<UserControl x:Class="AccordFrameworkImageAnalysis.Views.ImageCropDialogView"
+			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+			 xmlns:viewModels="clr-namespace:AccordFrameworkImageAnalysis.ViewModels"
+			 xmlns:common="clr-namespace:ReliaCoat.Common.UI;assembly=ReliaCoat.Common.UI"
+			 mc:Ignorable="d"
+			 d:DataContext="{d:DesignInstance viewModels:ImageCropDialogViewModel}">
+
+	<UserControl.Resources>
+		<common:DrawingToMediaConverter x:Key="d2m" />
+	</UserControl.Resources>
+
+	<DockPanel>
+
+		<StackPanel DockPanel.Dock="Top"
+					Orientation="Horizontal"
+					Margin="10"
+					HorizontalAlignment="Center">
+
+			<TextBlock Text="Crop Area: "
+					   FontSize="20" />
+
+			<TextBlock FontSize="20">
+				<Run Text="X0:" />
+				<Run Text="{Binding imageX0}" />
+			</TextBlock>
+
+			<TextBlock Text=", "
+					   FontSize="20" />
+
+			<TextBlock FontSize="20">
+				<Run Text="Y0:" />
+				<Run Text="{Binding imageY0}" />
+			</TextBlock>
+
+			<TextBlock Text=", "
+					   FontSize="20" />
+
+			<TextBlock FontSize="20">
+				<Run Text="X1:" />
+				<Run Text="{Binding imageX1}" />
+			</TextBlock>
+
+			<TextBlock Text=", "
+					   FontSize="20" />
+
+			<TextBlock FontSize="20">
+				<Run Text="Y1:" />
+				<Run Text="{Binding imageY1}" />
+			</TextBlock>
+
+		</StackPanel>
+
+		<Border Margin="10"
+				BorderBrush="White"
+				Background="Black">
+
+			<Grid x:Name="grid">
+
+				<Image x:Name="image"
+					   Source="{Binding bitmap, Converter={StaticResource d2m}}" />
+
+				<Canvas Height="{Binding ElementName=image, Path=ActualHeight}"
+						Width="{Binding ElementName=image, Path=ActualWidth}">
+
+					<Rectangle x:Name="cropRect"
+							   Stroke="Red"
+							   StrokeThickness="2"
+							   Fill="#22000000" />
+
+				</Canvas>
+
+			</Grid>
+
+		</Border>
+
+	</DockPanel>
+
+</UserControl>

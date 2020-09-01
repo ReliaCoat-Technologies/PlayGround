@@ -9,7 +9,7 @@
 		Title="MainWindow"
 		WindowStartupLocation="CenterScreen"
 		Height="800"
-		Width="1300">
+		Width="1400">
 
 	<Window.Resources>
 		<converters:DrawingToMediaConverter x:Key="d2m" />
@@ -22,33 +22,46 @@
 				DockPanel.Dock="Top"
 				Command="{Binding processImageCommand}" />
 
-		<UniformGrid Columns="1"
-		             DockPanel.Dock="Left"
-		             Width="400">
-
-			<Image Margin="10"
-			       Source="{Binding originalImage, Converter={StaticResource d2m}}" />
-
-			<Image Margin="10"
-			       Source="{Binding thresholdedImage, Converter={StaticResource d2m}}" />
-
-		</UniformGrid>
-
 		<DataGrid x:Name="DataGrid"
 				  Margin="10"
+				  DockPanel.Dock="Left"
 				  AutoGenerateColumns="False"
+				  Width="300"
 				  ItemsSource="{Binding poreInfoList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }">
 
 			<DataGrid.Columns>
 
-				<DataGridTextColumn Header="Area" Binding="{Binding area}"/>
-				<DataGridTextColumn Header="Angle" Binding="{Binding angle}"/>
-				<DataGridTextColumn Header="Aspect Ratio" Binding="{Binding aspectRatio}"/>
-				<DataGridTextColumn Header="Pore Type" Binding="{Binding poreType}"/>
+				<DataGridTextColumn Header="Area"
+									Binding="{Binding area}"/>
+				<DataGridTextColumn Header="Angle"
+									Binding="{Binding angle, StringFormat=F2}" />
+				<DataGridTextColumn Header="Aspect Ratio"
+									Binding="{Binding aspectRatio, StringFormat=F2}" />
+				<DataGridTextColumn Header="Convexity"
+				                    Binding="{Binding convexity, StringFormat=F2}" />
+				<DataGridTextColumn Header="Pore Type"
+									Binding="{Binding poreType}" />
+				
 
 			</DataGrid.Columns>
 
 		</DataGrid>
+
+		<UniformGrid Columns="2">
+
+			<Image Margin="10"
+				   Source="{Binding croppedImage, Converter={StaticResource d2m}}" />
+
+			<Image Margin="10"
+				   Source="{Binding workingImage, Converter={StaticResource d2m}}" />
+
+			<Image Margin="10"
+			       Source="{Binding thresholdedImage, Converter={StaticResource d2m}}" />
+
+			<Image Margin="10"
+			       Source="{Binding analyzedImage, Converter={StaticResource d2m}}" />
+
+		</UniformGrid>
 
 	</DockPanel>
 

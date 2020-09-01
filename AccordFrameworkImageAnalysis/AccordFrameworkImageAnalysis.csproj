@@ -61,6 +61,9 @@
     <Reference Include="DevExpress.Data.v19.1, Version=19.1.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.Mvvm.v19.1, Version=19.1.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.Xpf.Core.v19.1, Version=19.1.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Xpf.Themes.RctDarkTheme.v19.1">
+      <HintPath>..\..\..\DevExpress Custom Themes\RctDarkTheme\.td\Publish\DevExpress.Xpf.Themes.RctDarkTheme.v19.1.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -85,8 +88,15 @@
     <Compile Include="ContiguousPoreInfo.cs" />
     <Compile Include="PoreType.cs" />
     <Compile Include="ImageFunctions.cs" />
+    <Compile Include="Utilities\AdornerMouseButtonEventArgs.cs" />
     <Compile Include="Utilities\ImageFileManager.cs" />
+    <Compile Include="Utilities\RectangleResizeAdorner.cs" />
+    <Compile Include="Utilities\ResizePosition.cs" />
+    <Compile Include="ViewModels\ImageCropDialogViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
+    <Compile Include="Views\ImageCropDialogView.xaml.cs">
+      <DependentUpon>ImageCropDialogView.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -99,6 +109,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\ImageCropDialogView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

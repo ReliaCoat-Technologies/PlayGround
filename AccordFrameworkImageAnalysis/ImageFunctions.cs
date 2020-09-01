@@ -9,6 +9,12 @@ namespace AccordFrameworkImageAnalysis
 {
 	public static class ImageFunctions
 	{
+		public static Bitmap cropAtRectangle(this Bitmap inputImage, Rectangle rectangle)
+		{
+			var cropper = new Crop(rectangle);
+			return cropper.Apply(inputImage);
+		}
+
 		public static Bitmap convertToGrayscale(this Bitmap inputImage)
 		{
 			if (inputImage.PixelFormat == PixelFormat.Format8bppIndexed) return inputImage;
@@ -54,8 +60,9 @@ namespace AccordFrameworkImageAnalysis
 
 			foreach(var blob in blobs)
 			{
+				var edgePoints = blobCounter.GetBlobsEdgePoints(blob);
 				blobCounter.ExtractBlobsImage(inputImage, blob, false);
-				yield return new ContiguousPoreInfo(blob);
+				yield return new ContiguousPoreInfo(blob, edgePoints);
 			}
 		}
 	}

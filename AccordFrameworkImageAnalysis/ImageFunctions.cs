@@ -53,17 +53,11 @@ namespace AccordFrameworkImageAnalysis
 		{
 			var blobCounter = new BlobCounter(inputImage);
 
-			var blobs = blobCounter
+			return blobCounter
 				.GetObjectsInformation()
 				.OrderByDescending(x => x.Area)
-				.ToList();
-
-			foreach(var blob in blobs)
-			{
-				var edgePoints = blobCounter.GetBlobsEdgePoints(blob);
-				blobCounter.ExtractBlobsImage(inputImage, blob, false);
-				yield return new ContiguousPoreInfo(blob, edgePoints);
-			}
+				.Where(x => x.Area > 10)
+				.Select(x => new ContiguousPoreInfo(x, blobCounter, inputImage));
 		}
 	}
 }

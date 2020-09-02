@@ -10,6 +10,7 @@ using System.Linq;
 using System.Windows;
 using AccordFrameworkImageAnalysis.Views;
 using ReliaCoat.Common.UI.Extensions.CustomUserControls;
+using Point = System.Windows.Point;
 
 namespace AccordFrameworkImageAnalysis.ViewModels
 {
@@ -22,7 +23,11 @@ namespace AccordFrameworkImageAnalysis.ViewModels
 		private Bitmap _thresholdedImage;
 		private Bitmap _analyzedImage;
 		private ObservableCollection<ContiguousPoreInfo> _poreInfoList;
-		
+		private ContiguousPoreInfo _selectedPore;
+		private double _pulloutDensity;
+		private double _globularPorosity;
+		private double _interlamellarPorosity;
+		private double _crackDensity;
 		#endregion
 
 		#region Properties
@@ -56,10 +61,37 @@ namespace AccordFrameworkImageAnalysis.ViewModels
 			get { return _poreInfoList; }
 			set { _poreInfoList = value; RaisePropertyChanged(() => poreInfoList); }
 		}
+		public ContiguousPoreInfo selectedPore
+		{
+			get { return _selectedPore; }
+			set { _selectedPore = value; RaisePropertyChanged(() => selectedPore); }
+		}
+		public double pulloutDensity
+		{
+			get { return _pulloutDensity; }
+			set { _pulloutDensity = value; RaisePropertyChanged(() => pulloutDensity); }
+		}
+		public double globularPorosity
+		{
+			get { return _globularPorosity; }
+			set { _globularPorosity = value; RaisePropertyChanged(() => globularPorosity); }
+		}
+		public double interlamellarPorosity
+		{
+			get { return _interlamellarPorosity; }
+			set { _interlamellarPorosity = value; RaisePropertyChanged(() => interlamellarPorosity); }
+		}
+		public double crackDensity
+		{
+			get { return _crackDensity; }
+			set { _crackDensity = value; RaisePropertyChanged(() => crackDensity); }
+		}
 		#endregion
 
 		#region Commands
 		public ICommand processImageCommand { get; set; }
+
+
 		#endregion
 
 		#region Constructor
@@ -69,15 +101,13 @@ namespace AccordFrameworkImageAnalysis.ViewModels
 			processImageCommand = new DelegateCommand(async () => await processImageAsync());
 		}
 
-		private async Task openImageAsync()
+		public async Task processImageAsync(string fileName = null)
 		{
-			var fileManager = new ImageFileManager();
-			originalImage = await fileManager.openFileAsync();
-		}
+			poreInfoList.Clear();
 
-		private async Task processImageAsync()
-		{
-			await openImageAsync();
+			var fileManager = new ImageFileManager();
+
+			originalImage = await fileManager.openFileAsync(fileName);
 
 			if (originalImage == null) return;
 
@@ -116,6 +146,43 @@ namespace AccordFrameworkImageAnalysis.ViewModels
 				pore.drawPore(poreImage);
 
 			analyzedImage = poreImage;
+
+			var totalArea = _analyzedImage.Height * analyzedImage.Width;
+
+			pulloutDensity = getPorosity(PoreType.Pullout);
+			globularPorosity = getPorosity(PoreType.Globular);
+			interlamellarPorosity = getPorosity(PoreType.Interlamellar);
+			crackDensity = getPorosity(PoreType.Crack);
+		}
+
+		private double getPorosity(PoreType poreType)
+		{
+			var totalArea = _analyzedImage.Height * analyzedImage.Width;
+
+			var poreArea = _poreInfoList
+				.Where(x => x.poreType == poreType)
+				.Sum(x => x.area);
+
+			return poreArea / totalArea;
+		}
+
+		public void getPoreHitPoint(Point hitPoint)
+		{
+			selectedPore?.drawPore(analyzedImage);
+
+			var imageX = Convert.ToInt32(hitPoint.X * analyzedImage.Width);
+			var imageY = Convert.ToInt32(hitPoint.Y * analyzedImage.Height);
+
+			var rectangle = new Rectangle(0, 0, analyzedImage.Height, analyzedImage.Width);
+
+			selectedPore = _poreInfoList
+				.OrderBy(x => Math.Abs(x.centerX - imageX))
+				.ThenBy(x => Math.Abs(x.centerY - imageY))
+				.FirstOrDefault(x => x.isHit(imageX, imageY, rectangle));
+
+			selectedPore?.selectPore(analyzedImage);
+
+			RaisePropertyChanged(() => analyzedImage);
 		}
 		#endregion
 	}

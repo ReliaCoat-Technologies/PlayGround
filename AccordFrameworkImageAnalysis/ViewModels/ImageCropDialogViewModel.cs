@@ -52,6 +52,8 @@ namespace AccordFrameworkImageAnalysis.ViewModels
 
 			imageX1 = imageSize.Width;
 			imageY1 = imageSize.Height;
+
+			cropRect = new Rectangle(imageX0, imageY0, imageX1 - imageX0, imageY1 - imageY0);
 		}
 		#endregion
 

@@ -5,7 +5,9 @@
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:local="clr-namespace:AccordFrameworkImageAnalysis"
 		xmlns:converters="clr-namespace:ReliaCoat.Common.UI;assembly=ReliaCoat.Common.UI"
+		xmlns:viewModels="clr-namespace:AccordFrameworkImageAnalysis.ViewModels"
 		mc:Ignorable="d"
+		d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel}"
 		Title="MainWindow"
 		WindowStartupLocation="CenterScreen"
 		Height="800"
@@ -15,37 +17,135 @@
 		<converters:DrawingToMediaConverter x:Key="d2m" />
 	</Window.Resources>
 
-	<DockPanel>
+	<DockPanel AllowDrop="True"
+	           Drop="onDrop">
 
 		<Button Margin="10"
 				Content="Start Image Analysis"
 				DockPanel.Dock="Top"
 				Command="{Binding processImageCommand}" />
 
-		<DataGrid x:Name="DataGrid"
-				  Margin="10"
-				  DockPanel.Dock="Left"
-				  AutoGenerateColumns="False"
-				  Width="300"
-				  ItemsSource="{Binding poreInfoList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }">
+		<Border DockPanel.Dock="Left"
+				Width="300"
+				Margin="10"
+				Padding="10"
+				BorderBrush="Black"
+				BorderThickness="1"
+				Background="DarkGray">
 
-			<DataGrid.Columns>
+			<StackPanel>
 
-				<DataGridTextColumn Header="Area"
-									Binding="{Binding area}"/>
-				<DataGridTextColumn Header="Angle"
-									Binding="{Binding angle, StringFormat=F2}" />
-				<DataGridTextColumn Header="Aspect Ratio"
-									Binding="{Binding aspectRatio, StringFormat=F2}" />
-				<DataGridTextColumn Header="Convexity"
-				                    Binding="{Binding convexity, StringFormat=F2}" />
-				<DataGridTextColumn Header="Pore Type"
-									Binding="{Binding poreType}" />
-				
+				<TextBlock FontSize="20"
+						   TextAlignment="Center"
+						   Text="Pore" />
 
-			</DataGrid.Columns>
+				<Image MaxHeight="250"
+					   Margin="10"
+					   Source="{Binding selectedPore.managedImage, Converter={StaticResource d2m}}" />
 
-		</DataGrid>
+				<TextBlock FontSize="20"
+						   TextAlignment="Center"
+						   Text="Hull" />
+
+				<Image MaxHeight="250"
+					   Margin="10"
+					   Source="{Binding selectedPore.hullImage, Converter={StaticResource d2m}}" />
+
+				<TextBlock FontSize="20"
+						   Margin="10"
+						   TextAlignment="Center">
+					<Run Text="Area:" />
+					<Run Text="{Binding selectedPore.area, StringFormat=F2}" />
+				</TextBlock>
+
+				<TextBlock FontSize="20"
+						   Margin="10"
+						   TextAlignment="Center">
+					<Run Text="Angle:" />
+					<Run Text="{Binding selectedPore.angle, StringFormat=F2}" />
+				</TextBlock>
+
+				<TextBlock FontSize="20"
+						   Margin="10"
+						   TextAlignment="Center">
+					<Run Text="Convexity:" />
+					<Run Text="{Binding selectedPore.convexity, StringFormat=F2}" />
+				</TextBlock>
+
+				<TextBlock FontSize="20"
+						   Margin="10"
+						   TextAlignment="Center">
+					<Run Text="Aspect Ratio:" />
+					<Run Text="{Binding selectedPore.aspectRatio, StringFormat=F2}" />
+				</TextBlock>
+
+				<TextBlock FontSize="20"
+						   Margin="10"
+						   TextAlignment="Center">
+					<Run Text="Pore Type:" />
+					<Run Text="{Binding selectedPore.poreType}" />
+				</TextBlock>
+
+			</StackPanel>
+
+		</Border>
+
+		<Border DockPanel.Dock="Bottom"
+				Height="100"
+				Margin="10"
+				Padding="10"
+				BorderBrush="DarkGray"
+				BorderThickness="1"
+				Background="Black">
+
+			<DockPanel>
+
+				<TextBlock FontSize="20"
+						   DockPanel.Dock="Top"
+						   TextAlignment="Center"
+						   Text="Statistics" />
+
+				<StackPanel Orientation="Horizontal"
+							HorizontalAlignment="Center"
+							VerticalAlignment="Center">
+
+					<TextBlock FontSize="20"
+							   Margin="10"
+							   TextAlignment="Center"
+							   Foreground="Red">
+						<Run Text="Pullout Density:" />
+						<Run Text="{Binding pulloutDensity, StringFormat=P2}" />
+					</TextBlock>
+
+					<TextBlock FontSize="20"
+							   Margin="10"
+							   TextAlignment="Center"
+							   Foreground="Goldenrod">
+						<Run Text="Globular Porosity:" />
+						<Run Text="{Binding globularPorosity, StringFormat=P2}" />
+					</TextBlock>
+
+					<TextBlock FontSize="20"
+							   Margin="10"
+							   TextAlignment="Center"
+							   Foreground="LimeGreen">
+						<Run Text="Interlamellar Porosity:" />
+						<Run Text="{Binding interlamellarPorosity, StringFormat=P2}" />
+					</TextBlock>
+
+					<TextBlock FontSize="20"
+							   Margin="10"
+							   TextAlignment="Center"
+							   Foreground="White">
+						<Run Text="Crack Density:" />
+						<Run Text="{Binding crackDensity, StringFormat=P2}" />
+					</TextBlock>
+
+				</StackPanel>
+
+			</DockPanel>
+
+		</Border>
 
 		<UniformGrid Columns="2">
 
@@ -53,13 +153,9 @@
 				   Source="{Binding croppedImage, Converter={StaticResource d2m}}" />
 
 			<Image Margin="10"
-				   Source="{Binding workingImage, Converter={StaticResource d2m}}" />
-
-			<Image Margin="10"
-			       Source="{Binding thresholdedImage, Converter={StaticResource d2m}}" />
-
-			<Image Margin="10"
-			       Source="{Binding analyzedImage, Converter={StaticResource d2m}}" />
+				   Source="{Binding analyzedImage, Converter={StaticResource d2m}}"
+				   Cursor="Cross"
+				   MouseLeftButtonDown="onImageClick" />
 
 		</UniformGrid>
 

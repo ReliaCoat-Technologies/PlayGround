@@ -4,18 +4,24 @@
 				 xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
 				 xmlns:controls="clr-namespace:ReliaCoat.Common.UI.Controls;assembly=ReliaCoat.Common.UI.Controls"
 				 Title="MainWindow"
+				 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+				 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+				 xmlns:viewModels="clr-namespace:SoftwareThemeDesignerTester.ViewModels"
+				 mc:Ignorable="d"
+				 d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel}"
 				 WindowStartupLocation="CenterScreen"
 				 Height="700"
 				 Width="1400">
 
 	<DockPanel>
 
-		<controls:RctListBox Margin="10"
-							 ItemsSource="{Binding collectionView}"
-							 SelectedItem="{Binding selectedCountry}"
-							 DisplayMemberPath="countryName">
+		<controls:RctListBox ItemsSource="{Binding countryList}"
+		                     SelectedItem="{Binding selectedCountry, Mode=TwoWay}"
+		                     FontSize="16"
+		                     Width="400"
+		                     DisplayMemberPath="name"/>
 
-		</controls:RctListBox>
+		<Border />
 
 	</DockPanel>
 

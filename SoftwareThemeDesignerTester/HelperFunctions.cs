@@ -1,59 +1,34 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using DevExpress.Mvvm.Native;
+using System.Net;
+using Newtonsoft.Json;
+using System.Threading.Tasks;
 
 namespace SoftwareThemeDesignerTester
 {
 	public static class HelperFunctions
 	{
-		public static IEnumerable<Country> getCountryList()
+		public static async Task<IList<Country>> getCountriesAsync()
 		{
-			var countryText = File.ReadAllLines("CountryList.csv");
+			var request = WebRequest.Create("https://restcountries.eu/rest/v2/all");
+			request.Method = "GET";
 
-			var headerLine = countryText.First().Split(',');
-			var headerNumLines = headerLine.Length;
+			var response = await request.GetResponseAsync();
 
-			var continentIndex = headerLine.IndexOf(x => x == "Continent_Name");
-			var countryIndex = headerLine.IndexOf(x => x == "Country_Name");
-			var continentCodeIndex = headerLine.IndexOf(x => x == "Continent_Code");
-			var countryCodeIndex = headerLine.IndexOf(x => x == "Three_Letter_Country_Code");
+			var responseJson = string.Empty;
 
-			var isQuote = false;
-			
-			for (var i = 1; i < countryText.Length; i++)
+			using (var stream = response.GetResponseStream())
+				using (var sr = new StreamReader(stream))
+					responseJson = await sr.ReadToEndAsync();
+
+			var result = JsonConvert.DeserializeObject<IList<Country>>(responseJson, new JsonSerializerSettings
 			{
-				var line = new List<string>();
-				var lineSplit = countryText[i].Split(',');
-				var sb = new StringBuilder();
+				NullValueHandling = NullValueHandling.Ignore,
+				MissingMemberHandling = MissingMemberHandling.Ignore,
+			});
 
-				foreach (var item in lineSplit)
-				{
-					if (item.Contains("\""))
-						isQuote = !isQuote;
-
-					if (!isQuote && sb.Length == 0)
-					{
-						line.Add(item);
-					}
-
-					if (!isQuote && sb.Length > 0)
-					{
-						sb.Append(item);
-						line.Add(sb.ToString());
-						sb.Clear();
-					}
-
-					if (isQuote)
-					{
-						sb.Append($"{item},");
-					}
-				}
-
-				yield return new Country(line[countryIndex], line[countryCodeIndex], line[continentIndex], line[continentCodeIndex]);
-			}
+			return result;
 		}
 	}
 }

@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.IO;
+using System.Threading.Tasks;
 using System.Windows.Data;
 using DevExpress.Mvvm;
 
@@ -27,7 +25,7 @@ namespace SoftwareThemeDesignerTester.ViewModels
 				RaisePropertyChanged(() => countryList);
 
 				collectionView = CollectionViewSource.GetDefaultView(_countryList);
-				collectionView.GroupDescriptions.Add(new PropertyGroupDescription(nameof(Country.continentName)));
+				collectionView.GroupDescriptions.Add(new PropertyGroupDescription(nameof(Country.region)));
 			}
 		}
 
@@ -38,7 +36,7 @@ namespace SoftwareThemeDesignerTester.ViewModels
 			{
 				_selectedCountry = value;
 				RaisePropertyChanged(() => selectedCountry);
-				Console.WriteLine(_selectedCountry.countryName);
+				Console.WriteLine(_selectedCountry.name);
 			}
 		}
 
@@ -49,10 +47,10 @@ namespace SoftwareThemeDesignerTester.ViewModels
 		}
 		#endregion
 
-		#region Constructor
-		public MainWindowViewModel()
+		#region Methods
+		public async Task initializeAsync()
 		{
-			countryList = new ObservableCollection<Country>(HelperFunctions.getCountryList());
+			countryList = new ObservableCollection<Country>(await HelperFunctions.getCountriesAsync());
 		}
 		#endregion
 	}

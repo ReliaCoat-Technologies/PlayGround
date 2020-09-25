@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using DevExpress.Xpf.Core;
 using SoftwareThemeDesignerTester.ViewModels;
 
@@ -14,6 +15,13 @@ namespace SoftwareThemeDesignerTester
 
 			_viewModel = new MainWindowViewModel();
 			DataContext = _viewModel;
+
+			Loaded += async (s,e) => await onLoadedAsync();
+		}
+
+		private async Task onLoadedAsync()
+		{
+			await _viewModel.initializeAsync();
 		}
 	}
 }

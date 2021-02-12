@@ -1,0 +1,16 @@
+﻿<UserControl x:Class="SoftwareThemeDesignerTester.Views.CountryInfoView"
+			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 xmlns:ViewModels="clr-namespace:SoftwareThemeDesignerTester.ViewModels"
+			 d:DataContext="{d:DesignInstance ViewModels:CountryInfoViewModel}"
+			 mc:Ignorable="d">
+	
+		<TextBlock Text="{Binding country.name}"
+		           FontWeight="Bold"
+		           FontSize="20"
+		           TextAlignment="Center"
+		           VerticalAlignment="Center"/>
+
+</UserControl>

@@ -7,6 +7,7 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 using ReliaCoat.Common.UI;
 using SoftwareThemeDesignerTester.ViewModels;
+using SoftwareThemeDesignerTester.Views;
 
 namespace SoftwareThemeDesignerTester
 {
@@ -14,7 +15,7 @@ namespace SoftwareThemeDesignerTester
 	{
 		#region Fields
 		private readonly ThemeTesterWindowViewModel _viewModel;
-		private Country _dragItem;
+		private Random _random;
 		#endregion
 
 		#region Constructor
@@ -25,6 +26,8 @@ namespace SoftwareThemeDesignerTester
 			_viewModel = new ThemeTesterWindowViewModel();
 			DataContext = _viewModel;
 
+			_random = new Random();
+
 			Loaded += async (s,e) => await onLoadedAsync();
 		}
 		#endregion
@@ -33,14 +36,19 @@ namespace SoftwareThemeDesignerTester
 		private async Task onLoadedAsync()
 		{
 			await _viewModel.initializeAsync();
-
-			gridStack.children.Add(new Rectangle
-			{
-				Fill = Brushes.DodgerBlue,
-				Stroke = Brushes.White,
-				StrokeThickness = 2,
-			});
 		}
 		#endregion
+
+		private void addNewItem(object sender, RoutedEventArgs e)
+		{
+			var value = _random.Next(0, _viewModel.countryList.Count - 1);
+
+			var viewModel = new CountryInfoViewModel();
+			viewModel.country = _viewModel.countryList[value];
+			var view = new CountryInfoView();
+			view.setViewModel(viewModel);
+
+			gridStack.children.Add(view);
+		}
 	}
 }

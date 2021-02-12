@@ -13,6 +13,15 @@
 		Height="700"
 		Width="1400">
 
-	<controls:RctGridStack x:Name="gridStack"/>
+	<DockPanel>
+
+		<controls:RctButton Margin="10"
+							DockPanel.Dock="Top"
+							Content="Add Item"
+							Click="addNewItem"/>
+
+		<controls:RctGridStack x:Name="gridStack" />
+
+	</DockPanel>
 
 </Window>

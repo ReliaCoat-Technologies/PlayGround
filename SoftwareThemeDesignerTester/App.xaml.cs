@@ -1,24 +1,16 @@
 ﻿using System;
 using System.Windows;
-using DevExpress.Xpf.Core;
+using ReliaCoat.Common.UI.Controls;
 
 namespace SoftwareThemeDesignerTester
 {
-	/// <summary>
-	/// Interaction logic for App.xaml
-	/// </summary>
 	public partial class App : Application
 	{
 		protected override void OnStartup(StartupEventArgs e)
 		{
-			var theme = new Theme("RctDarkTheme", "DevExpress.Xpf.Themes.RctDarkTheme.v19.1")
-			{
-				AssemblyName = "DevExpress.Xpf.Themes.RctDarkTheme.v19.1"
-			};
+			SoftwareThemeManager.instance.initialize(this, true);
 
-			Theme.RegisterTheme(theme);
-
-			var window = new MainWindow();
+			var window = new ThemeTesterWindow();
 			window.Show();
 		}
 	}

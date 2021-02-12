@@ -69,8 +69,8 @@
     </ApplicationDefinition>
     <Compile Include="HelperFunctions.cs" />
     <Compile Include="TestEnumerator.cs" />
-    <Compile Include="ViewModels\MainWindowViewModel.cs" />
-    <Page Include="MainWindow.xaml">
+    <Compile Include="ViewModels\ThemeTesterWindowViewModel.cs" />
+    <Page Include="ThemeTesterWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -80,8 +80,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Country.cs" />
-    <Compile Include="MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
+    <Compile Include="ThemeTesterWindow.xaml.cs">
+      <DependentUpon>ThemeTesterWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
@@ -118,6 +118,14 @@
     <ProjectReference Include="..\..\ReliaCoat.Core\ReliaCoat.Common.UI.Controls\ReliaCoat.Common.UI.Controls.csproj">
       <Project>{d73b6b14-7b56-48cb-8e57-23a6d1cae786}</Project>
       <Name>ReliaCoat.Common.UI.Controls</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ReliaCoat.Core\ReliaCoat.Common.UI.Extensions\ReliaCoat.Common.UI.Extensions.csproj">
+      <Project>{4B0635FA-2FE0-4781-8E52-39924DE836A2}</Project>
+      <Name>ReliaCoat.Common.UI.Extensions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ReliaCoat.Core\ReliaCoat.Common.UI\ReliaCoat.Common.UI.csproj">
+      <Project>{D6B0B9B5-4A5A-48FB-92FE-F4A98517780F}</Project>
+      <Name>ReliaCoat.Common.UI</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

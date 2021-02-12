@@ -3,14 +3,13 @@
 			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-			 xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
 			 xmlns:viewModels="clr-namespace:AccordFrameworkImageAnalysis.ViewModels"
-			 xmlns:common="clr-namespace:ReliaCoat.Common.UI;assembly=ReliaCoat.Common.UI"
+			 xmlns:valueConverters="clr-namespace:ReliaCoat.Common.UI.ValueConverters;assembly=ReliaCoat.Common.UI"
 			 mc:Ignorable="d"
 			 d:DataContext="{d:DesignInstance viewModels:ImageCropDialogViewModel}">
 
 	<UserControl.Resources>
-		<common:DrawingToMediaConverter x:Key="d2m" />
+		<valueConverters:DrawingToMediaConverter x:Key="d2m" />
 	</UserControl.Resources>
 
 	<DockPanel>

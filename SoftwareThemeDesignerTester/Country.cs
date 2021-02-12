@@ -23,7 +23,5 @@ namespace SoftwareThemeDesignerTester
 		public List<string> borders { get; set; }
 		public string numericCode { get; set; }
 		#endregion
-
-
 	}
 }

@@ -115,9 +115,14 @@ namespace AccordFrameworkImageAnalysis.ViewModels
 			var view = new ImageCropDialogView();
 			view.setViewModel(dialogViewModel);
 
-			var result = RctDialog.createDialog(view, "Crop Image", MessageBoxButton.OKCancel, null, 800, 800);
+			var result = new RctDialog.Builder()
+				.setContent(view)
+				.setTitle("Crop Image")
+				.setMessageBoxButton(MessageBoxButton.OKCancel)
+				.setDimensions(800, 800)
+				.build();
 
-			if (result != MessageBoxResult.OK) return;
+			if (result.prompt() != MessageBoxResult.OK) return;
 
 			croppedImage = originalImage.cropAtRectangle(dialogViewModel.cropRect);
 

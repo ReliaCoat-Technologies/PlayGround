@@ -13,7 +13,7 @@ namespace SoftwareThemeDesignerTester
 		public List<string> callingCodes { get; set; }
 		public List<string> altSpellings { get; set; }
 		public string region { get; set; }
-		public string subregion { get; set; }
+		public string subRegion { get; set; }
 		public int population { get; set; }
 		public List<double> latlng { get; set; }
 		public string demonym { get; set; }

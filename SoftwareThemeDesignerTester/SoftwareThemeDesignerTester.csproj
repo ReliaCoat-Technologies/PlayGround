@@ -136,6 +136,10 @@
       <Project>{D6B0B9B5-4A5A-48FB-92FE-F4A98517780F}</Project>
       <Name>ReliaCoat.Common.UI</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\ReliaCoat.Core\ReliaCoat.Common\ReliaCoat.Common.csproj">
+      <Project>{65EEB4C2-8394-4090-A3ED-47A184BC2A82}</Project>
+      <Name>ReliaCoat.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

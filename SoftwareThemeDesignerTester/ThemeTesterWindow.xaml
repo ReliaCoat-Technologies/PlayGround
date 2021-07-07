@@ -6,6 +6,7 @@
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:viewModels="clr-namespace:SoftwareThemeDesignerTester.ViewModels"
 		xmlns:controls="clr-namespace:ReliaCoat.Common.UI.Controls;assembly=ReliaCoat.Common.UI.Controls"
+		xmlns:softwareThemeDesignerTester="clr-namespace:SoftwareThemeDesignerTester"
 		mc:Ignorable="d"
 		d:DataContext="{d:DesignInstance viewModels:ThemeTesterWindowViewModel}"
 		WindowStartupLocation="CenterScreen"
@@ -13,15 +14,74 @@
 		Height="700"
 		Width="1400">
 
-	<DockPanel>
+	<Grid>
 
-		<controls:RctButton Margin="10"
-							DockPanel.Dock="Top"
-							Content="Add Item"
-							Click="addNewItem"/>
+		<controls:RctDraggableGrid ItemsSource="{Binding countryRepository}">
 
-		<controls:RctGridStack x:Name="gridStack" />
+			<controls:RctDraggableGrid.Columns>
 
-	</DockPanel>
+				<DataGridTemplateColumn Header="Name"
+										Width="Auto">
+
+					<DataGridTemplateColumn.CellTemplate>
+
+						<DataTemplate DataType="{x:Type softwareThemeDesignerTester:Country}">
+
+							<TextBlock Text="{Binding name}"
+							           TextAlignment="Center" />
+
+						</DataTemplate>
+
+					</DataGridTemplateColumn.CellTemplate>
+
+				</DataGridTemplateColumn>
+
+				<DataGridTemplateColumn Header="Capital"
+										Width="Auto">
+
+					<DataGridTemplateColumn.CellTemplate>
+
+						<DataTemplate DataType="{x:Type softwareThemeDesignerTester:Country}">
+							<TextBlock Text="{Binding capital}"
+							           TextAlignment="Center" />
+						</DataTemplate>
+
+					</DataGridTemplateColumn.CellTemplate>
+
+				</DataGridTemplateColumn>
+
+				<DataGridTemplateColumn Header="Region"
+										Width="Auto">
+
+					<DataGridTemplateColumn.CellTemplate>
+
+						<DataTemplate DataType="{x:Type softwareThemeDesignerTester:Country}">
+							<TextBlock Text="{Binding region}"
+							           TextAlignment="Center" />
+						</DataTemplate>
+
+					</DataGridTemplateColumn.CellTemplate>
+
+				</DataGridTemplateColumn>
+
+				<DataGridTemplateColumn Header="Sub-Region"
+										Width="Auto">
+
+					<DataGridTemplateColumn.CellTemplate>
+
+						<DataTemplate DataType="{x:Type softwareThemeDesignerTester:Country}">
+							<TextBlock Text="{Binding subRegion}"
+							           TextAlignment="Center" />
+						</DataTemplate>
+
+					</DataGridTemplateColumn.CellTemplate>
+
+				</DataGridTemplateColumn>
+
+			</controls:RctDraggableGrid.Columns>
+
+		</controls:RctDraggableGrid>
+
+	</Grid>
 
 </Window>

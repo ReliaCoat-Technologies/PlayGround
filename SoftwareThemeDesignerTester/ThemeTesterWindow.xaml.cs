@@ -1,8 +1,7 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Windows;
+using ReliaCoat.Common.UI.Controls.Utilities;
 using SoftwareThemeDesignerTester.ViewModels;
-using SoftwareThemeDesignerTester.Views;
 
 namespace SoftwareThemeDesignerTester
 {
@@ -10,7 +9,7 @@ namespace SoftwareThemeDesignerTester
 	{
 		#region Fields
 		private readonly ThemeTesterWindowViewModel _viewModel;
-		private Random _random;
+		private readonly CollapsibleGridManager _collapsibleGridManager;
 		#endregion
 
 		#region Constructor
@@ -20,8 +19,6 @@ namespace SoftwareThemeDesignerTester
 
 			_viewModel = new ThemeTesterWindowViewModel();
 			DataContext = _viewModel;
-
-			_random = new Random();
 
 			Loaded += async (s,e) => await onLoadedAsync();
 		}
@@ -33,17 +30,5 @@ namespace SoftwareThemeDesignerTester
 			await _viewModel.initializeAsync();
 		}
 		#endregion
-
-		private void addNewItem(object sender, RoutedEventArgs e)
-		{
-			var value = _random.Next(0, _viewModel.countryList.Count - 1);
-
-			var viewModel = new CountryInfoViewModel();
-			viewModel.country = _viewModel.countryList[value];
-			var view = new CountryInfoView();
-			view.setViewModel(viewModel);
-
-			gridStack.children.Add(view);
-		}
 	}
 }

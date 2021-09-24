@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using System.Windows;
-using ReliaCoat.Common.UI.Controls.Utilities;
 using SoftwareThemeDesignerTester.ViewModels;
 
 namespace SoftwareThemeDesignerTester
@@ -9,7 +8,6 @@ namespace SoftwareThemeDesignerTester
 	{
 		#region Fields
 		private readonly ThemeTesterWindowViewModel _viewModel;
-		private readonly CollapsibleGridManager _collapsibleGridManager;
 		#endregion
 
 		#region Constructor

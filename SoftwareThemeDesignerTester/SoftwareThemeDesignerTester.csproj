@@ -70,11 +70,7 @@
     </ApplicationDefinition>
     <Compile Include="HelperFunctions.cs" />
     <Compile Include="TestEnumerator.cs" />
-    <Compile Include="ViewModels\CountryInfoViewModel.cs" />
     <Compile Include="ViewModels\ThemeTesterWindowViewModel.cs" />
-    <Compile Include="Views\CountryInfoView.xaml.cs">
-      <DependentUpon>CountryInfoView.xaml</DependentUpon>
-    </Compile>
     <Page Include="ThemeTesterWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -90,10 +86,6 @@
       <SubType>Code</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
-    <Page Include="Views\CountryInfoView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

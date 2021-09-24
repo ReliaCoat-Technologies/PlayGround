@@ -1,9 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 
 namespace SoftwareThemeDesignerTester
 {
@@ -11,7 +12,16 @@ namespace SoftwareThemeDesignerTester
 	{
 		public static async Task<IList<Country>> getCountriesAsync()
 		{
-			var request = WebRequest.Create("https://restcountries.eu/rest/v2/all");
+			var countryList = await getCountries();
+
+			return countryList;
+		}
+
+		private static async Task<IList<Country>> getCountries()
+		{
+			var request = WebRequest.Create("https://parseapi.back4app.com/classes/Country?count=1&include=continent");
+			request.Headers.Add("X-Parse-Application-Id", "mxsebv4KoWIGkRntXwyzg6c6DhKWQuit8Ry9sHja");
+			request.Headers.Add("X-Parse-Master-Key", "TpO0j3lG2PmEVMXlKYQACoOXKQrL3lwM0HwR9dbH");
 			request.Method = "GET";
 
 			var response = await request.GetResponseAsync();
@@ -22,13 +32,14 @@ namespace SoftwareThemeDesignerTester
 				using (var sr = new StreamReader(stream))
 					responseJson = await sr.ReadToEndAsync();
 
-			var result = JsonConvert.DeserializeObject<IList<Country>>(responseJson, new JsonSerializerSettings
-			{
-				NullValueHandling = NullValueHandling.Ignore,
-				MissingMemberHandling = MissingMemberHandling.Ignore,
-			});
+			var results = JsonConvert.DeserializeObject<JObject>(responseJson);
 
-			return result;
+			var countriesJson = results["results"] as JArray;
+
+			return countriesJson?
+				.OfType<JObject>()
+				.Select(x => new Country(x))
+				.ToList();
 		}
 	}
 }

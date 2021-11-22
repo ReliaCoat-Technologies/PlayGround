@@ -29,6 +29,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XrdFileConverter", "XrdFile
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MathFunctionTester", "MathFunctionTester\MathFunctionTester.csproj", "{4B7113E9-6C66-41E9-BE50-7FCA7676E4AE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BarcodeTester", "BarcodeTester\BarcodeTester.csproj", "{1DE500E8-9AE0-4912-808C-51AF854A94BB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -87,6 +89,10 @@ Global
 		{4B7113E9-6C66-41E9-BE50-7FCA7676E4AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4B7113E9-6C66-41E9-BE50-7FCA7676E4AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4B7113E9-6C66-41E9-BE50-7FCA7676E4AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1DE500E8-9AE0-4912-808C-51AF854A94BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1DE500E8-9AE0-4912-808C-51AF854A94BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1DE500E8-9AE0-4912-808C-51AF854A94BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1DE500E8-9AE0-4912-808C-51AF854A94BB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

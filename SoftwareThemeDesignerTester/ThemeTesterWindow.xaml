@@ -6,6 +6,7 @@
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:viewModels="clr-namespace:SoftwareThemeDesignerTester.ViewModels"
 		xmlns:controls="clr-namespace:ReliaCoat.Common.UI.Controls;assembly=ReliaCoat.Common.UI.Controls"
+		xmlns:local="clr-namespace:SoftwareThemeDesignerTester"
 		mc:Ignorable="d"
 		d:DataContext="{d:DesignInstance viewModels:ThemeTesterWindowViewModel}"
 		WindowStartupLocation="CenterScreen"
@@ -13,15 +14,32 @@
 		Height="700"
 		Width="1400">
 
-	<DockPanel>
-		
-		<controls:RctComboCheckList checkListItemsSource="{Binding countryRepository}"
-									checkedItems="{Binding countryList, Mode=TwoWay}"
-									groupMember="currency"
-									displayMember="name"
-									Margin="10"/>
+	<StackPanel>
 
-	</DockPanel>
+		<controls:RctGroupBox Margin="10">
 
+			<controls:RctComboCheckList Margin="10"
+										checkListItemsSource="{Binding mainSelectorViewModel.countryList}"
+										checkedItems="{Binding mainSelectorViewModel.selectedCountries, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+										labelText="Country"
+										displayMember="name" />
+
+		</controls:RctGroupBox>
+
+		<ItemsControl ItemsSource="{Binding selectorViewModels}">
+
+			<ItemsControl.ItemTemplate>
+
+				<DataTemplate DataType="{x:Type viewModels:CountrySelectorViewModel}">
+
+					<local:CheckListUserControl DataContext="{Binding .}" />
+
+				</DataTemplate>
+
+			</ItemsControl.ItemTemplate>
+
+		</ItemsControl>
+
+	</StackPanel>
 
 </Window>

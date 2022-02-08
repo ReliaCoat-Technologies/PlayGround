@@ -31,6 +31,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MathFunctionTester", "MathF
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BarcodeTester", "BarcodeTester\BarcodeTester.csproj", "{1DE500E8-9AE0-4912-808C-51AF854A94BB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactiveExtensionsPlayground", "ReactiveExtensionsPlayground\ReactiveExtensionsPlayground.csproj", "{B194FCCD-792A-4195-8E37-A87F7E7B83FA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BubbleChartTesting", "BubbleChartTesting\BubbleChartTesting.csproj", "{77B212C1-020C-4C63-B568-9DC446AB44DA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -93,6 +97,14 @@ Global
 		{1DE500E8-9AE0-4912-808C-51AF854A94BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1DE500E8-9AE0-4912-808C-51AF854A94BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1DE500E8-9AE0-4912-808C-51AF854A94BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B194FCCD-792A-4195-8E37-A87F7E7B83FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B194FCCD-792A-4195-8E37-A87F7E7B83FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B194FCCD-792A-4195-8E37-A87F7E7B83FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B194FCCD-792A-4195-8E37-A87F7E7B83FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77B212C1-020C-4C63-B568-9DC446AB44DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77B212C1-020C-4C63-B568-9DC446AB44DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77B212C1-020C-4C63-B568-9DC446AB44DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77B212C1-020C-4C63-B568-9DC446AB44DA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

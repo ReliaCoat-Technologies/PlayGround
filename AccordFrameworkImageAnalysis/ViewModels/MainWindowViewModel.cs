@@ -115,7 +115,7 @@ namespace AccordFrameworkImageAnalysis.ViewModels
 			var view = new ImageCropDialogView();
 			view.setViewModel(dialogViewModel);
 
-			var result = new RctDialog.Builder()
+			var result = RctDialog.Builder()
 				.setContent(view)
 				.setTitle("Crop Image")
 				.setMessageBoxButton(MessageBoxButton.OKCancel)

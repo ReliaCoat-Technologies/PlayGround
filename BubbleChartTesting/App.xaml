@@ -1,0 +1,16 @@
+﻿<Application x:Class="BubbleChartTesting.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:ReliaCoat.Common.UI.Controls;assembly=ReliaCoat.Common.UI.Controls">
+
+	<Application.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="pack://application:,,,/ReliaCoat.Common.UI.Controls;component/RctMainResourceDictionary.xaml" />
+				<controls:SkinResourceDictionary darkTheme="pack://application:,,,/ReliaCoat.Common.UI.Controls;component/Themes/DarkThemeColors.xaml"
+				                                 lightTheme="pack://application:,,,/ReliaCoat.Common.UI.Controls;component/Themes/LightThemeColors.xaml" />
+			</ResourceDictionary.MergedDictionaries>
+		</ResourceDictionary>
+	</Application.Resources>
+
+</Application>

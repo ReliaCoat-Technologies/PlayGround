@@ -1,48 +1,29 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows.Data;
-using System.Windows.Input;
-using DevExpress.Mvvm;
+using ReactiveUI;
 using ReliaCoat.Common;
-using ReliaCoat.Common.UI.Controls.ViewModels;
 
 namespace SoftwareThemeDesignerTester.ViewModels
 {
-	public class ThemeTesterWindowViewModel : ViewModelBase
+	public class ThemeTesterWindowViewModel : ReactiveObject
 	{
-		#region Fields
-		private ObservableCollection<Country> _countryRepository;
-		private ObservableCollection<object> _countryList;
-		private ICollectionView _countryCollectionView;
-		#endregion
+		private CountrySelectorViewModel _mainSelectorViewModel;
 
 		#region Properties
-		public ObservableCollection<Country> countryRepository
+		public CountrySelectorViewModel mainSelectorViewModel
 		{
-			get { return _countryRepository; }
-			set { _countryRepository = value; RaisePropertyChanged(() => countryRepository); }
+			get { return _mainSelectorViewModel; }
+			set { this.RaiseAndSetIfChanged(ref _mainSelectorViewModel, value); }
 		}
-		public ICollectionView countryCollectionView
-		{
-			get { return _countryCollectionView; }
-			set { _countryCollectionView = value; RaisePropertyChanged(() => countryCollectionView); }
-		}
-		public ObservableCollection<object> countryList
-		{
-			get { return _countryList; }
-			set { _countryList = value; RaisePropertyChanged(() => countryList); }
-		}
+
+		public ObservableCollection<CountrySelectorViewModel> selectorViewModels { get; }
 		#endregion
 
 		#region Constructor
 		public ThemeTesterWindowViewModel()
 		{
-			countryRepository = new ObservableCollection<Country>();
-			countryList = new ObservableCollection<object>();
-			countryCollectionView = CollectionViewSource.GetDefaultView(countryRepository);
+			selectorViewModels = new ObservableCollection<CountrySelectorViewModel>();
 		}
 		#endregion
 
@@ -51,7 +32,20 @@ namespace SoftwareThemeDesignerTester.ViewModels
 		{
 			var countries = await HelperFunctions.getCountriesAsync();
 
-			countryRepository.addRange(countries);
+			mainSelectorViewModel = new CountrySelectorViewModel();
+
+			mainSelectorViewModel.addCountries(countries);
+
+			var viewModelsToAdd = Enumerable.Range(0, 1)
+				.Select(x =>
+				{
+					var viewModel = new CountrySelectorViewModel();
+					viewModel.addCountries(countries);
+					return viewModel;
+				})
+				.ToList();
+
+			selectorViewModels.addRange(viewModelsToAdd);
 		}
 		#endregion
 	}

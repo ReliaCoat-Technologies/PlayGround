@@ -4,17 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{94F6296B-21F6-49DE-9BD6-57322EA17C94}</ProjectGuid>
+    <ProjectGuid>{77B212C1-020C-4C63-B568-9DC446AB44DA}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SoftwareThemeDesignerTester</RootNamespace>
-    <AssemblyName>SoftwareThemeDesignerTester</AssemblyName>
+    <RootNamespace>BubbleChartTesting</RootNamespace>
+    <AssemblyName>BubbleChartTesting</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -25,7 +24,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -37,22 +35,28 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DevExpress.Data.v19.1, Version=19.1.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
-    <Reference Include="DevExpress.Mvvm.v19.1, Version=19.1.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
-    <Reference Include="DevExpress.Xpf.Core.v19.1, Version=19.1.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
-    <Reference Include="DevExpress.Xpf.Themes.RctDarkTheme.v19.1">
-      <HintPath>..\..\..\DevExpress Custom Themes\200214 - RctDarkTheme - Progress Bar Selection\.td\Publish\DevExpress.Xpf.Themes.RctDarkTheme.v19.1.dll</HintPath>
-    </Reference>
     <Reference Include="DynamicData, Version=6.13.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\DynamicData.6.13.21\lib\net461\DynamicData.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="ReactiveUI, Version=10.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ReactiveUI.10.5.43\lib\net461\ReactiveUI.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SciChart.Charting, Version=5.4.0.12119, Culture=neutral, PublicKeyToken=b55dd9efe817e823, processorArchitecture=MSIL">
+      <HintPath>..\packages\SciChart.5.4.0.12119\lib\net46\SciChart.Charting.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SciChart.Core, Version=5.4.0.12119, Culture=neutral, PublicKeyToken=b55dd9efe817e823, processorArchitecture=MSIL">
+      <HintPath>..\packages\SciChart.5.4.0.12119\lib\net46\SciChart.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SciChart.Data, Version=5.4.0.12119, Culture=neutral, PublicKeyToken=b55dd9efe817e823, processorArchitecture=MSIL">
+      <HintPath>..\packages\SciChart.5.4.0.12119\lib\net46\SciChart.Data.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SciChart.Drawing, Version=5.4.0.12119, Culture=neutral, PublicKeyToken=b55dd9efe817e823, processorArchitecture=MSIL">
+      <HintPath>..\packages\SciChart.5.4.0.12119\lib\net46\SciChart.Drawing.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Splat, Version=9.2.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -106,31 +110,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="CheckListUserControl.xaml.cs">
-      <DependentUpon>CheckListUserControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="HelperFunctions.cs" />
-    <Compile Include="TestEnumerator.cs" />
-    <Compile Include="ViewModels\CountrySelectorViewModel.cs" />
-    <Compile Include="ViewModels\ThemeTesterWindowViewModel.cs" />
-    <Page Include="CheckListUserControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ThemeTesterWindow.xaml">
+    <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Page>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Country.cs" />
-    <Compile Include="ThemeTesterWindow.xaml.cs">
-      <DependentUpon>ThemeTesterWindow.xaml</DependentUpon>
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -163,23 +153,22 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\ReliaCoat.Core\ReliaCoat.Common.UI.Controls\ReliaCoat.Common.UI.Controls.csproj">
-      <Project>{d73b6b14-7b56-48cb-8e57-23a6d1cae786}</Project>
+      <Project>{D73B6B14-7B56-48CB-8E57-23A6D1CAE786}</Project>
       <Name>ReliaCoat.Common.UI.Controls</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\ReliaCoat.Core\ReliaCoat.Common.UI.Extensions\ReliaCoat.Common.UI.Extensions.csproj">
-      <Project>{4B0635FA-2FE0-4781-8E52-39924DE836A2}</Project>
+      <Project>{4b0635fa-2fe0-4781-8e52-39924de836a2}</Project>
       <Name>ReliaCoat.Common.UI.Extensions</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\ReliaCoat.Core\ReliaCoat.Common.UI\ReliaCoat.Common.UI.csproj">
-      <Project>{D6B0B9B5-4A5A-48FB-92FE-F4A98517780F}</Project>
+      <Project>{d6b0b9b5-4a5a-48fb-92fe-f4a98517780f}</Project>
       <Name>ReliaCoat.Common.UI</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\ReliaCoat.Core\ReliaCoat.Common\ReliaCoat.Common.csproj">
-      <Project>{65EEB4C2-8394-4090-A3ED-47A184BC2A82}</Project>
+      <Project>{65eeb4c2-8394-4090-a3ed-47a184bc2a82}</Project>
       <Name>ReliaCoat.Common</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

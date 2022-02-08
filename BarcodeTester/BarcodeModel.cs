@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
 using MongoDB.Bson;
 using ZXing;
+using ZXing.PDF417;
 
 namespace  BarcodeTester
 {
@@ -16,7 +17,7 @@ namespace  BarcodeTester
 
 			var renderer = writer.Renderer;
 
-			var bitmap = renderer.Render(barcode, BarcodeFormat.CODE_39, objectId);
+			var bitmap = renderer.Render(barcode, barcodeFormat, objectId);
 
 			return bitmap;
 		}

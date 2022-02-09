@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows.Input;
 using System.Windows.Media;
 using ReactiveUI;
+using ReliaCoat.Common;
 using ReliaCoat.Numerics.CartesianMath;
 using SciChart.Charting.Model.ChartSeries;
 using SciChart.Charting.Model.DataSeries;
@@ -70,19 +71,15 @@ namespace BubbleChartTesting
 
 			var dataSeries = new XyDataSeries<double> { AcceptsUnsortedData = true };
 
-			var points = new List<XyPoint>
+			var points = new List<XyPoint>();
+
+			for (var i = 0; i < 20; i++)
 			{
-				new XyPoint(1, 1),
-				new XyPoint(1, -1),
-				new XyPoint(-1, -1),
-				new XyPoint(-1, 1),
-				new XyPoint(0, 3),
-				new XyPoint(0, 1),
-				new XyPoint(0, -2),
-				new XyPoint(0, -1),
-				new XyPoint(3, 0),
-				new XyPoint(-2, -1),
-			};
+				var x = RandomSingleton.instance.NextDouble();
+				var y = RandomSingleton.instance.NextDouble();
+
+				points.Add(new XyPoint(x, y));
+			}
 
 			// Populate Points onto Chart
 			foreach (var point in points)
@@ -189,6 +186,15 @@ namespace BubbleChartTesting
 
 			if (_convexHullCalculator.isCompleted)
 			{
+				var lastTracelineSeries = renderableSeriesList
+					.OfType<LineRenderableSeriesViewModel>()
+					.FirstOrDefault(x => x.Tag == "Trace Line");
+
+				if (lastTracelineSeries != null)
+				{
+					renderableSeriesList.Remove(lastTracelineSeries);
+				}
+
 				isNextPointEnabled = false;
 			}
 		}

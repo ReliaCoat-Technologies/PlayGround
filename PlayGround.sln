@@ -35,6 +35,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactiveExtensionsPlaygroun
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BubbleChartTesting", "BubbleChartTesting\BubbleChartTesting.csproj", "{77B212C1-020C-4C63-B568-9DC446AB44DA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReliaCoat.Common.UnitTesting", "..\ReliaCoat.Core\ReliaCoat.Common.UnitTesting\ReliaCoat.Common.UnitTesting.csproj", "{8EDF4429-251A-416D-BB68-93F227191BCF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReliaCoat.Numerics.Parsing", "..\ReliaCoat.Core\ReliaCoat.Numerics.Parsing\ReliaCoat.Numerics.Parsing.csproj", "{8986F561-5ADF-40E3-B668-2187EACA7E6D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -105,6 +109,14 @@ Global
 		{77B212C1-020C-4C63-B568-9DC446AB44DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{77B212C1-020C-4C63-B568-9DC446AB44DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{77B212C1-020C-4C63-B568-9DC446AB44DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8EDF4429-251A-416D-BB68-93F227191BCF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8EDF4429-251A-416D-BB68-93F227191BCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8EDF4429-251A-416D-BB68-93F227191BCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8EDF4429-251A-416D-BB68-93F227191BCF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8986F561-5ADF-40E3-B668-2187EACA7E6D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8986F561-5ADF-40E3-B668-2187EACA7E6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8986F561-5ADF-40E3-B668-2187EACA7E6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8986F561-5ADF-40E3-B668-2187EACA7E6D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

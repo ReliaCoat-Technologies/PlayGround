@@ -18,7 +18,7 @@ namespace BubbleChartTesting
 	{
 		#region Fields
 		private ConvexHullCalculator _convexHullCalculator;
-		private bool _isNextPointEnabled;
+		private bool _isCalculateEnabled;
 		private XyDataSeries<double> _hullDataSeries;
 		#endregion
 
@@ -26,16 +26,16 @@ namespace BubbleChartTesting
 		public NumericAxis xAxis { get; }
 		public NumericAxis yAxis { get; }
 		public ObservableCollection<IRenderableSeriesViewModel> renderableSeriesList { get; }
-		public bool isNextPointEnabled
+		public bool isCalculateEnabled
 		{
-			get { return _isNextPointEnabled; }
-			set { this.RaiseAndSetIfChanged(ref _isNextPointEnabled, value); }
+			get { return _isCalculateEnabled; }
+			set { this.RaiseAndSetIfChanged(ref _isCalculateEnabled, value); }
 		}
 		#endregion
 
 		#region Commands
 		public ICommand populateDataCommand { get; }
-		public ICommand nextPointCommand { get; }
+		public ICommand calculateHullCommand { get; }
 		#endregion
 
 		#region Constructor
@@ -58,9 +58,9 @@ namespace BubbleChartTesting
 			renderableSeriesList = new ObservableCollection<IRenderableSeriesViewModel>();
 
 			populateDataCommand = ReactiveCommand.Create(populateData);
-			nextPointCommand = ReactiveCommand.Create(getNextPoint);
+			calculateHullCommand = ReactiveCommand.Create(getConvexHull);
 
-			isNextPointEnabled = false;
+			isCalculateEnabled = false;
 		}
 		#endregion
 
@@ -73,10 +73,10 @@ namespace BubbleChartTesting
 
 			var points = new List<XyPoint>();
 
-			for (var i = 0; i < 20; i++)
+			for (var i = 0; i < 8; i++)
 			{
 				var x = RandomSingleton.instance.NextDouble();
-				var y = RandomSingleton.instance.NextDouble();
+				var y = RandomSingleton.instance.NextDouble() * 30;
 
 				points.Add(new XyPoint(x, y));
 			}
@@ -126,7 +126,20 @@ namespace BubbleChartTesting
 				renderableSeriesList.Add(renderableSeries);
 			}
 
+			isCalculateEnabled = true;
+		}
+
+		private void getConvexHull()
+		{
+			// Get Convex Hull
+			_convexHullCalculator.calculateHull();
+
 			_hullDataSeries = new XyDataSeries<double> { AcceptsUnsortedData = true };
+
+			foreach (var hullPoint in _convexHullCalculator.hullPoints)
+			{
+				_hullDataSeries.Append(hullPoint.X, hullPoint.Y);
+			}
 
 			var hullRenderableSeries = new LineRenderableSeriesViewModel
 			{
@@ -138,65 +151,48 @@ namespace BubbleChartTesting
 
 			renderableSeriesList.Add(hullRenderableSeries);
 
-			isNextPointEnabled = true;
-		}
+			// Find Midpoint
+			var midpointDataSeries = new XyDataSeries<double> { AcceptsUnsortedData = true };
 
-		private void getNextPoint()
-		{
-			var previousTraceLineSeries = renderableSeriesList
-				.OfType<LineRenderableSeriesViewModel>()
-				.FirstOrDefault(x => x.Tag == "Trace Line");
+			var midpoint = _convexHullCalculator.hullPoints.getCartesianMidpoint();
+			midpointDataSeries.Append(midpoint.X, midpoint.Y);
 
-			if (previousTraceLineSeries != null)
+			var midpointRenderableSeries = new XyScatterRenderableSeriesViewModel()
 			{
-				renderableSeriesList.Remove(previousTraceLineSeries);
-			}
-
-			_convexHullCalculator.nextPoint();
-
-			var points = _convexHullCalculator.getLast3Points();
-
-			if (points == null)
-			{
-				return;
-			}
-
-			var traceDataSeries = new XyDataSeries<double> { AcceptsUnsortedData = true };
-
-			traceDataSeries.Append(points[0].X, points[0].Y);
-			traceDataSeries.Append(points[1].X, points[1].Y);
-			traceDataSeries.Append(points[2].X, points[2].Y);
-
-			var traceRenderableSeries = new LineRenderableSeriesViewModel
-			{
-				DataSeries = traceDataSeries,
-				Tag = "Trace Line",
-				Stroke = Colors.Red,
-				StrokeThickness = 2,
+				DataSeries = midpointDataSeries,
+				Tag = "Source Point",
+				PointMarker = new EllipsePointMarker
+				{
+					Height = 20,
+					Width = 20,
+					Fill = Colors.Orange,
+					Stroke = Colors.White,
+					StrokeThickness = 2
+				}
 			};
 
-			renderableSeriesList.Add(traceRenderableSeries);
+			renderableSeriesList.Add(midpointRenderableSeries);
 
-			_hullDataSeries.Clear();
+			// Find Scaled Hull
+			var scaledHull = _convexHullCalculator.hullPoints.scaleBy(1.2);
 
-			foreach (var hullPoint in _convexHullCalculator.hullPoints)
+			var scaledHullDataSeries = new XyDataSeries<double> { AcceptsUnsortedData = true };
+
+			foreach (var point in scaledHull)
 			{
-				_hullDataSeries.Append(hullPoint.X, hullPoint.Y);
+				scaledHullDataSeries.Append(point.X, point.Y);
 			}
 
-			if (_convexHullCalculator.isCompleted)
+			var scaledHullRenderableSeries = new LineRenderableSeriesViewModel
 			{
-				var lastTracelineSeries = renderableSeriesList
-					.OfType<LineRenderableSeriesViewModel>()
-					.FirstOrDefault(x => x.Tag == "Trace Line");
+				DataSeries = scaledHullDataSeries,
+				Tag = "Source Point",
+				Stroke = Colors.MediumPurple,
+			};
 
-				if (lastTracelineSeries != null)
-				{
-					renderableSeriesList.Remove(lastTracelineSeries);
-				}
+			renderableSeriesList.Add(scaledHullRenderableSeries);
 
-				isNextPointEnabled = false;
-			}
+			isCalculateEnabled = false;
 		}
 		#endregion
 	}

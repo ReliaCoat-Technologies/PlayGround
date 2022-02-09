@@ -20,10 +20,10 @@
 							Command="{Binding populateDataCommand}"
 							DockPanel.Dock="Top" />
 
-		<controls:RctButton Content="Next Point"
+		<controls:RctButton Content="Calculate Hull"
 		                    Margin="10"
-		                    Command="{Binding nextPointCommand}"
-							IsEnabled="{Binding isNextPointEnabled}"
+		                    Command="{Binding calculateHullCommand}"
+							IsEnabled="{Binding isCalculateEnabled}"
 		                    DockPanel.Dock="Top" />
 
 		<s:SciChartSurface Margin="10"

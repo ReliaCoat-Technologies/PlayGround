@@ -32,13 +32,13 @@ public static class FullFactorialDesigner
 
         for (var i = 0; i < experimentConditionList.Count; i++)
         {
-            experimentConditionList[i].conditionNumber = i + 1;
+            experimentConditionList[i].conditionNumber = (uint)i + 1;
         }
 
         return experimentConditionList;
     }
     
-    public static IEnumerable<ExperimentCondition<T>> designExperiment<T>(bool randomizeOrder, params DesignParameter<T>[] designParameters)
+    public static IEnumerable<ExperimentCondition<T>>designExperiment<T>(bool randomizeOrder, params DesignParameter<T>[] designParameters)
     {
         var experimentConditionList = new List<ExperimentCondition<T>>();
 
@@ -66,7 +66,7 @@ public static class FullFactorialDesigner
 
         for (var i = 0; i < experimentConditionList.Count; i++)
         {
-            experimentConditionList[i].conditionNumber = i + 1;
+            experimentConditionList[i].conditionNumber = (uint)i + 1;
         }
 
         return experimentConditionList;

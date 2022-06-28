@@ -174,7 +174,9 @@ namespace BubbleChartTesting
 			renderableSeriesList.Add(midpointRenderableSeries);
 
 			// Find Scaled Hull
-			var scaledHull = _convexHullCalculator.hullPoints.scaleBy(1.2);
+			
+            /*
+            var scaledHull = _convexHullCalculator.hullPoints.scaleBy(1.2);
 
 			var scaledHullDataSeries = new XyDataSeries<double> { AcceptsUnsortedData = true };
 
@@ -193,6 +195,7 @@ namespace BubbleChartTesting
 			renderableSeriesList.Add(scaledHullRenderableSeries);
 
 			isCalculateEnabled = false;
+			*/
 		}
 		#endregion
 	}

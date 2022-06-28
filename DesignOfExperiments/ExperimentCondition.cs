@@ -6,12 +6,12 @@ namespace DesignOfExperiments;
 public class ExperimentCondition
 {
     #region Properties
-    public int conditionNumber { get; set; }
+    public uint conditionNumber { get; set; }
     public virtual IDictionary<string, object> parameterConditions { get; }
     #endregion
 
     #region Constructor
-    public ExperimentCondition(int conditionNumber = 0)
+    public ExperimentCondition(uint conditionNumber = 0)
     {
         this.conditionNumber = conditionNumber;
         this.parameterConditions = new Dictionary<string, object>();
@@ -46,7 +46,7 @@ public class ExperimentCondition<T> : ExperimentCondition
     #endregion
 
     #region Constructor
-    public ExperimentCondition(int conditionNumber = 0) : base(conditionNumber)
+    public ExperimentCondition(uint conditionNumber = 0) : base(conditionNumber)
     {
         typedParameterConditions = new Dictionary<string, T>();
     }

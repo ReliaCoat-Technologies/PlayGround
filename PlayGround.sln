@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32516.85
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SciChartAnnotationsExperiments", "SciChartAnnotationsExperiments\SciChartAnnotationsExperiments.csproj", "{AB4D41C5-6D12-4E4F-A499-2D5A6685557D}"
 EndProject
@@ -38,6 +38,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReliaCoat.Common.UnitTesting", "..\ReliaCoat.Core\ReliaCoat.Common.UnitTesting\ReliaCoat.Common.UnitTesting.csproj", "{8EDF4429-251A-416D-BB68-93F227191BCF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReliaCoat.Numerics.Parsing", "..\ReliaCoat.Core\ReliaCoat.Numerics.Parsing\ReliaCoat.Numerics.Parsing.csproj", "{8986F561-5ADF-40E3-B668-2187EACA7E6D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dotnet48Testing", "Dotnet48Testing\Dotnet48Testing.csproj", "{07FE7C50-FBEA-4E72-9EFF-F5D4D4852E18}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DesignOfExperiments", "DesignOfExperiments\DesignOfExperiments.csproj", "{839858F7-B792-4B74-89CE-97E1314819B6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -117,8 +121,19 @@ Global
 		{8986F561-5ADF-40E3-B668-2187EACA7E6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8986F561-5ADF-40E3-B668-2187EACA7E6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8986F561-5ADF-40E3-B668-2187EACA7E6D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{07FE7C50-FBEA-4E72-9EFF-F5D4D4852E18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07FE7C50-FBEA-4E72-9EFF-F5D4D4852E18}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07FE7C50-FBEA-4E72-9EFF-F5D4D4852E18}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07FE7C50-FBEA-4E72-9EFF-F5D4D4852E18}.Release|Any CPU.Build.0 = Release|Any CPU
+		{839858F7-B792-4B74-89CE-97E1314819B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{839858F7-B792-4B74-89CE-97E1314819B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{839858F7-B792-4B74-89CE-97E1314819B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{839858F7-B792-4B74-89CE-97E1314819B6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6DB17D6E-F93D-4768-991B-30DE420BAD19}
 	EndGlobalSection
 EndGlobal

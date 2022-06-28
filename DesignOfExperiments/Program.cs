@@ -1,33 +1,17 @@
-﻿using System.Data;
-using ReliaCoat.Common;
+﻿using DesignOfExperiments;
 
-var exposureTimes = new double[] { 25, 50, 100 };
-var gains = new double[] { 1, 5, 10 };
-var injection = new string[] { "under", "optimized", "over" };
+var exposureTimes = new DesignParameter<double>("Exposure Time (µs)", 50, 100, 150);
+var gains = new DesignParameter<double>("Gain", 1, 5, 10);
+var injection = new DesignParameter<double>("Injection", 2, 3, 5);
 
-var permute1 = exposureTimes.SelectMany(x => gains, (ex, g) => new { ex, g });
-var permute2 = permute1.SelectMany(x => injection, (p1, i) => new { p1.ex, p1.g, i });
+var experiments = FullFactorialDesigner.designExperiment(true, exposureTimes, gains, injection)
+    .ToList();
 
-var parameterList = permute2.shuffle().ToArray();
+Console.WriteLine($"Number of Experiments: {experiments.Count}");
 
-var table = new DataTable("Design of Experiments");
-
-table.Columns.Add("Exposure Times", typeof(double));
-table.Columns.Add("Exposure Gains", typeof(double));
-table.Columns.Add("Injection", typeof(string));
-
-foreach (var t in parameterList)
+foreach (var experiment in experiments)
 {
-    var row = table.NewRow();
-
-    row[0] = t.ex;
-    row[1] = t.g;
-    row[2] = t.i;
-
-    table.Rows.Add(row);
+    Console.WriteLine(experiment.ToString());
 }
 
-foreach (var item in table.Rows)
-{
-
-}
+Console.ReadKey();

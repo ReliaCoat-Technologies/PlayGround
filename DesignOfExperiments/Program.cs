@@ -1,18 +1,33 @@
-﻿using DesignOfExperiments;
+﻿using System;
+using System.Linq;
+using ReliaCoat.Statistics;
 
-var exposureTimes = new DesignParameter<double>("Exposure Time (µs)", 50, 100, 150);
-var gains = new DesignParameter<double>("Gain", 1, 5, 10);
-var injection = new DesignParameter<double>("Injection", 2, 3, 5);
-var pfr = new DesignParameter<double>("Powder Feed Rate (g/min)", 15, 30);
-
-var experiments = FullFactorialDesigner.designExperiment(true, exposureTimes, gains, injection, pfr)
-    .ToList();
-
-Console.WriteLine($"Number of Experiments: {experiments.Count}");
-
-foreach (var experiment in experiments)
+namespace DesignOfExperiments
 {
-    Console.WriteLine(experiment.ToString());
-}
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            var numParameters = 6;
+            var sizeOfFraction = 2;
 
-Console.ReadKey();
+            var parameters = Enumerable.Range(0, numParameters)
+                .Select(x => new DesignParameter<double>(x.ToString(), -1, 1))
+                .ToArray();
+
+            var doe = FactorialDesignOfExperimentsCreator.designExperiment(sizeOfFraction, false, parameters);
+
+            Console.WriteLine($"Number of Parameters: {doe.numParameters}");
+            Console.WriteLine($"Size of Fraction: {doe.sizeOfFraction}");
+            Console.WriteLine($"Number of Experiments: {doe.numExperiments}");
+            Console.WriteLine($"Resolution of DOE: {doe.resolution}");
+
+            foreach (var experiment in doe.experimentConditions)
+            {
+                Console.WriteLine(experiment.ToString());
+            }
+
+            Console.ReadKey();
+        }
+    }
+}

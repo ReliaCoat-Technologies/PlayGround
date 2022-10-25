@@ -12,9 +12,6 @@ RUN wget https://fastdl.mongodb.org/tools/db/mongodb-database-tools-debian11-x86
 RUN apt install ./mongodb-database-tools-debian11-x86_64-100.6.0.deb
 RUN rm ./mongodb-database-tools-debian11-x86_64-100.6.0.deb
 
-RUN chmod +x /usr/bin/mongodump
-RUN chown root:root /usr/bin/mongodump
-
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["MongoBackupDocker/MongoBackupDocker.csproj", "MongoBackupDocker/"]

@@ -1,9 +1,9 @@
 ﻿using System.Diagnostics;
 using System.IO.Compression;
-using System.Security;
 using Renci.SshNet;
 using Renci.SshNet.Sftp;
 using Serilog;
+using File = System.IO.File;
 
 namespace MongoBackupDocker;
 
@@ -24,6 +24,8 @@ public static class DashboardBackupFunctions
         var zipFileName = DateTime.Now.ToString("yyyy_MMdd_HH:mm:ss");
         var zipFilePath = Path.Combine(backupDirectory, $"{zipFileName}_DatabaseBackup.zip");
 
+        Log.Information("Creating Mongo Backup for {0}", zipFilePath);
+
         var sw = new Stopwatch();
         sw.Start();
 
@@ -33,10 +35,11 @@ public static class DashboardBackupFunctions
         await backupFileSystemAsync(zipArchive);
 
         sw.Stop();
-        Log.Information("Backup Complete. Time Elapsed: {0}", sw.Elapsed);
+
+        Log.Information("Backup for {0} Complete. Time Elapsed: {1}", zipFilePath, sw.Elapsed);
     }
 
-    public static async Task doMongoDumpAsync(ZipArchive zipArchive)
+    private static async Task doMongoDumpAsync(ZipArchive zipArchive)
     {
         const string host = "192.168.2.152";
         const int port = 27017;
@@ -45,12 +48,14 @@ public static class DashboardBackupFunctions
         var mongoDumpFileName = $"{dbName}.agz";
         var mongoDumpPath = Path.Combine(backupDirectory, mongoDumpFileName);
 
-        var whoAmIScript = new BashScriptRunner("cd /");
-        await whoAmIScript.executeAsync();
+        var mongoDumpCommand = $"--uri=\"mongodb://{host}:{port}\" --db=\"{dbName}\" --archive=\"{mongoDumpPath}\"";
 
-        var mongoDumpCommand = $"mongodump --uri=\"mongodb://{host}:{port}\" --db=\"{dbName}\" --archive=\"{mongoDumpPath}\"";
+        Log.Information("Initializing Mongo Dump");
 
-        var mongoDumpScriptRunner = new BashScriptRunner(mongoDumpCommand);
+        var sw = new Stopwatch();
+        sw.Start();
+
+        var mongoDumpScriptRunner = new LinuxCommandRunner("mongodump", mongoDumpCommand);
         await mongoDumpScriptRunner.executeAsync();
 
         if (!File.Exists(mongoDumpPath))
@@ -58,12 +63,32 @@ public static class DashboardBackupFunctions
             throw new Exception("Mongodump was not created.");
         }
 
+        sw.Stop();
+
+        var lines = mongoDumpScriptRunner
+            .standardError
+            .Split('\n')
+            .Select(x => string.Join(' ', x.Split('\t')
+                .Skip(1)
+                .ToArray()))
+            .ToList();
+
+        foreach (var line in lines)
+        {
+            Log.Information(line);
+        }
+
         zipArchive.CreateEntryFromFile(mongoDumpPath, mongoDumpFileName);
 
+        Log.Information("Mongo Dump Time: {0}", sw.Elapsed);
+
         File.Delete(mongoDumpPath);
+
+        
+
     }
 
-    public static async Task backupFileSystemAsync(ZipArchive zipArchive)
+    private static async Task backupFileSystemAsync(ZipArchive zipArchive)
     {
         Log.Information("Beginning Connection to SFTP Server");
 
@@ -71,65 +96,84 @@ public static class DashboardBackupFunctions
         const int port = 22022;
         const string user = "fileSystemManager";
         const string pass = "icprctecp";
+        const string rootDirectory = "/files/RCT_Main";
 
-        var client = new SftpClient(host, port, user, pass);
-
-        try
+        using var sftpClient = new SftpClient(host, port, user, pass);
         {
-            client.Connect();
-        }
-        catch(Exception ex)
-        {
-            Log.Error(ex, "SFTP connection error.");
-            return;
-        }
-        
-        Log.Information("SFTP Server Connection Successful");
+            sftpClient.BufferSize = 1024 * 100000; // 1 MB buffer
 
-        var directories = client.ListDirectory("/files/RCT_Main");
-
-        foreach (var directory in directories.Skip(2))
-        {
-            if (directory.IsDirectory)
+            try
             {
-                await processDirectoryAsync(directory, client, zipArchive);
+                sftpClient.Connect();
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "SFTP connection error.");
+                return;
+            }
+
+            Log.Information("SFTP Server Connection Successful");
+
+            var filesToDownload = archiveFiles(sftpClient, rootDirectory)
+                .ToList();
+
+            await processDirectoryAsync(sftpClient, zipArchive, filesToDownload);
+        }
+    }
+
+    private static IEnumerable<SftpFile> archiveFiles(SftpClient sftpClient, string directory)
+    {
+        var files = sftpClient.ListDirectory(directory)
+            .Skip(2); // Skip the . and .. directories
+
+        foreach (var file in files)
+        {
+            if (file.IsRegularFile)
+            {
+                yield return file;
+            }
+            else if (file.IsDirectory)
+            {
+                foreach (var subFile in archiveFiles(sftpClient, file.FullName))
+                {
+                    yield return subFile;
+                }
             }
         }
     }
 
-    private static async Task processDirectoryAsync(SftpFile directory, ISftpClient client, ZipArchive zipArchive)
+    private static async Task processDirectoryAsync(SftpClient client, ZipArchive zipArchive, IList<SftpFile> files)
     {
-        Log.Information("Directory Found {0}", directory.FullName);
+        Log.Information("Found {0} files to archive.", files.Count);
 
-        var files = client.ListDirectory(directory.FullName);
-
-        foreach (var item in files.Skip(2))
+        // Skip current and upper directories.
+        for (var i = 0; i < files.Count; i++)
         {
-            if (item.IsRegularFile)
-            {
-                await processFileAsync(client, item, zipArchive);
-            }
+            var file = files[i];
+
+            Log.Information("({0} of {1}) File Found {2} ({3} kb)", 
+                i + 1,
+                files.Count - 2,
+                file.Name,
+                file.Length / 1024);
+
+            var timer = new Stopwatch();
+            timer.Start();
+
+            await processFileAsync(client, zipArchive, file);
+
+            timer.Stop();
+            Log.Information("Transfer Time for {0}: {1} ms", file.Name, timer.Elapsed.TotalMilliseconds);
         }
     }
 
-    private static async Task processFileAsync(ISftpClient client, SftpFile file, ZipArchive zipArchive)
+    private static async Task processFileAsync(SftpClient client, ZipArchive zipArchive, SftpFile file)
     {
-        Log.Information("File Found {0}", file.FullName);
-
         var entry = zipArchive.CreateEntry(file.FullName);
 
-        var timer = new Stopwatch();
-        timer.Start();
-        
-        await using var sftpStream = client.Open(file.FullName, FileMode.Open);
-        await using var zipStream = entry.Open();
-        
-        var buffer = new byte[sftpStream.Length];
+        using var sftpStream = client.OpenRead(file.FullName);
+        using var zipStream = entry.Open();
 
-        await sftpStream.ReadAsync(buffer, 0, (int)sftpStream.Length);
-        await zipStream.WriteAsync(buffer);
-        
-        timer.Stop();
-        Log.Information("File Transfer Time for {0}: {1} ms", file.FullName, timer.Elapsed.TotalMilliseconds);
+        await sftpStream.CopyToAsync(zipStream);
     }
 }

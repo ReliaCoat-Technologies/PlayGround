@@ -2,27 +2,29 @@
 
 namespace MongoBackupDocker;
 
-public class BashScriptRunner
+public class LinuxCommandRunner
 {
     #region Fields
     private readonly Process _process;
     #endregion
 
     #region Properties
-    public string command { get; }    
+    public string command { get; }
+    public string args { get; }    
     public string standardOutput { get; private set; }
     public string standardError { get; private set; }
     #endregion
 
     #region Constructor
-    public BashScriptRunner(string command)
+    public LinuxCommandRunner(string command, string args = "")
     {
+        this.args = args;
         this.command = command;
 
         var startInfo = new ProcessStartInfo
         {
-            FileName = "/bin/bash",
-            Arguments = command,
+            FileName = command,
+            Arguments = args,
             RedirectStandardOutput = true,
             RedirectStandardError = true,
             UseShellExecute = false,

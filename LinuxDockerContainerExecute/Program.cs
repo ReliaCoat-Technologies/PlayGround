@@ -2,7 +2,7 @@
 
 using LinuxDockerContainerExecute;
 
-var a = new BashScriptRunner("/usr/bin/whoami");
+var a = new BashScriptRunner("/usr/bin/whoami", string.Empty);
 a.executeAsync();
 
 Console.ReadKey();

@@ -9,19 +9,21 @@ public class BashScriptRunner
     #endregion
 
     #region Properties
+    public string fileName { get; }
     public string command { get; }    
     public string standardOutput { get; private set; }
     public string standardError { get; private set; }
     #endregion
 
     #region Constructor
-    public BashScriptRunner(string command)
+    public BashScriptRunner(string fileName, string command)
     {
         this.command = command;
+        this.fileName = fileName;
 
         var startInfo = new ProcessStartInfo
         {
-            FileName = "/bin/bash",
+            FileName = fileName,
             Arguments = command,
             RedirectStandardOutput = true,
             RedirectStandardError = true,

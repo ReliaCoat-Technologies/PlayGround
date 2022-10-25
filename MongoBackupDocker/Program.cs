@@ -4,4 +4,4 @@ AppDomain.CurrentDomain.UnhandledException += ErrorHandlingFunctions.UnhandledEx
 
 await DashboardBackupFunctions.doDatabaseBackupAsync();
 
-Console.ReadKey();
+// Console.ReadKey();

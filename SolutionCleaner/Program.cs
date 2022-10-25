@@ -38,6 +38,8 @@ namespace SolutionCleaner
 				}
 			}
 
+			
+
 			sw.Stop();
 
 			Console.WriteLine($"Github directory ZIP complete. Time = {sw.Elapsed:g}");

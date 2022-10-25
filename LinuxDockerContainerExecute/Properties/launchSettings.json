@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "LinuxDockerContainerExecute": {
+      "commandName": "Project"
+    },
+    "Docker": {
+      "commandName": "Docker"
+    }
+  }
+}

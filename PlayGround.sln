@@ -45,6 +45,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReliaCoat.Statistics", "..\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DesignOfExperiments", "DesignOfExperiments\DesignOfExperiments.csproj", "{FD125592-37E6-4009-84C2-E795B081511C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SciChart3DTest", "SciChart3DTest\SciChart3DTest.csproj", "{3C085A30-59EE-4C0D-8091-3EC52294DBE8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReliaCoat.GpuDetectorNetFramework", "ReliaCoat.GpuDetectorNetFramework\ReliaCoat.GpuDetectorNetFramework.csproj", "{590A5964-90A9-4577-9B16-FB3DF5A3FB00}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MongoBackupDocker", "MongoBackupDocker\MongoBackupDocker.csproj", "{E3148426-3D16-432F-9339-7AF911CA1B92}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinuxDockerContainerExecute", "LinuxDockerContainerExecute\LinuxDockerContainerExecute.csproj", "{F8D9DB75-EA14-461D-925C-52DECDB8493F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -135,6 +143,22 @@ Global
 		{FD125592-37E6-4009-84C2-E795B081511C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FD125592-37E6-4009-84C2-E795B081511C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FD125592-37E6-4009-84C2-E795B081511C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C085A30-59EE-4C0D-8091-3EC52294DBE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C085A30-59EE-4C0D-8091-3EC52294DBE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C085A30-59EE-4C0D-8091-3EC52294DBE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C085A30-59EE-4C0D-8091-3EC52294DBE8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{590A5964-90A9-4577-9B16-FB3DF5A3FB00}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{590A5964-90A9-4577-9B16-FB3DF5A3FB00}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{590A5964-90A9-4577-9B16-FB3DF5A3FB00}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{590A5964-90A9-4577-9B16-FB3DF5A3FB00}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E3148426-3D16-432F-9339-7AF911CA1B92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E3148426-3D16-432F-9339-7AF911CA1B92}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E3148426-3D16-432F-9339-7AF911CA1B92}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E3148426-3D16-432F-9339-7AF911CA1B92}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F8D9DB75-EA14-461D-925C-52DECDB8493F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F8D9DB75-EA14-461D-925C-52DECDB8493F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F8D9DB75-EA14-461D-925C-52DECDB8493F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F8D9DB75-EA14-461D-925C-52DECDB8493F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

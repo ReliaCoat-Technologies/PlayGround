@@ -5,6 +5,15 @@ FROM mcr.microsoft.com/dotnet/runtime:6.0 AS base
 # set working directory
 WORKDIR /app
 
+ENV MONGO_HOST_ADDRESS "127.0.0.1"
+ENV MONGO_HOST_PORT "27017"
+ENV MONGO_DBNAME "admin"
+ENV SFTP_HOST_ADDRESS "127.0.0.1"
+ENV SFTP_HOST_PORT "22"
+ENV SFTP_USERNAME "admin"
+ENV SFTP_PASSWORD "password"
+ENV FILE_SYSTEM_ROOT "/files"
+
 # install mongodb tools (for mongodump)
 RUN apt update
 RUN apt install -y wget

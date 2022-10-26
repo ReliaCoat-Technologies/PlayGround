@@ -3,7 +3,6 @@ using System.IO.Compression;
 using Renci.SshNet;
 using Renci.SshNet.Sftp;
 using Serilog;
-using File = System.IO.File;
 
 namespace MongoBackupDocker;
 
@@ -12,8 +11,26 @@ public static class DashboardBackupFunctions
     private static readonly ILogger Log = LoggerFactory.getLogger(typeof(DashboardBackupFunctions));
     private const string backupDirectory = "/backups";
 
+    private static string mongoHostAddress;
+    private static int mongoHostPort;
+    private static string mongoDatabase;
+    private static string sftpHostAddress;
+    private static int sftpHostPort;
+    private static string sftpUser;
+    private static string sftpPassword;
+    private static string fileSystemRoot;
+
     public static async Task doDatabaseBackupAsync()
     {
+        mongoHostAddress = Environment.GetEnvironmentVariable("MONGO_HOST_ADDRESS");
+        mongoHostPort = int.Parse(Environment.GetEnvironmentVariable("MONGO_HOST_PORT"));
+        mongoDatabase = Environment.GetEnvironmentVariable("MONGO_DBNAME");
+        sftpHostAddress = Environment.GetEnvironmentVariable("SFTP_HOST_ADDRESS");
+        sftpHostPort = int.Parse(Environment.GetEnvironmentVariable("SFTP_HOST_PORT"));
+        sftpUser = Environment.GetEnvironmentVariable("SFTP_USERNAME");
+        sftpPassword = Environment.GetEnvironmentVariable("SFTP_PASSWORD");
+        fileSystemRoot = Environment.GetEnvironmentVariable("FILE_SYSTEM_ROOT");
+
         if (!Directory.Exists(backupDirectory))
         {
             Log.Information("Creating backups directory");
@@ -41,16 +58,12 @@ public static class DashboardBackupFunctions
 
     private static async Task doMongoDumpAsync(ZipArchive zipArchive)
     {
-        const string host = "192.168.2.152";
-        const int port = 27017;
-        const string dbName = "RCT_Main";
-
-        var mongoDumpFileName = $"{dbName}.agz";
+        var mongoDumpFileName = $"{mongoDatabase}.agz";
         var mongoDumpPath = Path.Combine(backupDirectory, mongoDumpFileName);
 
-        var mongoDumpCommand = $"--uri=\"mongodb://{host}:{port}\" --db=\"{dbName}\" --archive=\"{mongoDumpPath}\"";
+        var mongoDumpCommand = $"--uri=\"mongodb://{mongoHostAddress}:{mongoHostPort}\" --db=\"{mongoDatabase}\" --archive=\"{mongoDumpPath}\"";
 
-        Log.Information("Initializing Mongo Dump");
+        Log.Information("Initializing Mongo Dump for database: {0}", mongoDatabase);
 
         var sw = new Stopwatch();
         sw.Start();
@@ -65,40 +78,24 @@ public static class DashboardBackupFunctions
 
         sw.Stop();
 
-        var lines = mongoDumpScriptRunner
-            .standardError
-            .Split('\n')
-            .Select(x => string.Join(' ', x.Split('\t')
-                .Skip(1)
-                .ToArray()))
-            .ToList();
-
-        foreach (var line in lines)
-        {
-            Log.Information(line);
-        }
-
         zipArchive.CreateEntryFromFile(mongoDumpPath, mongoDumpFileName);
 
         Log.Information("Mongo Dump Time: {0}", sw.Elapsed);
 
         File.Delete(mongoDumpPath);
-
-        
-
     }
 
     private static async Task backupFileSystemAsync(ZipArchive zipArchive)
     {
         Log.Information("Beginning Connection to SFTP Server");
 
-        const string host = "192.168.2.152";
-        const int port = 22022;
-        const string user = "fileSystemManager";
-        const string pass = "icprctecp";
-        const string rootDirectory = "/files/RCT_Main";
+        // const string host = "192.168.2.152";
+        // const int port = 22022;
+        // const string user = "fileSystemManager";
+        // const string pass = "icprctecp";
+        var rootDirectory = Path.Combine(fileSystemRoot, mongoDatabase);
 
-        using var sftpClient = new SftpClient(host, port, user, pass);
+        using var sftpClient = new SftpClient(sftpHostAddress, sftpHostPort, sftpUser, sftpPassword);
         {
             sftpClient.BufferSize = 1024 * 100000; // 1 MB buffer
 

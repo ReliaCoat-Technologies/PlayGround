@@ -1,0 +1,28 @@
+﻿version: "3.9"
+
+services:
+
+  mongo_database:
+    image: mongobackupdocker:latest
+    # Set the host backup directory here.
+    volumes:
+      - <<host backup dir>>:/backups
+    container_name: mongoBackup
+    environment:
+      - MONGO_HOST_ADDRESS=127.0.0.1 # Set the MongoDB host address
+      - MONGO_HOST_PORT=27017 # Set the MongoDB host port
+      - MONGO_DBNAME=RCT_Main # Set Mongo database to dump
+      - SFTP_HOST_ADDRESS=192.168.2.152 # Set the file system host address
+      - SFTP_HOST_PORT=22022 # Set the file system port
+      - SFTP_USERNAME=admin # Set the file system user name
+      - SFTP_PASSWORD=password # Set the file system password
+      - FILE_SYSTEM_ROOT=/files # Set the root directory of the file system
+      - CRON_SCHEDULE="0 2 * * 2,4" # Set the cron schedule
+      
+      # CRON_SCHEDULE definitions
+      # .---------------- minute (0 - 59, * for all)
+      # |  .------------- hour (0 - 23, * for all) 
+      # |  |  .---------- day of month (1 - 31, * for all)
+      # |  |  |  .------- month (1 - 12, * for all) (1 = jan, 2 = feb...)
+      # |  |  |  |  .---- day of week (0 - 6, * for all) (0 = sunday, 1 = monday...)
+      # *  *  *  *  *

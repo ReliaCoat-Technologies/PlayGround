@@ -2,6 +2,6 @@
 
 AppDomain.CurrentDomain.UnhandledException += ErrorHandlingFunctions.UnhandledExceptionTrapper;
 
-await DashboardBackupFunctions.doDatabaseBackupAsync();
+var session = new DashboardBackupSession();
 
-// Console.ReadKey();
+await session.doDatabaseBackupAsync();

@@ -43,12 +43,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EllipseCanocialEquation.cs" />
+    <Compile Include="MinimumAreaEnclosingCircle.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\ReliaCoat.Core\ReliaCoat.Common\ReliaCoat.Common.csproj">
+      <Project>{65EEB4C2-8394-4090-A3ED-47A184BC2A82}</Project>
+      <Name>ReliaCoat.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

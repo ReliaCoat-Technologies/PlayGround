@@ -39,7 +39,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleDiagnostics", "Conso
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RestApiDataPull", "RestApiDataPull\RestApiDataPull.csproj", "{76959A25-EAB9-4CBF-92C9-DABC0B8F6603}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmallestEnclosedEllipse", "SmallestEnclosedEllipse\SmallestEnclosedEllipse.csproj", "{B4CC9B93-974E-4A40-84BE-24408458082D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EllipseDrawer", "EllipseDrawer\EllipseDrawer.csproj", "{7705DBFD-B9DA-4550-AA12-7231EA64AAAB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -119,10 +119,10 @@ Global
 		{76959A25-EAB9-4CBF-92C9-DABC0B8F6603}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{76959A25-EAB9-4CBF-92C9-DABC0B8F6603}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{76959A25-EAB9-4CBF-92C9-DABC0B8F6603}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B4CC9B93-974E-4A40-84BE-24408458082D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B4CC9B93-974E-4A40-84BE-24408458082D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B4CC9B93-974E-4A40-84BE-24408458082D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B4CC9B93-974E-4A40-84BE-24408458082D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7705DBFD-B9DA-4550-AA12-7231EA64AAAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7705DBFD-B9DA-4550-AA12-7231EA64AAAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7705DBFD-B9DA-4550-AA12-7231EA64AAAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7705DBFD-B9DA-4550-AA12-7231EA64AAAB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

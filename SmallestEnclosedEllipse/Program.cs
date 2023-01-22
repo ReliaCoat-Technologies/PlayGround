@@ -6,19 +6,34 @@ namespace SmallestEnclosedEllipse
     {
         static void Main(string[] args)
         {
-            var points1 = new[]
+            var points = new[]
             {
-                new Point(5, -2),
-                new Point(-3, -2),
-                new Point(-2, 5),
-                new Point(1, 6),
-                new Point(0, 2),
+                new DoublePoint2D(-6, -2),
+                new DoublePoint2D(6, -2),
+                new DoublePoint2D(3, 7),
+                new DoublePoint2D(-1, -5),
+                new DoublePoint2D(-4, 4),
             };
 
-            // var result = new MinimumAreaEnclosingCircle().getWelzlCircleLazy(points1);
-            var result = new MinimumAreaEnclosingCircle().getWelzlCircle(points1);
+            var ellipse = new DoubleConic2D(points[0], points[1], points[2], points[3], points[4]);
 
-            Console.ReadLine();
+            // new MinimumAreaEnclosingCircle().getEllipseFrom(3, 4, 5);
+
+            /*
+            var matrix = new [,]
+            {
+                { 3.0, 2.0, 0.0, 2.0 }, 
+                { 1.0, 2.0, 5.0, 3.0 }, 
+                { 1.0, 0.0, 6.0, 4.0 }, 
+                { 5.0, 6.0, 7.0, 8.0 }, 
+            };
+
+            var result = DeterminantFunctions.getDeterminant(matrix);
+
+            Console.WriteLine("Determinant Result: {0}", result);
+            */
+
+            Console.ReadKey();
         }
     }
 }

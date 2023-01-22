@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ReliaCoat.Common;
 
-namespace SmallestEnclosedEllipse
+namespace EllipseDrawer.Utilities
 {
     public class MinimumAreaEnclosingCircle
     {

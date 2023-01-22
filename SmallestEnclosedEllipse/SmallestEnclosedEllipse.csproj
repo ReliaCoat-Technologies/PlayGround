@@ -43,6 +43,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DeterminantFunctions.cs" />
+    <Compile Include="DoubleCircle2D.cs" />
+    <Compile Include="DoubleConic2D.cs" />
+    <Compile Include="DoublePoint2D.cs" />
+    <Compile Include="MatrixGenerator.cs" />
     <Compile Include="MinimumAreaEnclosingCircle.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

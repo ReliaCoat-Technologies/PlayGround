@@ -65,6 +65,14 @@
                                          Margin="10"
                                          Text="{Binding Y5, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
 
+                    <controls:RctTextBox labelText="Test X"
+                                         Margin="10"
+                                         Text="{Binding testX, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+
+                    <controls:RctTextBox labelText="Test Y"
+                                         Margin="10"
+                                         Text="{Binding testY, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+
                 </UniformGrid>
 
             </StackPanel>

@@ -95,7 +95,7 @@
     </ApplicationDefinition>
     <Compile Include="Utilities\DeterminantFunctions.cs" />
     <Compile Include="Utilities\DoubleCircle2D.cs" />
-    <Compile Include="Utilities\DoubleConic2D.cs" />
+    <Compile Include="Utilities\DoubleEllipse2D.cs" />
     <Compile Include="Utilities\DoublePoint2D.cs" />
     <Compile Include="Utilities\MatrixGenerator.cs" />
     <Compile Include="Utilities\MinimumAreaEnclosingCircle.cs" />

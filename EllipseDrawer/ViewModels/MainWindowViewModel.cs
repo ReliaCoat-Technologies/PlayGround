@@ -17,7 +17,9 @@ namespace EllipseDrawer.ViewModels
     {
         #region Fields
         private readonly XyDataSeries<double> _pointSeries;
+        private readonly XyDataSeries<double> _centerSeries;
         private readonly XyDataSeries<double> _ellipseSeries;
+        private DoubleEllipse2D _currentEllipse;
 
         private double _X1;
         private double _Y1;
@@ -29,6 +31,8 @@ namespace EllipseDrawer.ViewModels
         private double _Y4;
         private double _X5;
         private double _Y5;
+        private double _testX;
+        private double _testY;
         #endregion
 
         #region Properties
@@ -82,6 +86,16 @@ namespace EllipseDrawer.ViewModels
             get => _Y5;
             set => this.RaiseAndSetIfChanged(ref _Y5, value);
         }
+        public double testX
+        {
+            get => _testX;
+            set => this.RaiseAndSetIfChanged(ref _testX, value);
+        }
+        public double testY
+        {
+            get => _testY;
+            set => this.RaiseAndSetIfChanged(ref _testY, value);
+        }
         #endregion
 
         #region Constructor
@@ -100,6 +114,9 @@ namespace EllipseDrawer.ViewModels
                 this.WhenAnyValue(x => x.X5),
                 this.WhenAnyValue(x => x.Y5),
             };
+
+            this.WhenAnyValue(x => x.testX, x => x.testY)
+                .Subscribe(x => testPoint(x));
 
 #if DEBUG
             X1 = -7;
@@ -133,6 +150,11 @@ namespace EllipseDrawer.ViewModels
                 AcceptsUnsortedData = true
             };
 
+            _centerSeries = new XyDataSeries<double>
+            {
+                AcceptsUnsortedData = true
+            };
+
             _ellipseSeries = new XyDataSeries<double>
             {
                 AcceptsUnsortedData = true
@@ -152,6 +174,21 @@ namespace EllipseDrawer.ViewModels
             };
 
             renderableSeriesList.Add(pointRenderableSeries);
+
+            var centerRenderableSeries = new XyScatterRenderableSeriesViewModel
+            {
+                PointMarker = new EllipsePointMarker
+                {
+                    Fill = Colors.DarkRed,
+                    Stroke = Colors.White,
+                    StrokeThickness = 2,
+                    Width = 20,
+                    Height = 20,
+                },
+                DataSeries = _centerSeries
+            };
+
+            renderableSeriesList.Add(centerRenderableSeries);
 
             var ellipseRenderableSeries = new MountainRenderableSeriesViewModel()
             {
@@ -182,26 +219,33 @@ namespace EllipseDrawer.ViewModels
             var point4 = new DoublePoint2D(values[6], values[7]);
             var point5 = new DoublePoint2D(values[8], values[9]);
 
-            var ellipse = new DoubleConic2D(point1, point2, point3, point4, point5);
+            _currentEllipse = new DoubleEllipse2D(point1, point2, point3, point4, point5);
 
             var intervals = 500;
+
+            _centerSeries.Clear();
+
+            _centerSeries.Append(_currentEllipse.centerX, _currentEllipse.centerY);
 
             _ellipseSeries.Clear();
 
             for (var i = 0; i < intervals + 1; i++)
             {
-                var t = 2 * Math.PI * i / intervals;
+                var angleRadians = 2 * Math.PI * i / intervals;
 
-                var x = ellipse.centerX
-                        + ellipse.radiusMajor * Math.Cos(t) * Math.Cos(ellipse.angle)
-                        - ellipse.radiusMinor * Math.Sin(t) * Math.Sin(ellipse.angle);
-
-                var y = ellipse.centerY
-                        + ellipse.radiusMajor * Math.Cos(t) * Math.Sin(ellipse.angle)
-                        + ellipse.radiusMinor * Math.Sin(t) * Math.Cos(ellipse.angle);
+                var (x, y) = _currentEllipse.getCartesianCoordinatesForAngle(angleRadians);
 
                 _ellipseSeries.Append(x, y);
             }
+
+            testPoint((testX, testY));
+        }
+
+        private void testPoint((double, double) valueTuple)
+        {
+            var point = new DoublePoint2D(valueTuple.Item1, valueTuple.Item2);
+
+            var isWithinEllipse = _currentEllipse.isPointWithin(point);
         }
 
         protected override void zoomExtentsOverride()

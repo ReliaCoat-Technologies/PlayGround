@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Linq;
+using System.Windows;
 
 namespace EllipseDrawer.Utilities
 {
-    public struct DoubleConic2D
+    public struct DoubleEllipse2D
     {
         public double A { get; }
         public double B { get; }
@@ -16,10 +17,11 @@ namespace EllipseDrawer.Utilities
         public double radiusMinor { get; }
         public double centerX { get; }
         public double centerY { get; }
-        public double angle { get; }
-        public double angleDegrees => angle * 180 / Math.PI;
+        public double angleRadians { get; }
+        public bool isValidEllipse { get; }
+        public double angleDegrees => angleRadians * 180 / Math.PI;
 
-        public DoubleConic2D(DoublePoint2D point1, DoublePoint2D point2, DoublePoint2D point3, DoublePoint2D point4, DoublePoint2D point5)
+        public DoubleEllipse2D(DoublePoint2D point1, DoublePoint2D point2, DoublePoint2D point3, DoublePoint2D point4, DoublePoint2D point5)
         {
             var xVector = new[]
             {
@@ -88,6 +90,8 @@ namespace EllipseDrawer.Utilities
             // Get the canoncial form parameters.
             var conicDeterminant = B * B - 4 * A * C;
 
+            isValidEllipse = conicDeterminant < 0;
+
             var a = A * E * E;
             var b = C * D * D;
             var c = B * D * E;
@@ -119,7 +123,45 @@ namespace EllipseDrawer.Utilities
 
             var o = C - A - h;
             var p = o / B;
-            angle = Math.Atan(p);
+            angleRadians = Math.Atan(p);
+        }
+
+        public bool isPointWithin(DoublePoint2D testPoint)
+        {
+            var testDeltaX = testPoint.X - centerX;
+            var testDeltaY = testPoint.Y - centerY;
+
+            var angle = Math.Atan2(testDeltaX, testDeltaY);
+
+            var ellipseBoundaryPoint = getCartesianPointForAngle(angle);
+
+            var ellipseDeltaX = ellipseBoundaryPoint.X - centerX;
+            var ellipseDeltaY = ellipseBoundaryPoint.Y - centerY;
+
+            var testPointDisplacement = Math.Sqrt(testDeltaX * testDeltaX + testDeltaY * testDeltaY);
+            var ellipseBoundaryDisplacement = Math.Sqrt(ellipseDeltaX * ellipseDeltaX + ellipseDeltaY * ellipseDeltaY);
+
+            return testPointDisplacement <= ellipseBoundaryDisplacement;
+        }
+
+        public (double, double) getCartesianCoordinatesForAngle(double inputAngleRadians)
+        {
+            var x = centerX
+                    + radiusMajor * Math.Cos(inputAngleRadians) * Math.Cos(angleRadians)
+                    - radiusMinor * Math.Sin(inputAngleRadians) * Math.Sin(angleRadians);
+
+            var y = centerY
+                    + radiusMajor * Math.Cos(inputAngleRadians) * Math.Sin(angleRadians)
+                    + radiusMinor * Math.Sin(inputAngleRadians) * Math.Cos(angleRadians);
+
+            return (x, y);
+        }
+
+        public DoublePoint2D getCartesianPointForAngle(double inputAngleRadians)
+        {
+            var (x, y) = getCartesianCoordinatesForAngle(inputAngleRadians);
+
+            return new DoublePoint2D(x, y);
         }
     }
 }

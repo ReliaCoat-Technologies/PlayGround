@@ -49,22 +49,6 @@
                                          Margin="10"
                                          Text="{Binding Y3, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
 
-                    <controls:RctTextBox labelText="X4"
-                                         Margin="10"
-                                         Text="{Binding X4, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
-
-                    <controls:RctTextBox labelText="Y4"
-                                         Margin="10"
-                                         Text="{Binding Y4, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
-
-                    <controls:RctTextBox labelText="X5"
-                                         Margin="10"
-                                         Text="{Binding X5, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
-
-                    <controls:RctTextBox labelText="Y5"
-                                         Margin="10"
-                                         Text="{Binding Y5, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
-
                     <controls:RctTextBox labelText="Test X"
                                          Margin="10"
                                          Text="{Binding testX, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />

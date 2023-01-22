@@ -20,7 +20,7 @@ namespace EllipseDrawer.ViewModels
         private readonly XyDataSeries<double> _centerSeries;
         private readonly XyDataSeries<double> _ellipseSeries;
         private readonly XyScatterRenderableSeriesViewModel _centerRenderableSeriesViewModel;
-        private DoubleSteinerEllipse2D _currentSteinerEllipse;
+        private DoubleEllipse2D _currentEllipse;
 
         private double _X1;
         private double _Y1;
@@ -222,7 +222,7 @@ namespace EllipseDrawer.ViewModels
             var point4 = new DoublePoint2D(values[6], values[7]);
             var point5 = new DoublePoint2D(values[8], values[9]);
 
-            _currentSteinerEllipse = new DoubleSteinerEllipse2D(point1, point2, point3, point4, point5);
+            _currentEllipse = DoubleEllipse2D.generateFromFivePoints(point1, point2, point3, point4, point5);
 
             var intervals = 500;
 
@@ -232,7 +232,7 @@ namespace EllipseDrawer.ViewModels
             {
                 var angleRadians = 2 * Math.PI * i / intervals;
 
-                var (x, y) = _currentSteinerEllipse.getCartesianCoordinatesForAngle(angleRadians);
+                var (x, y) = _currentEllipse.getCartesianCoordinatesForAngle(angleRadians);
 
                 _ellipseSeries.Append(x, y);
             }
@@ -249,14 +249,14 @@ namespace EllipseDrawer.ViewModels
 
             var point = new DoublePoint2D(valueTuple.Item1, valueTuple.Item2);
 
-            var isWithinEllipse = _currentSteinerEllipse.isPointWithinEllipse(point);
+            var isWithinEllipse = _currentEllipse.isPointWithinEllipse(point);
 
             _centerRenderableSeriesViewModel.PointMarker.Fill = isWithinEllipse
                 ? Colors.DarkGreen
                 : Colors.DarkRed;
 
             _centerSeries.Clear();
-            _centerSeries.Append(_currentSteinerEllipse.centerX, _currentSteinerEllipse.centerY);
+            _centerSeries.Append(_currentEllipse.centerX, _currentEllipse.centerY);
             _centerSeries.Append(testX, testY);
         }
 

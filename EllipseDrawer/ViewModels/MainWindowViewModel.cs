@@ -19,7 +19,8 @@ namespace EllipseDrawer.ViewModels
         private readonly XyDataSeries<double> _pointSeries;
         private readonly XyDataSeries<double> _centerSeries;
         private readonly XyDataSeries<double> _ellipseSeries;
-        private DoubleEllipse2D _currentEllipse;
+        private readonly XyScatterRenderableSeriesViewModel _centerRenderableSeriesViewModel;
+        private DoubleSteinerEllipse2D _currentSteinerEllipse;
 
         private double _X1;
         private double _Y1;
@@ -116,19 +117,22 @@ namespace EllipseDrawer.ViewModels
             };
 
             this.WhenAnyValue(x => x.testX, x => x.testY)
-                .Subscribe(x => testPoint(x));
+                .Subscribe(testPoint);
 
 #if DEBUG
-            X1 = -7;
-            Y1 = -3;
-            X2 = 5;
-            Y2 = -3;
-            X3 = 2;
-            Y3 = 6;
-            X4 = -2;
-            Y4 = -6;
-            X5 = -5;
-            Y5 = 3;
+            X1 = -6;
+            Y1 = -2;
+            X2 = 6;
+            Y2 = -2;
+            X3 = 3;
+            Y3 = 7;
+            X4 = -1;
+            Y4 = -5;
+            X5 = -4;
+            Y5 = 4;
+
+            testX = 0;
+            testY = 6;
 #endif
 
             var combinedObservable = Observable.CombineLatest(propertyObservables);
@@ -175,11 +179,10 @@ namespace EllipseDrawer.ViewModels
 
             renderableSeriesList.Add(pointRenderableSeries);
 
-            var centerRenderableSeries = new XyScatterRenderableSeriesViewModel
+            _centerRenderableSeriesViewModel = new XyScatterRenderableSeriesViewModel
             {
                 PointMarker = new EllipsePointMarker
                 {
-                    Fill = Colors.DarkRed,
                     Stroke = Colors.White,
                     StrokeThickness = 2,
                     Width = 20,
@@ -188,7 +191,7 @@ namespace EllipseDrawer.ViewModels
                 DataSeries = _centerSeries
             };
 
-            renderableSeriesList.Add(centerRenderableSeries);
+            renderableSeriesList.Add(_centerRenderableSeriesViewModel);
 
             var ellipseRenderableSeries = new MountainRenderableSeriesViewModel()
             {
@@ -219,13 +222,9 @@ namespace EllipseDrawer.ViewModels
             var point4 = new DoublePoint2D(values[6], values[7]);
             var point5 = new DoublePoint2D(values[8], values[9]);
 
-            _currentEllipse = new DoubleEllipse2D(point1, point2, point3, point4, point5);
+            _currentSteinerEllipse = new DoubleSteinerEllipse2D(point1, point2, point3, point4, point5);
 
             var intervals = 500;
-
-            _centerSeries.Clear();
-
-            _centerSeries.Append(_currentEllipse.centerX, _currentEllipse.centerY);
 
             _ellipseSeries.Clear();
 
@@ -233,7 +232,7 @@ namespace EllipseDrawer.ViewModels
             {
                 var angleRadians = 2 * Math.PI * i / intervals;
 
-                var (x, y) = _currentEllipse.getCartesianCoordinatesForAngle(angleRadians);
+                var (x, y) = _currentSteinerEllipse.getCartesianCoordinatesForAngle(angleRadians);
 
                 _ellipseSeries.Append(x, y);
             }
@@ -243,9 +242,22 @@ namespace EllipseDrawer.ViewModels
 
         private void testPoint((double, double) valueTuple)
         {
+            if (_centerSeries == null || _centerRenderableSeriesViewModel == null)
+            {
+                return;
+            }
+
             var point = new DoublePoint2D(valueTuple.Item1, valueTuple.Item2);
 
-            var isWithinEllipse = _currentEllipse.isPointWithin(point);
+            var isWithinEllipse = _currentSteinerEllipse.isPointWithinEllipse(point);
+
+            _centerRenderableSeriesViewModel.PointMarker.Fill = isWithinEllipse
+                ? Colors.DarkGreen
+                : Colors.DarkRed;
+
+            _centerSeries.Clear();
+            _centerSeries.Append(_currentSteinerEllipse.centerX, _currentSteinerEllipse.centerY);
+            _centerSeries.Append(testX, testY);
         }
 
         protected override void zoomExtentsOverride()

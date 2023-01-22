@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Windows;
 
 namespace EllipseDrawer.Utilities
 {
@@ -23,6 +22,7 @@ namespace EllipseDrawer.Utilities
 
         public DoubleEllipse2D(DoublePoint2D point1, DoublePoint2D point2, DoublePoint2D point3, DoublePoint2D point4, DoublePoint2D point5)
         {
+            // Initialize vectors based on points.
             var xVector = new[]
             {
                 point1.X,
@@ -41,6 +41,7 @@ namespace EllipseDrawer.Utilities
                 point5.Y,
             };
 
+            // Initialize secondary vectors.
             var x2Vector = xVector
                 .Zip(xVector, (x1, x2) => x1 * x2)
                 .ToArray();
@@ -104,6 +105,7 @@ namespace EllipseDrawer.Utilities
             var i1 = f + h;
             var i2 = f - h;
 
+            // Get Major and Minor Radii
             var j1 = 2 * e * i1;
             var k1 = -1 * Math.Sqrt(j1);
             var l1 = k1 / conicDeterminant;
@@ -115,6 +117,7 @@ namespace EllipseDrawer.Utilities
             radiusMajor = Math.Max(l1, l2);
             radiusMinor = Math.Min(l1, l2);
 
+            // Get Center Coordinates
             var m = 2 * C * D - B * E;
             centerX = m / conicDeterminant;
 
@@ -126,26 +129,29 @@ namespace EllipseDrawer.Utilities
             angleRadians = Math.Atan(p);
         }
 
-        public bool isPointWithin(DoublePoint2D testPoint)
+        public bool isPointWithinEllipse(DoublePoint2D testPoint)
         {
-            var testDeltaX = testPoint.X - centerX;
-            var testDeltaY = testPoint.Y - centerY;
+            // Get distance of test point from center of ellipse.
+            var centeredX = testPoint.X - centerX;
+            var centeredY = testPoint.Y - centerY;
 
-            var angle = Math.Atan2(testDeltaX, testDeltaY);
-
-            var ellipseBoundaryPoint = getCartesianPointForAngle(angle);
-
-            var ellipseDeltaX = ellipseBoundaryPoint.X - centerX;
-            var ellipseDeltaY = ellipseBoundaryPoint.Y - centerY;
-
-            var testPointDisplacement = Math.Sqrt(testDeltaX * testDeltaX + testDeltaY * testDeltaY);
-            var ellipseBoundaryDisplacement = Math.Sqrt(ellipseDeltaX * ellipseDeltaX + ellipseDeltaY * ellipseDeltaY);
-
-            return testPointDisplacement <= ellipseBoundaryDisplacement;
+            // Rotate point by ellipse's angle (in reverse direction, CW).
+            var rotatedX = centeredX * Math.Cos(-angleRadians) - centeredY * Math.Sin(-angleRadians);
+            var rotatedY = centeredX * Math.Sin(-angleRadians) + centeredY * Math.Cos(-angleRadians);
+            
+            // Scale point to ellipse's major and minor radii.
+            var normalizedX = rotatedX / radiusMajor;
+            var normalizedY = rotatedY / radiusMinor;
+            
+            // Check if pythagorean normalized distance is greater than the radius of the normalized circle.
+            var distanceFromCenter = Math.Sqrt(normalizedX * normalizedX + normalizedY * normalizedY);
+            return distanceFromCenter <= 1;
         }
 
         public (double, double) getCartesianCoordinatesForAngle(double inputAngleRadians)
         {
+            // Get the cartesian coordinates for an ellipses
+            // Based on the angle on the transformed coordinates.
             var x = centerX
                     + radiusMajor * Math.Cos(inputAngleRadians) * Math.Cos(angleRadians)
                     - radiusMinor * Math.Sin(inputAngleRadians) * Math.Sin(angleRadians);

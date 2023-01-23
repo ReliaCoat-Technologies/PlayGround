@@ -38,6 +38,11 @@ namespace EllipseDrawer.Utilities
 
         private static bool isValidEllipse(DoubleEllipse2D ellipse, DoublePoint2D[] points)
         {
+            if (!ellipse.isValidEllipse)
+            {
+                return false;
+            }
+
             foreach (var point in points)
             {
                 if (!ellipse.isPointWithinEllipse(point))

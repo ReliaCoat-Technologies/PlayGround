@@ -35,6 +35,8 @@ namespace EllipseDrawer.Utilities
         /// Unitless area of the ellipse.
         /// </summary>
         public double area => Math.PI * radiusMajor * radiusMinor;
+
+        public bool isValidEllipse => !double.IsNaN(radiusMajor) && !double.IsNaN(radiusMinor);
         #endregion
 
         #region Constructors

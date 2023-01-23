@@ -154,7 +154,7 @@ namespace EllipseDrawer.ViewModels
                 _pointSeries.Append(point.X, point.Y);
             }
 
-            _currentEllipse = MinimumAreaEnclosingEllipse.getSteinerEllipseLazy(doublePoints);
+            _currentEllipse = MinimumAreaEnclosingEllipse.getSteinerCurcumellipse(doublePoints);
 
             var intervals = 500;
 

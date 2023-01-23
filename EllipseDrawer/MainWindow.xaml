@@ -23,31 +23,29 @@
 
             <StackPanel>
 
+                <ItemsControl ItemsSource="{Binding points}">
+                    <ItemsControl.ItemTemplate>
+
+                        <DataTemplate DataType="{x:Type viewModels:PointViewModel}">
+
+                            <UniformGrid Columns="2">
+
+                                <controls:RctTextBox labelText="X"
+                                                     Margin="10"
+                                                     Text="{Binding X, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+
+                                <controls:RctTextBox labelText="Y"
+                                                     Margin="10"
+                                                     Text="{Binding Y, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+
+                            </UniformGrid>
+
+                        </DataTemplate>
+
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
                 <UniformGrid Columns="2">
-
-                    <controls:RctTextBox labelText="X1"
-                                         Margin="10"
-                                         Text="{Binding X1, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
-
-                    <controls:RctTextBox labelText="Y1"
-                                         Margin="10"
-                                         Text="{Binding Y1, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
-
-                    <controls:RctTextBox labelText="X2"
-                                         Margin="10"
-                                         Text="{Binding X2, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
-
-                    <controls:RctTextBox labelText="Y2"
-                                         Margin="10"
-                                         Text="{Binding Y2, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
-
-                    <controls:RctTextBox labelText="X3"
-                                         Margin="10"
-                                         Text="{Binding X3, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
-
-                    <controls:RctTextBox labelText="Y3"
-                                         Margin="10"
-                                         Text="{Binding Y3, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
 
                     <controls:RctTextBox labelText="Test X"
                                          Margin="10"

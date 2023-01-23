@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Reactive.Linq;
 using System.Windows.Media;
 using EllipseDrawer.Utilities;
@@ -22,47 +24,13 @@ namespace EllipseDrawer.ViewModels
         private readonly XyScatterRenderableSeriesViewModel _centerRenderableSeriesViewModel;
         private DoubleEllipse2D _currentEllipse;
 
-        private double _X1;
-        private double _Y1;
-        private double _X2;
-        private double _Y2;
-        private double _X3;
-        private double _Y3;
         private double _testX;
         private double _testY;
         #endregion
 
         #region Properties
-        public double X1
-        {
-            get => _X1;
-            set => this.RaiseAndSetIfChanged(ref _X1, value);
-        }
-        public double Y1
-        {
-            get => _Y1;
-            set => this.RaiseAndSetIfChanged(ref _Y1, value);
-        }
-        public double X2
-        {
-            get => _X2;
-            set => this.RaiseAndSetIfChanged(ref _X2, value);
-        }
-        public double Y2
-        {
-            get => _Y2;
-            set => this.RaiseAndSetIfChanged(ref _Y2, value);
-        }
-        public double X3
-        {
-            get => _X3;
-            set => this.RaiseAndSetIfChanged(ref _X3, value);
-        }
-        public double Y3
-        {
-            get => _Y3;
-            set => this.RaiseAndSetIfChanged(ref _Y3, value);
-        }
+        public ObservableCollection<PointViewModel> points { get; }
+
         public double testX
         {
             get => _testX;
@@ -78,37 +46,15 @@ namespace EllipseDrawer.ViewModels
         #region Constructor
         public MainWindowViewModel()
         {
-            var propertyObservables = new[]
-            {
-                this.WhenAnyValue(x => x.X1),
-                this.WhenAnyValue(x => x.Y1),
-                this.WhenAnyValue(x => x.X2),
-                this.WhenAnyValue(x => x.Y2),
-                this.WhenAnyValue(x => x.X3),
-                this.WhenAnyValue(x => x.Y3),
-            };
-
-            this.WhenAnyValue(x => x.testX, x => x.testY)
-                .Subscribe(testPoint);
-
+            points = new ObservableCollection<PointViewModel>();
 #if DEBUG
-            X1 = -6;
-            Y1 = -2;
-            X2 = 6;
-            Y2 = -2;
-            X3 = 3;
-            Y3 = 7;
+            addPoint(-6, -2);
+            addPoint(6, -2);
+            addPoint(3, 7);
 
             testX = 0;
             testY = 6;
 #endif
-
-            var combinedObservable = Observable.CombineLatest(propertyObservables);
-
-            combinedObservable
-                .ObserveOnDispatcher()
-                .Subscribe(updateChart);
-
             xAxis.AxisTitle = "X";
             xAxis.GrowBy = new DoubleRange(0.2, 0.2);
             xAxis.AutoRange = AutoRange.Always;
@@ -170,23 +116,45 @@ namespace EllipseDrawer.ViewModels
             };
 
             renderableSeriesList.Add(ellipseRenderableSeries);
+
+            updateChart();
+
+            this.WhenAnyValue(x => x.testX, x => x.testY)
+                .Subscribe(testPoint);
         }
         #endregion
 
         #region Methods
-        private void updateChart(IList<double> values)
+        public void addPoint(double X = 0, double Y = 0)
         {
+            var pointToAdd = new PointViewModel { X = X, Y = Y };
+
+            pointToAdd
+                .WhenAnyValue(x => x.X, x => x.Y)
+                .Subscribe(x => updateChart());
+
+            points.Add(pointToAdd);
+        }
+
+        private void updateChart()
+        {
+            if (_pointSeries == null)
+            {
+                return;
+            }
+
             _pointSeries.Clear();
 
-            _pointSeries.Append(values[0], values[1]);
-            _pointSeries.Append(values[2], values[3]);
-            _pointSeries.Append(values[4], values[5]);
+            var doublePoints = points
+                .Select(x => x.getPoint())
+                .ToArray();
 
-            var point1 = new DoublePoint2D(values[0], values[1]);
-            var point2 = new DoublePoint2D(values[2], values[3]);
-            var point3 = new DoublePoint2D(values[4], values[5]);
+            foreach (var point in doublePoints)
+            {
+                _pointSeries.Append(point.X, point.Y);
+            }
 
-            _currentEllipse = DoubleEllipse2D.generateSteinerCircumellipse(point1, point2, point3);
+            _currentEllipse = MinimumAreaEnclosingEllipse.getSteinerEllipseLazy(doublePoints);
 
             var intervals = 500;
 

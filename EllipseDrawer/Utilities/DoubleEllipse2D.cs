@@ -8,11 +8,11 @@ namespace EllipseDrawer.Utilities
     {
         #region Properties
         /// <summary>
-        /// Longer radius of the ellipse.
+        /// Longer radius of the ellipse. (Unitless)
         /// </summary>
         public double radiusMajor { get; }
         /// <summary>
-        /// Shorter radius of the ellipse.
+        /// Shorter radius of the ellipse. (Unitless)
         /// </summary>
         public double radiusMinor { get; }
         /// <summary>
@@ -31,10 +31,14 @@ namespace EllipseDrawer.Utilities
         /// Rotation, counter-clockwise from X-Axis in positive direction, of ellipse, in degrees.
         /// </summary>
         public double angleDegrees => angleRadians * 180 / Math.PI;
+        /// <summary>
+        /// Unitless area of the ellipse.
+        /// </summary>
+        public double area => Math.PI * radiusMajor * radiusMinor;
         #endregion
 
         #region Constructors
-        private DoubleEllipse2D(double radiusMajor, double radiusMinor, double centerX, double centerY, double angleRadians)
+        public DoubleEllipse2D(double radiusMajor, double radiusMinor, double centerX, double centerY, double angleRadians)
         {
             this.radiusMajor = radiusMajor;
             this.radiusMinor = radiusMinor;

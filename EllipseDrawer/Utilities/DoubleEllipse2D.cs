@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 
 namespace EllipseDrawer.Utilities
@@ -177,20 +178,27 @@ namespace EllipseDrawer.Utilities
             var AMatrix = MatrixGenerator.createMatrixFromColumns(xyVector, y2Vector, xVector, yVector, cVector);
             var A = DeterminantFunctions.getDeterminant(AMatrix);
 
+            // A must always be positive. If not, multiply each coefficient by -1
+            // Unproven, only determined by experimentation.
+            var multiplier = A > 0 ? 1 : -1;
+            A *= multiplier;
+
             var BMatrix = MatrixGenerator.createMatrixFromColumns(x2Vector, y2Vector, xVector, yVector, cVector);
-            var B = -1 * DeterminantFunctions.getDeterminant(BMatrix);
+            var B = -1 * multiplier * DeterminantFunctions.getDeterminant(BMatrix);
 
             var CMatrix = MatrixGenerator.createMatrixFromColumns(x2Vector, xyVector, xVector, yVector, cVector);
-            var C = DeterminantFunctions.getDeterminant(CMatrix);
+            var C = multiplier * DeterminantFunctions.getDeterminant(CMatrix);
 
             var DMatrix = MatrixGenerator.createMatrixFromColumns(x2Vector, xyVector, y2Vector, yVector, cVector);
-            var D = -1 * DeterminantFunctions.getDeterminant(DMatrix);
+            var D = -1 * multiplier * DeterminantFunctions.getDeterminant(DMatrix);
 
             var EMatrix = MatrixGenerator.createMatrixFromColumns(x2Vector, xyVector, y2Vector, xVector, cVector);
-            var E = DeterminantFunctions.getDeterminant(EMatrix);
+            var E = multiplier * DeterminantFunctions.getDeterminant(EMatrix);
 
             var FMatrix = MatrixGenerator.createMatrixFromColumns(x2Vector, xyVector, y2Vector, xVector, yVector);
-            var F = -1 * DeterminantFunctions.getDeterminant(FMatrix);
+            var F = -1 * multiplier *  DeterminantFunctions.getDeterminant(FMatrix);
+
+            Debug.WriteLine($"A = {A}, B = {B}, C = {C}, D = {D}, E = {E}, F = {F}");
 
             return generateFromGeneralCoefficients(A, B, C, D, E, F);
         }

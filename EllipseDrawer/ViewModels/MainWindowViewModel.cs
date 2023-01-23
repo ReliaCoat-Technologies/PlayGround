@@ -28,10 +28,6 @@ namespace EllipseDrawer.ViewModels
         private double _Y2;
         private double _X3;
         private double _Y3;
-        private double _X4;
-        private double _Y4;
-        private double _X5;
-        private double _Y5;
         private double _testX;
         private double _testY;
         #endregion
@@ -67,26 +63,6 @@ namespace EllipseDrawer.ViewModels
             get => _Y3;
             set => this.RaiseAndSetIfChanged(ref _Y3, value);
         }
-        public double X4
-        {
-            get => _X4;
-            set => this.RaiseAndSetIfChanged(ref _X4, value);
-        }
-        public double Y4
-        {
-            get => _Y4;
-            set => this.RaiseAndSetIfChanged(ref _Y4, value);
-        }
-        public double X5
-        {
-            get => _X5;
-            set => this.RaiseAndSetIfChanged(ref _X5, value);
-        }
-        public double Y5
-        {
-            get => _Y5;
-            set => this.RaiseAndSetIfChanged(ref _Y5, value);
-        }
         public double testX
         {
             get => _testX;
@@ -110,10 +86,6 @@ namespace EllipseDrawer.ViewModels
                 this.WhenAnyValue(x => x.Y2),
                 this.WhenAnyValue(x => x.X3),
                 this.WhenAnyValue(x => x.Y3),
-                this.WhenAnyValue(x => x.X4),
-                this.WhenAnyValue(x => x.Y4),
-                this.WhenAnyValue(x => x.X5),
-                this.WhenAnyValue(x => x.Y5),
             };
 
             this.WhenAnyValue(x => x.testX, x => x.testY)
@@ -126,10 +98,6 @@ namespace EllipseDrawer.ViewModels
             Y2 = -2;
             X3 = 3;
             Y3 = 7;
-            X4 = -1;
-            Y4 = -5;
-            X5 = -4;
-            Y5 = 4;
 
             testX = 0;
             testY = 6;
@@ -213,16 +181,12 @@ namespace EllipseDrawer.ViewModels
             _pointSeries.Append(values[0], values[1]);
             _pointSeries.Append(values[2], values[3]);
             _pointSeries.Append(values[4], values[5]);
-            _pointSeries.Append(values[6], values[7]);
-            _pointSeries.Append(values[8], values[9]);
 
             var point1 = new DoublePoint2D(values[0], values[1]);
             var point2 = new DoublePoint2D(values[2], values[3]);
             var point3 = new DoublePoint2D(values[4], values[5]);
-            var point4 = new DoublePoint2D(values[6], values[7]);
-            var point5 = new DoublePoint2D(values[8], values[9]);
 
-            _currentEllipse = DoubleEllipse2D.generateFromFivePoints(point1, point2, point3, point4, point5);
+            _currentEllipse = DoubleEllipse2D.generateSteinerCircumellipse(point1, point2, point3);
 
             var intervals = 500;
 

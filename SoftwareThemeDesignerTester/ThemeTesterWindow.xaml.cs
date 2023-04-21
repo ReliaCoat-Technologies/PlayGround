@@ -25,7 +25,7 @@ namespace SoftwareThemeDesignerTester
 		#region Methods
 		private async Task onLoadedAsync()
 		{
-			await _viewModel.initializeAsync();
+			
 		}
 		#endregion
 	}

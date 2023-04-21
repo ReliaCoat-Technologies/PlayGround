@@ -1,5 +1,5 @@
-﻿using EllipseDrawer.Utilities;
-using ReactiveUI;
+﻿using ReactiveUI;
+using ReliaCoat.Numerics.CartesianMath;
 
 namespace EllipseDrawer.ViewModels
 {
@@ -24,9 +24,9 @@ namespace EllipseDrawer.ViewModels
         #endregion
 
         #region Methods
-        public DoublePoint2D getPoint()
+        public XyPoint getPoint()
         {
-            return new DoublePoint2D(X, Y);
+            return new XyPoint(X, Y);
         }
         #endregion
     }

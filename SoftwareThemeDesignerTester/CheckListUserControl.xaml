@@ -8,10 +8,4 @@
 			 d:DataContext="{d:DesignInstance viewModels:CountrySelectorViewModel}"
 			 mc:Ignorable="d">
 
-	<controls:RctComboCheckList Margin="10"
-								checkListItemsSource="{Binding countryList}"
-								checkedItems="{Binding selectedCountries, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-								labelText="Country"
-								displayMember="name" />
-
 </UserControl>

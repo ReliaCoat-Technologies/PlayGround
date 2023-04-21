@@ -1,52 +1,26 @@
-﻿using System.Collections.ObjectModel;
-using System.Linq;
-using System.Threading.Tasks;
-using ReactiveUI;
-using ReliaCoat.Common;
+﻿using ReactiveUI;
 
 namespace SoftwareThemeDesignerTester.ViewModels
 {
 	public class ThemeTesterWindowViewModel : ReactiveObject
 	{
-		private CountrySelectorViewModel _mainSelectorViewModel;
+		#region Fields
+        private double _myValue;
+		#endregion
 
 		#region Properties
-		public CountrySelectorViewModel mainSelectorViewModel
+		public double myValue
 		{
-			get { return _mainSelectorViewModel; }
-			set { this.RaiseAndSetIfChanged(ref _mainSelectorViewModel, value); }
+			get => _myValue;
+			set => this.RaiseAndSetIfChanged(ref _myValue, value);
 		}
-
-		public ObservableCollection<CountrySelectorViewModel> selectorViewModels { get; }
 		#endregion
 
 		#region Constructor
 		public ThemeTesterWindowViewModel()
-		{
-			selectorViewModels = new ObservableCollection<CountrySelectorViewModel>();
-		}
-		#endregion
-
-		#region Methods
-		public async Task initializeAsync()
-		{
-			var countries = await HelperFunctions.getCountriesAsync();
-
-			mainSelectorViewModel = new CountrySelectorViewModel();
-
-			mainSelectorViewModel.addCountries(countries);
-
-			var viewModelsToAdd = Enumerable.Range(0, 1)
-				.Select(x =>
-				{
-					var viewModel = new CountrySelectorViewModel();
-					viewModel.addCountries(countries);
-					return viewModel;
-				})
-				.ToList();
-
-			selectorViewModels.addRange(viewModelsToAdd);
-		}
+        {
+            myValue = 1.5;
+        }
 		#endregion
 	}
 }

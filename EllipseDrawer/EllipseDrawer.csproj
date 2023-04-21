@@ -38,6 +38,9 @@
     <Reference Include="DynamicData, Version=7.9.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\DynamicData.7.9.5\lib\net462\DynamicData.dll</HintPath>
     </Reference>
+    <Reference Include="MathNet.Numerics, Version=5.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MathNet.Numerics.5.0.0\lib\net48\MathNet.Numerics.dll</HintPath>
+    </Reference>
     <Reference Include="ReactiveUI, Version=18.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ReactiveUI.18.1.8\lib\net472\ReactiveUI.dll</HintPath>
     </Reference>
@@ -93,11 +96,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Utilities\DeterminantFunctions.cs" />
-    <Compile Include="Utilities\DoubleCircle2D.cs" />
-    <Compile Include="Utilities\DoubleEllipse2D.cs" />
-    <Compile Include="Utilities\DoublePoint2D.cs" />
-    <Compile Include="Utilities\MatrixGenerator.cs" />
     <Compile Include="Utilities\MinimumAreaEnclosingEllipse.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\PointViewModel.cs" />
@@ -157,6 +155,10 @@
     <ProjectReference Include="..\..\ReliaCoat.Core\ReliaCoat.Common\ReliaCoat.Common.csproj">
       <Project>{65EEB4C2-8394-4090-A3ED-47A184BC2A82}</Project>
       <Name>ReliaCoat.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ReliaCoat.Core\ReliaCoat.Numerics\ReliaCoat.Numerics.csproj">
+      <Project>{4D36AED5-B30A-4F8A-B567-DC5940D2393D}</Project>
+      <Name>ReliaCoat.Numerics</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

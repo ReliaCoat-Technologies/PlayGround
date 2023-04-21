@@ -1,147 +1,109 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using ReliaCoat.Common;
+using ReliaCoat.Numerics.CartesianMath;
 
 namespace EllipseDrawer.Utilities
 {
     public static class MinimumAreaEnclosingEllipse
     {
-        private static readonly Random _random = new Random();
-
-        // Determine if a point is inside the circle.
-        private static bool isPointInsideEllipse(DoubleEllipse2D inputEllipse, DoublePoint2D testPoint)
-        {
-            return inputEllipse.isPointWithinEllipse(testPoint);
-        }
-
-        private static DoubleEllipse2D getEllipseFrom(DoublePoint2D pointA, DoublePoint2D pointB)
-        {
-            var deltaX = pointB.X - pointA.X;
-            var deltaY = pointB.Y - pointA.Y;
-
-            var angleRadians = Math.Atan2(deltaX, deltaY);
-
-            var radiusMajor = Math.Sqrt(deltaX * deltaX + deltaY + deltaY);
-            var radiusMinor = radiusMajor / 10;
-
-            var midpointX = (pointB.X + pointA.X) / 2;
-            var midpointY = (pointB.Y + pointA.Y) / 2;
-
-            return new DoubleEllipse2D(radiusMajor, radiusMinor, midpointX, midpointY, angleRadians);
-        }
-
-        private static DoubleEllipse2D getEllipseFrom(DoublePoint2D pointA, DoublePoint2D pointB, DoublePoint2D pointC)
-        {
-            return DoubleEllipse2D.generateSteinerCircumellipse(pointA, pointB, pointC);
-        }
-
-        private static bool isValidEllipse(DoubleEllipse2D ellipse, DoublePoint2D[] points)
-        {
-            if (!ellipse.isValidEllipse)
-            {
-                return false;
-            }
-
-            foreach (var point in points)
-            {
-                if (!ellipse.isPointWithinEllipse(point))
-                {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
         // "Lazy" O(N^3) method.
-        public static DoubleEllipse2D getSteinerEllipseLazy(IEnumerable<DoublePoint2D> pointsInput)
+        public static DoubleEllipse2D getAllEncompassingEllipseLazy(IEnumerable<XyPoint> pointsInput)
         {
             var points = pointsInput.ToArray();
 
-            var currentEllipse = new DoubleEllipse2D(double.PositiveInfinity, double.PositiveInfinity, 0, 0, 0);
+            var hullPoints = ConvexHullCalculator.getConvexHull(points);
 
-            var pointsToTry = points
-                .permute(points)
-                .permute(points)
-                .Where(x => x.Distinct().Count() == 3)
-                .ToArray();
-
-            foreach (var pointToTry in pointsToTry)
+            if (hullPoints.Count == 3)
             {
-                var pointArray = pointToTry.ToArray();
-
-                var ellipse = getEllipseFrom(pointArray[0], pointArray[1], pointArray[2]);
-
-                if (isValidEllipse(ellipse, points) && currentEllipse.area > ellipse.area)
-                {
-                    currentEllipse = ellipse;
-                }
+                return DoubleEllipse2D.generateFromThreePoints(hullPoints[0], hullPoints[1], hullPoints[2]);
             }
 
-            return currentEllipse;
-        }
+            if (hullPoints.Count == 4)
+            {
+                return DoubleEllipse2D.generateFromFourPoints(hullPoints[0], hullPoints[1], hullPoints[2], hullPoints[3]);
+            }
 
-        private static DoubleEllipse2D getMinimumEllipse(DoublePoint2D[] points)
-        {
-            if (points.Length == 0)
+            var fivePointEllipses = getDistinctEllipses(hullPoints, 5).ToArray();
+
+            if (!fivePointEllipses.Any())
             {
                 return new DoubleEllipse2D(0, 0, 0, 0, 0);
             }
-            if (points.Length == 1)
+
+            var minArea = fivePointEllipses.Min(x => x.area);
+
+            return fivePointEllipses.FirstOrDefault(x => x.area == minArea);
+        }
+
+        private static IEnumerable<DoubleEllipse2D> getDistinctEllipses(this IEnumerable<XyPoint> pointsInput, int numberOfPoints)
+        {
+            var points = pointsInput.ToArray();
+
+            if (numberOfPoints < 3)
             {
-                return new DoubleEllipse2D(0, 0, points[0].X, points[0].Y, 0);
+                throw new ArgumentException("Number of points per ellipse must exceed 3");
             }
-            if (points.Length == 2)
+            if (numberOfPoints > 5)
             {
-                return getEllipseFrom(points[0], points[1]);
+                throw new ArgumentException("Number of points per ellipse must not exceed 5");
             }
 
-            for (var i = 0; i < 3; i++)
+            var permutedPoints = new List<IList<XyPoint>>();
+
+            for (var i = 0; i < points.Length; i++)
             {
-                for (var j = i + 1; j < 3; j++)
+                for (var j = i; j < points.Length; j++)
                 {
-                    var ellipse = getEllipseFrom(points[i], points[j]);
-
-                    if (isValidEllipse(ellipse, points))
+                    if (points[i] == points[j])
                     {
-                        return ellipse;
+                        continue;
                     }
+
+                    var pointSet = new List<XyPoint> { points[i], points[j] };
+
+                    permutedPoints.Add(pointSet);
                 }
             }
 
-            return getEllipseFrom(points[0], points[1], points[2]);
-        }
+            var ellipsesToReturn = new List<DoubleEllipse2D>();
 
-        private static DoubleEllipse2D getWelzlEllipseHelper(DoublePoint2D[] inputPoints, IList<DoublePoint2D> boundaryPoints, int numberOfPointsLeft)
-        {
-            if (numberOfPointsLeft == 0 || boundaryPoints.Count == 3)
+            for (var t = 3; t <= numberOfPoints; t++)
             {
-                return getMinimumEllipse(boundaryPoints.ToArray());
+                var newPermutedPoints = new List<IList<XyPoint>>();
+
+                foreach (var pointSet in permutedPoints)
+                {
+                    foreach (var point in points)
+                    {
+                        if (pointSet.Contains(point))
+                        {
+                            continue;
+                        }
+
+                        var newPointSet = pointSet.ToList();
+                        newPointSet.Add(point);
+
+                        if (t == numberOfPoints)
+                        {
+                            var ellipse = DoubleEllipse2D.generateEllipse(newPointSet);
+                            
+                            if (ellipse.arePointsWithinEllipse(points))
+                            {
+                                ellipsesToReturn.Add(ellipse);
+                            }
+                        }
+                        else
+                        {
+                            newPermutedPoints.Add(newPointSet);
+                        }
+                    }
+                }
+
+                permutedPoints = newPermutedPoints;
             }
 
-            var index = _random.Next() % numberOfPointsLeft;
-            var point = inputPoints[index];
-
-            (inputPoints[index], inputPoints[numberOfPointsLeft - 1]) = (inputPoints[numberOfPointsLeft - 1], inputPoints[index]);
-
-            var circle = getWelzlEllipseHelper(inputPoints, boundaryPoints, numberOfPointsLeft - 1);
-
-            if (isPointInsideEllipse(circle, point))
-            {
-                return circle;
-            }
-
-            boundaryPoints.Add(point);
-
-            return getWelzlEllipseHelper(inputPoints, boundaryPoints, numberOfPointsLeft - 1);
-        }
-
-        public static DoubleEllipse2D getSteinerCurcumellipse(IEnumerable<DoublePoint2D> inputPoints)
-        {
-            var points = inputPoints.shuffle().ToArray();
-
-            return getWelzlEllipseHelper(points, new List<DoublePoint2D>(), points.Length);
+            return ellipsesToReturn;
         }
     }
 }

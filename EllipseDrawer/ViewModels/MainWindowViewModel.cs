@@ -1,12 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
-using System.Reactive.Linq;
+using System.Windows.Input;
 using System.Windows.Media;
 using EllipseDrawer.Utilities;
 using ReactiveUI;
 using ReliaCoat.Common.UI.Extensions.SciChartExtensions;
+using ReliaCoat.Numerics.CartesianMath;
 using SciChart.Charting.Model.ChartSeries;
 using SciChart.Charting.Model.DataSeries;
 using SciChart.Charting.Visuals.Axes;
@@ -43,17 +44,22 @@ namespace EllipseDrawer.ViewModels
         }
         #endregion
 
+        #region Commands
+        public ICommand addPointCommand { get; }
+        #endregion
+
         #region Constructor
         public MainWindowViewModel()
         {
             points = new ObservableCollection<PointViewModel>();
 #if DEBUG
-            addPoint(-6, -2);
-            addPoint(6, -2);
-            addPoint(3, 7);
+            addPoint(1, 1);
+            addPoint(-1, 1);
+            addPoint(-1, -1);
+            addPoint(1, -1);
 
             testX = 0;
-            testY = 6;
+            testY = 0;
 #endif
             xAxis.AxisTitle = "X";
             xAxis.GrowBy = new DoubleRange(0.2, 0.2);
@@ -119,8 +125,12 @@ namespace EllipseDrawer.ViewModels
 
             updateChart();
 
+            points.CollectionChanged += (s, e) => updateChart();
+
             this.WhenAnyValue(x => x.testX, x => x.testY)
                 .Subscribe(testPoint);
+
+            addPointCommand = ReactiveCommand.Create(() => addPoint());
         }
         #endregion
 
@@ -154,7 +164,13 @@ namespace EllipseDrawer.ViewModels
                 _pointSeries.Append(point.X, point.Y);
             }
 
-            _currentEllipse = MinimumAreaEnclosingEllipse.getSteinerCurcumellipse(doublePoints);
+            var sw = new Stopwatch();
+            sw.Start();
+            
+            _currentEllipse = MinimumAreaEnclosingEllipse.getAllEncompassingEllipseLazy(doublePoints);
+
+            sw.Stop();
+            Debug.Write($"Calculation Time: {sw.Elapsed.TotalMilliseconds} ms");
 
             var intervals = 500;
 
@@ -179,7 +195,7 @@ namespace EllipseDrawer.ViewModels
                 return;
             }
 
-            var point = new DoublePoint2D(valueTuple.Item1, valueTuple.Item2);
+            var point = new XyPoint(valueTuple.Item1, valueTuple.Item2);
 
             var isWithinEllipse = _currentEllipse.isPointWithinEllipse(point);
 

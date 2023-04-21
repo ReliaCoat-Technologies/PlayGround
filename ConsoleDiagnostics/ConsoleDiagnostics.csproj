@@ -55,6 +55,14 @@
       <Project>{4b0635fa-2fe0-4781-8e52-39924de836a2}</Project>
       <Name>ReliaCoat.Common.UI.Extensions</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\ReliaCoat.Core\ReliaCoat.Numerics\ReliaCoat.Numerics.csproj">
+      <Project>{4D36AED5-B30A-4F8A-B567-DC5940D2393D}</Project>
+      <Name>ReliaCoat.Numerics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EllipseDrawer\EllipseDrawer.csproj">
+      <Project>{7705DBFD-B9DA-4550-AA12-7231EA64AAAB}</Project>
+      <Name>EllipseDrawer</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
